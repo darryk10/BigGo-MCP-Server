@@ -18,7 +18,7 @@ class Store(BaseModel):
     # link: str
     name: str | None = None
     discount_info: str | None = None
-    rate_desc: str | None = None
+    # rate_desc: str | None = None
     # is_cashback: bool
 
 
@@ -27,11 +27,10 @@ class Shop(BaseModel):
     username: str | None = None
     uid: str | None = None
     location: str | None = None
-    seller_credit: int | None = None
+    # seller_credit: int | None = None
 
 
 class ListItem(BaseModel):
-    # id: nindex-oid (history_id)
     nindex: str | None = None
     oid: str | None = None
     # subscribe_id: Any
