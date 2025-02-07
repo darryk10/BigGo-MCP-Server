@@ -3,6 +3,8 @@ from typing import Annotated, Literal
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
 import requests
+from .types.product_search_ret import ProductSearchAPIRet
+from .utils import get_nindex_oid
 
 server = FastMCP("BigGo MCP Server")
 
@@ -18,7 +20,7 @@ def product_search(
 
     logger.info("product search, query: %s", query)
 
-    url = f"https://biggo.com.tw/api/v1/spa/search/{query}/product?group=gp"
+    url = f"https://biggo.com.tw/api/v1/spa/search/{query}/product"
     logger.debug("product search, url: %s", url)
 
     resp = requests.get(url)
@@ -27,50 +29,97 @@ def product_search(
         logger.error(err_msg)
         raise ValueError(err_msg)
 
-    result = resp.json()
-    logger.debug("product search result: %s", result)
+    # clean data
+    original_length = len(resp.text)
+    cleaned_data = ProductSearchAPIRet.model_validate_json(resp.text)
+    result = cleaned_data.model_dump_json(exclude_none=True)
+
+    logger.info("Original length: %s, Cleaned length: %s", original_length,
+                len(result))
+
     return result
+
+
+# @server.tool()
+# async def ec_list() -> str:
+#     """EC List
+#
+#     This includes 'provide' that can be used in combination with 'oid'
+#     to create the currect 'item' structure for price history search
+#     """
+#
+#     logger.info("get ec list")
+#
+#     url = "https://biggo.com.tw/app/provide2sitetype.php"
+#
+#     resp = requests.get(url)
+#     if resp.status_code >= 400:
+#         err_msg = f"ec list api error: {resp.text}"
+#         logger.error(err_msg)
+#         raise ValueError(err_msg)
+#
+#     # clean data
+#     original_length = len(resp.text)
+#     cleaned_data = ECListAPIRet.model_validate_json(resp.text)
+#     result = cleaned_data.model_dump_json(exclude_none=True)
+#
+#     logger.info("Original length: %s, Cleaned length: %s", original_length,
+#                 len(result))
+#
+#     return result
 
 
 @server.tool()
-async def ec_list() -> str:
-    """Get EC List
-    This includes 'provide' that can be used in combination with 'oid'
-    to create the currect 'item' structure for price history search
-    """
+async def price_history_graph(
+    history_id: Annotated[
+        str,
+        Field(description="""
+              Product History ID
+              Here are a few steps to obtain this argument.
+              1. Use 'product_search' tool to retrive a list of products
+              2. Find the most relevant product.
+              3. The product should have a field called 'history_id', use it as the value for this argument
+              """,
+              examples=[
+                  "tw_pmall_rakuten-nwdsl_6MONJRBOO", "tw_pec_senao-1363332"
+              ])],
+    language: Annotated[Literal["tw", "en"],
+                        Field(description="Timeline label language")],
+) -> str:
+    """Link that visualizes product price history"""
 
-    logger.info("get ec list")
+    logger.info("price history graph, history_id: %s, language: %s", history_id,
+                language)
 
-    url = "https://biggo.com.tw/app/provide2sitetype.php"
+    item_info = get_nindex_oid(history_id)
+    url = f"https://imbot-dev.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={language}"
 
-    resp = requests.get(url)
-    if resp.status_code >= 400:
-        err_msg = f"ec list api error: {resp.text}"
-        logger.error(err_msg)
-        raise ValueError(err_msg)
-
-    result = resp.json()
-    logger.debug("ec list result: %s", result)
-    return result
+    return f"""<PriceHistoryGraph> ![Price History Graph]({url}) </PriceHistoryGraph>"""
 
 
 @server.tool()
 async def price_history(
-    item: Annotated[
+    history_id: Annotated[
         str,
-        Field(description=
-              """Product to search for. The structure is <provide>-<oid>""",
-              examples=["tw_pmall_rakuten-nwdsl_6MONJRBOO"])],
-    days: Annotated[Literal["days90", "days180", "days365", "days730"],
+        Field(description="""
+              Product History ID
+              Here are a few steps to obtain this argument.
+              1. Use 'product_search' tool to retrive a list of products
+              2. Find the most relevant product.
+              3. The product should have a field called 'history_id', use it as the value for this argument
+              """,
+              examples=[
+                  "tw_pmall_rakuten-nwdsl_6MONJRBOO", "tw_pec_senao-1363332"
+              ])],
+    days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
 ) -> str:
     """Product Price History"""
 
-    logger.info("price history, item: %s, days: %s", item, days)
+    logger.info("price history, history_id: %s, days: %s", history_id, days)
 
-    days_number = int(days.lstrip("days"))
     url = "https://extension.biggo.com/api/product_price_history.php"
-    body = {"item": [item], "days": days_number}
+    body = {"item": [history_id], "days": int(days)}
 
     logger.info("call price history, body: %s", body)
 
@@ -80,6 +129,4 @@ async def price_history(
         logger.error(err_msg)
         raise ValueError(err_msg)
 
-    result = resp.json()
-    logger.debug("price history result: %s", result)
-    return result
+    return resp.text

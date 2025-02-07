@@ -1,6 +1,22 @@
 import base64
+from dataclasses import dataclass
 from aiohttp import ClientSession
 from pydantic import BaseModel
+
+
+@dataclass(slots=True)
+class NindexOID:
+    nindex: str
+    oid: str
+
+
+def get_nindex_oid(inpt: str) -> NindexOID:
+    """
+    Arguments:
+    - inpt: structure <nindex>-<oid>
+    """
+    temp = inpt.split("-", maxsplit=1)
+    return NindexOID(nindex=temp[0], oid=temp[1])
 
 
 class _AuthTokenResp(BaseModel):
