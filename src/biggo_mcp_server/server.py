@@ -40,35 +40,6 @@ def product_search(
     return result
 
 
-# @server.tool()
-# async def ec_list() -> str:
-#     """EC List
-#
-#     This includes 'provide' that can be used in combination with 'oid'
-#     to create the currect 'item' structure for price history search
-#     """
-#
-#     logger.info("get ec list")
-#
-#     url = "https://biggo.com.tw/app/provide2sitetype.php"
-#
-#     resp = requests.get(url)
-#     if resp.status_code >= 400:
-#         err_msg = f"ec list api error: {resp.text}"
-#         logger.error(err_msg)
-#         raise ValueError(err_msg)
-#
-#     # clean data
-#     original_length = len(resp.text)
-#     cleaned_data = ECListAPIRet.model_validate_json(resp.text)
-#     result = cleaned_data.model_dump_json(exclude_none=True)
-#
-#     logger.info("Original length: %s, Cleaned length: %s", original_length,
-#                 len(result))
-#
-#     return result
-
-
 @server.tool()
 async def price_history_graph(
     history_id: Annotated[
