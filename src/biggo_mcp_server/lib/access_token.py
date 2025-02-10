@@ -1,10 +1,11 @@
+from logging import getLogger
 from pydantic import BaseModel
 import base64
 import requests
 
+from ..types.auth_token_ret import AuthTokenRet
 
-class _AuthTokenResp(BaseModel):
-    access_token: str
+logger = getLogger(__name__)
 
 
 def get_access_token(
@@ -33,6 +34,4 @@ def get_access_token(
         raise ValueError(msg)
 
     data = resp.json()
-    parsed_data = _AuthTokenResp.model_validate(data)
-
-    return parsed_data.access_token
+    return AuthTokenRet.model_validate(data).access_token
