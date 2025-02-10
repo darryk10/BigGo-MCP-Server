@@ -6,6 +6,7 @@ from ..types.auth_token_ret import AuthTokenRet
 logger = getLogger(__name__)
 
 
+# TODO: use 'async_lru_cache'
 async def get_access_token(
         client_id: str,
         client_secret: str,
