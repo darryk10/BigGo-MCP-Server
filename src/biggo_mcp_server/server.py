@@ -5,9 +5,8 @@ from pydantic import Field
 import requests
 from .lib.log import setup_logging
 from .types.setting import BigGoMCPSetting
-from .lib.price_history import get_price_history, get_price_history_with_url
+from .lib.price_history import gen_price_history_graph_url, get_price_history, get_price_history_with_url
 from .types.product_search_ret import ProductSearchAPIRet
-from .lib.utils import get_nindex_oid
 
 logger = getLogger(__name__)
 
@@ -62,14 +61,11 @@ def price_history_graph(
     language: Annotated[Literal["tw", "en"],
                         Field(description="Timeline label language")],
 ) -> str:
-    """Link that visualizes product price history"""
+    """Link That Visualizes Product Price History"""
 
     logger.info("price history graph, history_id: %s, language: %s", history_id,
                 language)
-
-    item_info = get_nindex_oid(history_id)
-    url = f"https://imbot-dev.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={language}"
-
+    url = gen_price_history_graph_url(history_id, language)
     return f"""<PriceHistoryGraph> ![Price History Graph]({url}) </PriceHistoryGraph>"""
 
 
@@ -89,6 +85,8 @@ def price_history_with_history_id(
               ])],
     days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
+    language: Annotated[Literal["tw", "en"],
+                        Field(description="Timeline label language")],
 ) -> str:
     """Product Price History With History ID"""
 
@@ -97,7 +95,18 @@ def price_history_with_history_id(
     resp = get_price_history(history_id=history_id, days=int(days))
     if resp is None:
         return "No price history found"
-    return resp.model_dump_json(exclude_none=True)
+
+    url = gen_price_history_graph_url(history_id, language)
+
+    return f"""
+<PriceHistoryDescription>
+    {resp.model_dump_json(exclude_none=True)}
+</PriceHistoryDescription>
+
+<PriceHistoryGraph>
+    ![Price History Graph]({url})
+</PriceHistoryGraph>
+"""
 
 
 @server.tool()
@@ -105,6 +114,8 @@ def price_history_with_url(
     days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
     url: Annotated[str, Field(description="Product URL")],
+    language: Annotated[Literal["tw", "en"],
+                        Field(description="Timeline label language")],
 ) -> str:
     """Product Price History With URL"""
 
@@ -112,4 +123,15 @@ def price_history_with_url(
     resp = get_price_history_with_url(days=int(days), url=url)
     if resp is None:
         return "No price history found"
-    return resp.model_dump_json(exclude_none=True)
+
+    url = gen_price_history_graph_url(resp.history_id, language)
+
+    return f"""
+<PriceHistoryDescription>
+    {resp.data.model_dump_json(exclude_none=True)}
+</PriceHistoryDescription>
+
+<PriceHistoryGraph>
+    ![Price History Graph]({url})
+</PriceHistoryGraph>
+"""

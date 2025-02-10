@@ -1,11 +1,18 @@
+from dataclasses import dataclass
 from logging import getLogger
 import requests
 
-from .utils import get_nindex_from_url, get_pid_from_url
+from .utils import get_nindex_from_url, get_nindex_oid, get_pid_from_url
 
 from ..types.price_history_ret import PriceHistoryAPIRet
 
 logger = getLogger(__name__)
+
+
+def gen_price_history_graph_url(history_id: str, language: str) -> str:
+    item_info = get_nindex_oid(history_id)
+    url = f"https://imbot-dev.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={language}"
+    return url
 
 
 def get_price_history(history_id: str, days: int) -> PriceHistoryAPIRet | None:
@@ -30,8 +37,19 @@ def get_history_id(nindex: str, pid: str) -> str:
     return f"{nindex}-{pid}"
 
 
+@dataclass(slots=True)
+class PriceHistoryWithUrlRet:
+    nindex: str
+    pid: str
+    data: PriceHistoryAPIRet
+
+    @property
+    def history_id(self) -> str:
+        return get_history_id(nindex=self.nindex, pid=self.pid)
+
+
 def get_price_history_with_url(days: int,
-                               url: str) -> PriceHistoryAPIRet | None:
+                               url: str) -> PriceHistoryWithUrlRet | None:
     if (nindex := get_nindex_from_url(url)) is None:
         logger.warning("nindex not found, url: %s", url)
         return
@@ -51,4 +69,5 @@ def get_price_history_with_url(days: int,
             days=days,
         )
 
-    return resp
+    if resp is not None:
+        return PriceHistoryWithUrlRet(nindex=nindex, pid=pid, data=resp)
