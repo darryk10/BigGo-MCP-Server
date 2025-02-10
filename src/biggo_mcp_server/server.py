@@ -41,7 +41,11 @@ def product_search(
     logger.info("Original length: %s, Cleaned length: %s", original_length,
                 len(result))
 
-    return result
+    return f"""
+<ProductSearchResult>
+    {result}
+</ProductSearchResult>
+"""
 
 
 @server.tool()
