@@ -9,6 +9,7 @@ def test_get_history():
     history = price_history_with_history_id(
         history_id="tw_pmall_rakuten-nwdsl_6MONJRBOO",
         days="90",
+        language="tw",
     )
     assert isinstance(history, str)
 
@@ -17,6 +18,7 @@ def test_get_history_with_url():
     history = price_history_with_url(
         url="https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781",
         days="90",
+        language="tw",
     )
     assert isinstance(history, str)
 
