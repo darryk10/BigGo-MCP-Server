@@ -6,7 +6,7 @@ from urllib.parse import quote_plus, urlparse, parse_qs
 
 from ..types.ec_list_ret import EcListAPIData, EcListAPIRet, EcListPattern
 from ..types.ninde_from_url_ret import NindexFromUrlAPIRet
-import requests
+from aiohttp import ClientSession
 
 logger = getLogger(__name__)
 
@@ -142,21 +142,24 @@ def get_product_id(ec_list: dict[str, EcListPattern], nindex: str,
         return ""
 
 
-def get_nindex_from_url(url: str) -> str | None:
+async def get_nindex_from_url(url: str) -> str | None:
     url = f"https://extension.biggo.com/api/store.php?method=domain_lookup&domain={quote_plus(url)}"
     logger.debug("get_nindex_from_url, url: %s", url)
-    resp = requests.get(url)
-    return NindexFromUrlAPIRet.model_validate_json(resp.text).nindex
+    async with ClientSession() as session:
+        async with session.get(url) as resp:
+            return NindexFromUrlAPIRet.model_validate(await resp.json()).nindex
 
 
-def get_ec_list() -> EcListAPIData | None:
-    resp = requests.get("https://extension.biggo.com/api/eclist.php")
-    data = EcListAPIRet.model_validate_json(resp.text)
-    return data.data
+async def get_ec_list() -> EcListAPIData | None:
+    url = "https://extension.biggo.com/api/eclist.php"
+    async with ClientSession() as session:
+        async with session.get(url) as resp:
+            data = EcListAPIRet.model_validate(await resp.json())
+            return data.data
 
 
-def get_pid_from_url(nindex: str, url: str) -> str | None:
-    ec_list = get_ec_list()
+async def get_pid_from_url(nindex: str, url: str) -> str | None:
+    ec_list = await get_ec_list()
     if not ec_list:
         logger.warning("ec list is empty")
         return

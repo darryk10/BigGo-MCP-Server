@@ -1,14 +1,12 @@
 from logging import getLogger
-from pydantic import BaseModel
 import base64
-import requests
-
+from aiohttp import ClientSession
 from ..types.auth_token_ret import AuthTokenRet
 
 logger = getLogger(__name__)
 
 
-def get_access_token(
+async def get_access_token(
         client_id: str,
         client_secret: str,
         endpoint: str = "https://api.biggo.com/auth/v1/token") -> str:
@@ -24,14 +22,15 @@ def get_access_token(
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
-    resp = requests.post(
-        url=endpoint,
-        headers=headers,
-        params=params,
-    )
-    if resp.status_code >= 400:
-        msg = f"get access token error, {resp.text}"
-        raise ValueError(msg)
+    async with ClientSession() as session:
+        async with session.post(
+                url=endpoint,
+                headers=headers,
+                params=params,
+        ) as resp:
+            if resp.status >= 400:
+                msg = f"get access token error, {await resp.text()}"
+                raise ValueError(msg)
 
-    data = resp.json()
-    return AuthTokenRet.model_validate(data).access_token
+        data = await resp.json()
+        return AuthTokenRet.model_validate(data).access_token

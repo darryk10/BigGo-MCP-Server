@@ -1,12 +1,14 @@
 """
-Mostly just make sure the tools are working.
+Just check if the tools can be called without errors.
 """
 
 from biggo_mcp_server.server import price_history_graph, price_history_with_history_id, price_history_with_url, product_search
+import pytest
 
 
-def test_get_history():
-    history = price_history_with_history_id(
+@pytest.mark.asyncio
+async def test_get_history():
+    history = await price_history_with_history_id(
         history_id="tw_pmall_rakuten-nwdsl_6MONJRBOO",
         days="90",
         language="tw",
@@ -14,8 +16,9 @@ def test_get_history():
     assert isinstance(history, str)
 
 
-def test_get_history_with_url():
-    history = price_history_with_url(
+@pytest.mark.asyncio
+async def test_get_history_with_url():
+    history = await price_history_with_url(
         url="https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781",
         days="90",
         language="tw",
@@ -23,8 +26,9 @@ def test_get_history_with_url():
     assert isinstance(history, str)
 
 
-def test_product_search():
-    search = product_search(query="iphone")
+@pytest.mark.asyncio
+async def test_product_search():
+    search = await product_search(query="iphone")
     assert isinstance(search, str)
 
 

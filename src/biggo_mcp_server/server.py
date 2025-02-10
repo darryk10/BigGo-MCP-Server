@@ -1,8 +1,8 @@
 from logging import getLogger
 from typing import Annotated, Literal
+from aiohttp import ClientSession
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
-import requests
 from .lib.log import setup_logging
 from .types.setting import BigGoMCPSetting
 from .lib.price_history import gen_price_history_graph_url, get_price_history, get_price_history_with_url
@@ -16,7 +16,7 @@ setup_logging(setting.log_level)
 
 
 @server.tool()
-def product_search(
+async def product_search(
     query: Annotated[
         str, Field(description="Search query", examples=["iphone", "護唇膏"])]
 ) -> str:
@@ -27,16 +27,17 @@ def product_search(
     url = f"https://biggo.com.tw/api/v1/spa/search/{query}/product"
     logger.debug("product search, url: %s", url)
 
-    resp = requests.get(url)
-    if resp.status_code >= 400:
-        err_msg = f"product search api error: {resp.text}"
-        logger.error(err_msg)
-        raise ValueError(err_msg)
+    async with ClientSession() as session:
+        async with session.get(url) as resp:
+            if resp.status >= 400:
+                err_msg = f"product search api error: {await resp.text()}"
+                logger.error(err_msg)
+                raise ValueError(err_msg)
 
-    # clean data
-    original_length = len(resp.text)
-    cleaned_data = ProductSearchAPIRet.model_validate_json(resp.text)
-    result = cleaned_data.model_dump_json(exclude_none=True)
+            # clean data
+            original_length = len(await resp.text())
+            cleaned_data = ProductSearchAPIRet.model_validate(await resp.json())
+            result = cleaned_data.model_dump_json(exclude_none=True)
 
     logger.info("Original length: %s, Cleaned length: %s", original_length,
                 len(result))
@@ -74,7 +75,7 @@ def price_history_graph(
 
 
 @server.tool()
-def price_history_with_history_id(
+async def price_history_with_history_id(
     history_id: Annotated[
         str,
         Field(description="""
@@ -96,7 +97,7 @@ def price_history_with_history_id(
 
     logger.info("price history with history id, history_id: %s, days: %s",
                 history_id, days)
-    resp = get_price_history(history_id=history_id, days=int(days))
+    resp = await get_price_history(history_id=history_id, days=int(days))
     if resp is None:
         return "No price history found"
 
@@ -114,7 +115,7 @@ def price_history_with_history_id(
 
 
 @server.tool()
-def price_history_with_url(
+async def price_history_with_url(
     days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
     url: Annotated[str, Field(description="Product URL")],
@@ -124,7 +125,7 @@ def price_history_with_url(
     """Product Price History With URL"""
 
     logger.info("price history with url, url: %s, days: %s", url, days)
-    resp = get_price_history_with_url(days=int(days), url=url)
+    resp = await get_price_history_with_url(days=int(days), url=url)
     if resp is None:
         return "No price history found"
 
@@ -139,3 +140,48 @@ def price_history_with_url(
     ![Price History Graph]({url})
 </PriceHistoryGraph>
 """
+
+
+@server.tool()
+async def spec_indexes(
+) -> Annotated[str, Field(description="List of Elasticsearch indexes")]:
+    """Elasticsearch Indexes for Product Specification"""
+    return "Not implemented"
+
+
+@server.tool()
+async def spec_mapping(
+    index: Annotated[str,
+                     Field(description="""
+                          Elasticsearch index
+                          Here are a few steps to obtain this argument.
+                          1. Use 'spec_indexes' tool to get the list of indexes
+                          2. Choose the most relevant index
+                          """)]
+) -> Annotated[str, Field(description="Elasticsearch Mappings")]:
+    """Elasticsearch Mapping For Product Specification """
+    return "Not implemented"
+
+
+@server.tool()
+async def spec_search(
+    index: Annotated[str,
+                     Field(description="""
+                          Elasticsearch index
+                          Here are a few steps to obtain this argument.
+                          1. Use 'spec_indexes' tool to get the list of indexes
+                          2. Choose the most relevant index
+                          """)],
+    # TODO: add examples
+    query: Annotated[str,
+                     Field(description="""
+                          Elasticsearch query, no need to include the `query` field.
+                          Steps to know what to query:
+                          1. Use 'spec_indexes' tool to get the list of indexes
+                          2. Choose the most relevant index
+                          3. Use 'spec_mapping' tool to get the mapping of the index
+                          4. Use this tool to query the index
+                          """)],
+) -> str:
+    """Product Specification Search"""
+    return "Not implemented"
