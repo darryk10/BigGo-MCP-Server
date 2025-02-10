@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 
 class PriceHistoryItem(BaseModel):
@@ -29,7 +29,7 @@ class Statistics(BaseModel):
     days7: Days | None = None
 
 
-class PriceHistoryRet(BaseModel):
+class PriceHistoryAttributes(BaseModel):
     symbol: str
     currency: str
     nindex: str
@@ -44,3 +44,7 @@ class PriceHistoryRet(BaseModel):
     icon: str
     statistics: Statistics
     state: str
+
+
+class PriceHistoryAPIRet(RootModel):
+    root: dict[str, PriceHistoryAttributes]

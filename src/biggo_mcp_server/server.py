@@ -3,12 +3,17 @@ from typing import Annotated, Literal
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
 import requests
+from .lib.log import setup_logging
+from .types.setting import BigGoMCPSetting
+from .lib.price_history import get_price_history, get_price_history_with_url
 from .types.product_search_ret import ProductSearchAPIRet
-from .utils import get_nindex_oid
-
-server = FastMCP("BigGo MCP Server")
+from .lib.utils import get_nindex_oid
 
 logger = getLogger(__name__)
+
+server = FastMCP("BigGo MCP Server")
+setting = BigGoMCPSetting()
+setup_logging(setting.log_level)
 
 
 @server.tool()
@@ -41,7 +46,7 @@ def product_search(
 
 
 @server.tool()
-async def price_history_graph(
+def price_history_graph(
     history_id: Annotated[
         str,
         Field(description="""
@@ -69,7 +74,7 @@ async def price_history_graph(
 
 
 @server.tool()
-async def price_history(
+def price_history_with_history_id(
     history_id: Annotated[
         str,
         Field(description="""
@@ -85,19 +90,26 @@ async def price_history(
     days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
 ) -> str:
-    """Product Price History"""
+    """Product Price History With History ID"""
 
-    logger.info("price history, history_id: %s, days: %s", history_id, days)
+    logger.info("price history with history id, history_id: %s, days: %s",
+                history_id, days)
+    resp = get_price_history(history_id=history_id, days=int(days))
+    if resp is None:
+        return "No price history found"
+    return resp.model_dump_json(exclude_none=True)
 
-    url = "https://extension.biggo.com/api/product_price_history.php"
-    body = {"item": [history_id], "days": int(days)}
 
-    logger.info("call price history, body: %s", body)
+@server.tool()
+def price_history_with_url(
+    days: Annotated[Literal["90", "80", "365", "730"],
+                    Field(description="History range")],
+    url: Annotated[str, Field(description="Product URL")],
+) -> str:
+    """Product Price History With URL"""
 
-    resp = requests.get(url, json=body)
-    if resp.status_code >= 400:
-        err_msg = f"price history api error: {resp.text}"
-        logger.error(err_msg)
-        raise ValueError(err_msg)
-
-    return resp.text
+    logger.info("price history with url, url: %s, days: %s", url, days)
+    resp = get_price_history_with_url(days=int(days), url=url)
+    if resp is None:
+        return "No price history found"
+    return resp.model_dump_json(exclude_none=True)

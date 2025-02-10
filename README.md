@@ -20,8 +20,10 @@ npx @modelcontextprotocol/inspector uv run biggo-mcp-server
 ```
 
 ### Test
+`pytest` is a dependency in group `test`.
+We need to specify the group to run tests.
 ```
-uv run test
+uv run --group test pytest
 ```
 
 ### Build 

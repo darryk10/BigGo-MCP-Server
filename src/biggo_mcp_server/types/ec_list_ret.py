@@ -1,24 +1,28 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Any, Literal
 
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, ConfigDict
 
-
-class ModelItem(BaseModel):
-    name: str
-    # image: str
-    # height: str
-    # width: str
-    # domain: List[str]
-    # has_product: bool
-    # checkout_url: List[str]
-    # checkout_done_url: List[str]
-    # image_3x: str = Field(..., alias='image@3x')
-    # s3_image: Optional[str] = None
-    provide: str
-    # s3_logo: Optional[str] = None
+from .common import BigGoAPIRet
 
 
-class ECListAPIRet(RootModel):
-    root: List[ModelItem]
+class EcListPattern(BaseModel):
+    ptn: str
+    bg_mark: str
+    match: str | list[str] = ""
+    template: str | list[str] = "%1"
+    query: str = ""
+    uppercase: bool = False
+    lowercase: bool = False
+    len: int | None = None
+    pad: Any = ""
+
+
+EcListRegion = Literal["tw", "thai", "jp", "hk", "id", "my", "ph", "sg", "us",
+                       "vn"] | str
+EcListAPIData = dict[EcListRegion, dict[str, EcListPattern]]
+
+
+class EcListAPIRet(BigGoAPIRet[EcListAPIData]):
+    pass
