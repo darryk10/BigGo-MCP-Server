@@ -1,19 +1,70 @@
-from typing import Literal
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
-LOG_LEVEL_CHOICES = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+from enum import StrEnum
+from pydantic import BaseModel
 
 
-class BigGoMCPSetting(BaseSettings):
+class LogLevel(StrEnum):
+    DEBUG = "DEBUG"
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"
+
+
+class Regions(StrEnum):
+    ID = "ID"
+    VN = "VN"
+    TH = "TH"
+    PH = "PH"
+    MY = "MY"
+    IN = "IN"
+    US = "US"
+    TW = "TW"
+    HK = "HK"
+    JP = "JP"
+    SG = "SG"
+
+
+class Domains(StrEnum):
+    ID = "biggo.id"
+    VN = "vn.biggo.com"
+    TH = "biggo.co.th"
+    PH = "ph.biggo.com"
+    MY = "my.biggo.com"
+    IN = "biggo.co.in"
+    US = "biggo.com"
+    TW = "biggo.com.tw"
+    HK = "biggo.hk"
+    JP = "biggo.jp"
+    SG = "biggo.sg"
+
+
+REGION_SITE_DOMAIN_MAP: dict[Regions, Domains] = {
+    Regions.ID: Domains.ID,
+    Regions.VN: Domains.VN,
+    Regions.TH: Domains.TH,
+    Regions.PH: Domains.PH,
+    Regions.MY: Domains.MY,
+    Regions.IN: Domains.IN,
+    Regions.US: Domains.US,
+    Regions.TW: Domains.TW,
+    Regions.HK: Domains.HK,
+    Regions.JP: Domains.JP,
+    Regions.SG: Domains.SG,
+}
+
+
+class BigGoMCPSetting(BaseModel):
     """
     BigGo MCP Server settings
-
-    All settings can be configured via environment variables with the prefix BIGGO_MCP_.
-    For example, BIGGO_MCP_LOG_LEVEL=DEBUG will set log_level to DEBUG.
     """
-    model_config = SettingsConfigDict(env_prefix="BIGGO_MCP_")
 
     client_id: str | None = None
     client_secret: str | None = None
 
-    log_level: LOG_LEVEL_CHOICES = "INFO"
+    region: Regions = Regions.TW
+
+    log_level: LogLevel = LogLevel.INFO
+
+    @property
+    def site_domain(self) -> Domains:
+        return REGION_SITE_DOMAIN_MAP[self.region]

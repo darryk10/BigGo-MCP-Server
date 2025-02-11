@@ -1,26 +1,31 @@
+"""
+Tools for BigGo MCP Server
+"""
 from logging import getLogger
 from typing import Annotated, Literal
 from aiohttp import ClientSession
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import Context
 from pydantic import Field
 
-from .types.responses import PriceHisotryGraphToolResponse, PriceHisotryWithHistoryIDToolResponse, ProductSearchToolResponse
-from .lib.log import setup_logging
-from .types.setting import BigGoMCPSetting
-from .lib.price_history import gen_price_history_graph_url, get_price_history, get_price_history_with_url
-from .types.api_ret.product_search import ProductSearchAPIRet
+from ..types.responses import (
+    PriceHisotryGraphToolResponse,
+    PriceHisotryWithHistoryIDToolResponse,
+    ProductSearchToolResponse,
+)
+from .price_history import (
+    gen_price_history_graph_url,
+    get_price_history,
+    get_price_history_with_url,
+)
+from ..types.api_ret.product_search import ProductSearchAPIRet
 
 logger = getLogger(__name__)
 
-server = FastMCP("BigGo MCP Server")
-setting = BigGoMCPSetting()
-setup_logging(setting.log_level)
 
-
-@server.tool()
 async def product_search(
+    ctx: Context,
     query: Annotated[
-        str, Field(description="Search query", examples=["iphone", "護唇膏"])]
+        str, Field(description="Search query", examples=["iphone", "護唇膏"])],
 ) -> str:
     """Product Search"""
 
@@ -36,15 +41,14 @@ async def product_search(
                 logger.error(err_msg)
                 raise ValueError(err_msg)
 
-            # clean data
             cleaned_data = ProductSearchAPIRet.model_validate(await resp.json())
 
     return ProductSearchToolResponse(
         product_search_result=cleaned_data).slim_dump()
 
 
-@server.tool()
 def price_history_graph(
+    ctx: Context,
     history_id: Annotated[
         str,
         Field(description="""
@@ -70,8 +74,8 @@ def price_history_graph(
         price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
-@server.tool()
 async def price_history_with_history_id(
+    ctx: Context,
     history_id: Annotated[
         str,
         Field(description="""
@@ -100,12 +104,12 @@ async def price_history_with_history_id(
     url = gen_price_history_graph_url(history_id, language)
 
     return PriceHisotryWithHistoryIDToolResponse(
-        price_hisotry_description=resp,
+        price_history_description=resp,
         price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
-@server.tool()
 async def price_history_with_url(
+    ctx: Context,
     days: Annotated[Literal["90", "80", "365", "730"],
                     Field(description="History range")],
     url: Annotated[str, Field(description="Product URL")],
@@ -122,21 +126,20 @@ async def price_history_with_url(
     url = gen_price_history_graph_url(resp.history_id, language)
 
     return PriceHisotryWithHistoryIDToolResponse(
-        price_hisotry_description=resp.data,
+        price_history_description=resp.data,
         price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
-@server.tool()
 async def spec_indexes(
+    ctx: Context,
 ) -> Annotated[str, Field(description="List of Elasticsearch indexes")]:
     """Elasticsearch Indexes for Product Specification"""
     return "Not implemented"
 
 
-@server.tool()
 async def spec_mapping(
-    index: Annotated[str,
-                     Field(description="""
+    ctx: Context, index: Annotated[str,
+                                   Field(description="""
                           Elasticsearch index
                           Here are a few steps to obtain this argument.
                           1. Use 'spec_indexes' tool to get the list of indexes
@@ -147,8 +150,8 @@ async def spec_mapping(
     return "Not implemented"
 
 
-@server.tool()
 async def spec_search(
+    ctx: Context,
     index: Annotated[str,
                      Field(description="""
                           Elasticsearch index

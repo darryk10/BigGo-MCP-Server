@@ -56,13 +56,10 @@ uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
         "run",
         "--directory",
         "/home/alex/work/biggo-mcp-server-python", // Absolute path to project
-        "biggo-mcp-server"
+        "biggo-mcp-server",
+        // "--log-level",
+        // "INFO"
       ],
-      "env": {
-        "BIGGO_MCP_CLIENT_ID": "YOUR_CLIENT_ID",
-        "BIGGO_MCP_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
-        "BIGGO_MCP_LOG_LEVEL": "DEBUG"
-      },
       "enabled": true
     }
   }
@@ -78,22 +75,20 @@ uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
         "--index",
         "http://devpi.cloud.biggo.com/alex/alex/+simple",
         "--from",
-        "biggo-mcp-server@0.1.0", // PROJECT_NAME@VERSION
+        "biggo-mcp-server@0.1.0" // PROJECT_NAME@VERSION
+        // "--log-level",
+        // "INFO"
       ],
-      "env": {
-        "BIGGO_MCP_CLIENT_ID": "YOUR_CLIENT_ID",
-        "BIGGO_MCP_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
-        "BIGGO_MCP_LOG_LEVEL": "DEBUG"
-      },
       "enabled": true
     }
   }
 }
 ```
 
-## Environment Variables
-| Variable                  | Description        |
-| ------------------------- | ------------------ |
-| `BIGGO_MCP_CLIENT_ID`     | Your client ID     |
-| `BIGGO_MCP_CLIENT_SECRET` | Your client secret |
-| `BIGGO_MCP_LOG_LEVEL`     | Log level          |
+### Arguments
+| Variable          | Description               | Default | Choices                                    |
+| ----------------- | ------------------------- | ------- | ------------------------------------------ |
+| `--region`        | Region for product search | TW      | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
+| `--client-id`     | Client ID                 | None    |                                            |
+| `--client-secret` | Client Secret             | None    |                                            |
+| `--log-level`     | Log level                 | INFO    | DEBUG, INFO, WARNING, ERROR, CRITICAL      |

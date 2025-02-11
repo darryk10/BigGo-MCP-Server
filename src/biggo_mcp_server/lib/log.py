@@ -1,21 +1,21 @@
 from logging import getLogger
-from ..types.setting import LOG_LEVEL_CHOICES
+from ..types.setting import LogLevel
 
 logger = getLogger(__name__)
 
 
-def setup_logging(log_level: LOG_LEVEL_CHOICES = "INFO"):
+def setup_logging(log_level: LogLevel = LogLevel.INFO):
     logger = getLogger("biggo_mcp_server")
     logger.setLevel(log_level)
     msg = "BigGo MCP Server logging setup, log_level: %s"
     match log_level:
-        case "DEBUG":
+        case LogLevel.DEBUG:
             logger.debug(msg, log_level)
-        case "INFO":
+        case LogLevel.INFO:
             logger.info(msg, log_level)
-        case "WARNING":
+        case LogLevel.WARNING:
             logger.warning(msg, log_level)
-        case "ERROR":
+        case LogLevel.ERROR:
             logger.error(msg, log_level)
-        case "CRITICAL":
+        case LogLevel.CRITICAL:
             logger.critical(msg, log_level)

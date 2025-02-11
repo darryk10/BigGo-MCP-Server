@@ -20,7 +20,7 @@ class PriceHisotryGraphToolResponse(BaseToolResponse):
 
 
 class PriceHisotryWithHistoryIDToolResponse(BaseToolResponse):
-    price_hisotry_description: PriceHistoryAPIRet
+    price_history_description: PriceHistoryAPIRet
     price_history_graph: str
 
 
