@@ -1,7 +1,7 @@
 from logging import getLogger
 import base64
 from aiohttp import ClientSession
-from ..types.auth_token_ret import AuthTokenRet
+from ..types.api_ret.auth_token import AuthTokenRet
 
 logger = getLogger(__name__)
 

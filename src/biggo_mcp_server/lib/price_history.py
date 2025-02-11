@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 from logging import getLogger
 from aiohttp import ClientSession
-
 from .utils import get_nindex_from_url, get_nindex_oid, get_pid_from_url
-
-from ..types.price_history_ret import PriceHistoryAPIRet
+from ..types.api_ret.price_history import PriceHistoryAPIRet
 
 logger = getLogger(__name__)
 

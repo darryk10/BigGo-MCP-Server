@@ -37,8 +37,8 @@ class PriceHistoryAttributes(BaseModel):
     current_price: int
     datetime_format: str
     price_history: List[PriceHistoryItem]
-    purl: str
-    url: str
+    purl: str | None = None
+    url: str | None = None
     title: str
     nindex_name: str
     icon: str

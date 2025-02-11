@@ -4,8 +4,8 @@ import re
 from typing import Any
 from urllib.parse import quote_plus, urlparse, parse_qs
 
-from ..types.ec_list_ret import EcListAPIData, EcListAPIRet, EcListPattern
-from ..types.ninde_from_url_ret import NindexFromUrlAPIRet
+from ..types.api_ret.ec_list import EcListAPIData, EcListAPIRet, EcListPattern
+from ..types.api_ret.ninde_from_url import NindexFromUrlAPIRet
 from aiohttp import ClientSession
 
 logger = getLogger(__name__)

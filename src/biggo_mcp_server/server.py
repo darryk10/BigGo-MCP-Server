@@ -6,7 +6,7 @@ from pydantic import Field
 from .lib.log import setup_logging
 from .types.setting import BigGoMCPSetting
 from .lib.price_history import gen_price_history_graph_url, get_price_history, get_price_history_with_url
-from .types.product_search_ret import ProductSearchAPIRet
+from .types.api_ret.product_search import ProductSearchAPIRet
 
 logger = getLogger(__name__)
 
