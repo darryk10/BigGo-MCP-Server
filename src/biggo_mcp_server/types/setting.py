@@ -2,6 +2,11 @@ from enum import StrEnum
 from pydantic import BaseModel
 
 
+class GraphLanguage(StrEnum):
+    TW = "tw"
+    EN = "en"
+
+
 class LogLevel(StrEnum):
     DEBUG = "DEBUG"
     INFO = "INFO"
@@ -68,3 +73,10 @@ class BigGoMCPSetting(BaseModel):
     @property
     def domain(self) -> Domains:
         return REGION_DOMAIN_MAP[self.region]
+
+    @property
+    def graph_language(self) -> GraphLanguage:
+        if self.region == Regions.TW:
+            return GraphLanguage.TW
+        else:
+            return GraphLanguage.EN

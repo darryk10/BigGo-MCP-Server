@@ -19,10 +19,6 @@ class PriceHisotryGraphToolResponse(BaseToolResponse):
     price_history_graph: str
 
 
-class PriceHisotryWithHistoryIDToolResponse(BaseToolResponse):
+class PriceHistoryToolResponse(BaseToolResponse):
     price_history_description: PriceHistoryAPIRet
     price_history_graph: str
-
-
-class PriceHisotryWithURLToolResponse(PriceHisotryWithHistoryIDToolResponse):
-    pass

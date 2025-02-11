@@ -1,13 +1,15 @@
 from logging import getLogger
-from .tools import (
-    price_history_graph,
-    price_history_with_history_id,
-    price_history_with_url,
-    product_search,
+from ..tools.spec_search import (
     spec_indexes,
     spec_mapping,
     spec_search,
 )
+from ..tools.price_history import (
+    price_history_graph,
+    price_history_with_history_id,
+    price_history_with_url,
+)
+from ..tools.product_search import product_search
 from .log import setup_logging
 from ..types.setting import BigGoMCPSetting
 from .server import BigGoMCPServer

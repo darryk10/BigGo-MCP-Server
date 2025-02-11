@@ -33,5 +33,5 @@ async def get_access_token(
                 msg = f"get access token error, {await resp.text()}"
                 raise ValueError(msg)
 
-        data = await resp.json()
-        return AuthTokenRet.model_validate(data).access_token
+            data = await resp.json()
+            return AuthTokenRet.model_validate(data).access_token

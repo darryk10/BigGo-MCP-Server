@@ -1,47 +1,74 @@
 """
-Just check if the tools can be called without errors.
+Just check if the tools can run without errors.
 """
 
-from biggo_mcp_server.lib.tools import price_history_graph, price_history_with_history_id, price_history_with_url, product_search
+from biggo_mcp_server.tools.price_history import (
+    price_history_graph,
+    price_history_with_history_id,
+    price_history_with_url,
+)
+from biggo_mcp_server.tools.product_search import product_search
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
+
+from biggo_mcp_server.types.setting import BigGoMCPSetting
 
 
 @pytest.mark.asyncio
 async def test_get_history():
+
+    ctx = MagicMock()
+    ctx.fastmcp = MagicMock()
+    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+
     history = await price_history_with_history_id(
-        ctx=MagicMock(),
+        ctx=ctx,
         history_id="tw_pmall_rakuten-nwdsl_6MONJRBOO",
         days="90",
-        language="tw",
     )
+
     assert isinstance(history, str)
 
 
 @pytest.mark.asyncio
 async def test_get_history_with_url():
+
+    ctx = MagicMock()
+    ctx.fastmcp = MagicMock()
+    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+
     history = await price_history_with_url(
-        ctx=MagicMock(),
+        ctx=ctx,
         url="https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781",
         days="90",
-        language="tw",
     )
     assert isinstance(history, str)
 
 
 @pytest.mark.asyncio
 async def test_product_search():
+
+    ctx = MagicMock()
+    ctx.fastmcp = MagicMock()
+    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+
     search = await product_search(
-        ctx=MagicMock(),
+        ctx=ctx,
         query="iphone",
     )
+
     assert isinstance(search, str)
 
 
 def test_price_history_graph():
+
+    ctx = MagicMock()
+    ctx.fastmcp = MagicMock()
+    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+
     search = price_history_graph(
-        ctx=MagicMock(),
+        ctx=ctx,
         history_id="tw_pmall_rakuten-nwdsl_6MONJRBOO",
-        language="tw",
     )
+
     assert isinstance(search, str)

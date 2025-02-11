@@ -3,12 +3,18 @@ from logging import getLogger
 import re
 from typing import Any
 from urllib.parse import quote_plus, urlparse, parse_qs
-
+from mcp.server.fastmcp import Context
+from ..types.setting import BigGoMCPSetting
 from ..types.api_ret.ec_list import EcListAPIData, EcListAPIRet, EcListPattern
 from ..types.api_ret.ninde_from_url import NindexFromUrlAPIRet
 from aiohttp import ClientSession
 
 logger = getLogger(__name__)
+
+
+def get_setting(ctx: Context) -> BigGoMCPSetting:
+    server: BigGoMCPServer = ctx.fastmcp  # type: ignore
+    return server.biggo_setting
 
 
 @dataclass(slots=True)
