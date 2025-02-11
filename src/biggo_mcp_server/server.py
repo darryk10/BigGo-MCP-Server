@@ -3,6 +3,8 @@ from typing import Annotated, Literal
 from aiohttp import ClientSession
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
+
+from .types.responses import PriceHisotryGraphToolResponse, PriceHisotryWithHistoryIDToolResponse, ProductSearchToolResponse
 from .lib.log import setup_logging
 from .types.setting import BigGoMCPSetting
 from .lib.price_history import gen_price_history_graph_url, get_price_history, get_price_history_with_url
@@ -35,18 +37,10 @@ async def product_search(
                 raise ValueError(err_msg)
 
             # clean data
-            original_length = len(await resp.text())
             cleaned_data = ProductSearchAPIRet.model_validate(await resp.json())
-            result = cleaned_data.model_dump_json(exclude_none=True)
 
-    logger.info("Original length: %s, Cleaned length: %s", original_length,
-                len(result))
-
-    return f"""
-<ProductSearchResult>
-    {result}
-</ProductSearchResult>
-"""
+    return ProductSearchToolResponse(
+        product_search_result=cleaned_data).slim_dump()
 
 
 @server.tool()
@@ -71,7 +65,9 @@ def price_history_graph(
     logger.info("price history graph, history_id: %s, language: %s", history_id,
                 language)
     url = gen_price_history_graph_url(history_id, language)
-    return f"""<PriceHistoryGraph> ![Price History Graph]({url}) </PriceHistoryGraph>"""
+
+    return PriceHisotryGraphToolResponse(
+        price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
 @server.tool()
@@ -103,15 +99,9 @@ async def price_history_with_history_id(
 
     url = gen_price_history_graph_url(history_id, language)
 
-    return f"""
-<PriceHistoryDescription>
-    {resp.model_dump_json(exclude_none=True)}
-</PriceHistoryDescription>
-
-<PriceHistoryGraph>
-    ![Price History Graph]({url})
-</PriceHistoryGraph>
-"""
+    return PriceHisotryWithHistoryIDToolResponse(
+        price_hisotry_description=resp,
+        price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
 @server.tool()
@@ -131,15 +121,9 @@ async def price_history_with_url(
 
     url = gen_price_history_graph_url(resp.history_id, language)
 
-    return f"""
-<PriceHistoryDescription>
-    {resp.data.model_dump_json(exclude_none=True)}
-</PriceHistoryDescription>
-
-<PriceHistoryGraph>
-    ![Price History Graph]({url})
-</PriceHistoryGraph>
-"""
+    return PriceHisotryWithHistoryIDToolResponse(
+        price_hisotry_description=resp.data,
+        price_history_graph=f"![Price History Graph]({url})").slim_dump()
 
 
 @server.tool()
