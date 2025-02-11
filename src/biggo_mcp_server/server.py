@@ -26,7 +26,7 @@ async def product_search(
 
     logger.info("product search, query: %s", query)
 
-    url = f"https://biggo.com.tw/api/v1/spa/search/{query}/product"
+    url = f"https://api.biggo.com/api/v1/spa/search/{query}/product"
     logger.debug("product search, url: %s", url)
 
     async with ClientSession() as session:
