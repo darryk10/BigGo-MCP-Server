@@ -38,7 +38,7 @@ class Domains(StrEnum):
     SG = "biggo.sg"
 
 
-REGION_SITE_DOMAIN_MAP: dict[Regions, Domains] = {
+REGION_DOMAIN_MAP: dict[Regions, Domains] = {
     Regions.ID: Domains.ID,
     Regions.VN: Domains.VN,
     Regions.TH: Domains.TH,
@@ -66,5 +66,5 @@ class BigGoMCPSetting(BaseModel):
     log_level: LogLevel = LogLevel.INFO
 
     @property
-    def site_domain(self) -> Domains:
-        return REGION_SITE_DOMAIN_MAP[self.region]
+    def domain(self) -> Domains:
+        return REGION_DOMAIN_MAP[self.region]
