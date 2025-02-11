@@ -6,11 +6,11 @@ from pydantic import BaseModel
 
 
 class Multiple(BaseModel):
-    min_price: int | None = None
-    max_price: int | None = None
+    min_price: float | None = None
+    max_price: float | None = None
     model_id: str | None = None
     title: str | None = None
-    current_price: int | None = None
+    current_price: float | None = None
 
 
 class Store(BaseModel):
@@ -54,7 +54,7 @@ class ListItem(BaseModel):
     symbol: str | None = None
     currency: str | None = None
     multiple: Multiple | None = None
-    price: int | None = None
+    price: float | None = None
     price_range_min: Any | None = None
     price_range_max: Any | None = None
     count_result_store: Any | None = None
@@ -62,7 +62,7 @@ class ListItem(BaseModel):
     store: Store | None = None
     has_shop: bool | None = None
     shop: Shop | None = None
-    price_diff_real: int | None = None
+    price_diff_real: float | None = None
     product_nindex_price: List | None = None
     # subscribe_tags: List
     # subscribe_time: Any
@@ -99,5 +99,5 @@ class ProductSearchAPIRet(BaseModel):
     # recommend_group: List
     list: List[ListItem] | None = None
     # biggo_c: List[BiggoCItem]
-    low_price: int | None = None
-    high_price: int | None = None
+    low_price: float | None = None
+    high_price: float | None = None

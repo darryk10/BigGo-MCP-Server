@@ -1,3 +1,4 @@
+from urllib.parse import quote
 from aiohttp import ClientSession
 from ..types.api_ret.product_search import ProductSearchAPIRet
 from ..types.setting import BigGoMCPSetting
@@ -13,6 +14,7 @@ class ProductSearchService:
 
     async def search(self, query: str) -> ProductSearchAPIRet:
         url = f"https://api.biggo.com/api/v1/spa/search/{query}/product"
+
         headers = {
             "Content-Type": "application/json",
             "site": self._setting.domain,

@@ -13,7 +13,12 @@ logger = getLogger(__name__)
 async def product_search(
     ctx: Context,
     query: Annotated[
-        str, Field(description="Search query", examples=["iphone", "護唇膏"])],
+        str,
+        Field(
+            description="""Search query""",
+            examples=["iphone", "護唇膏"],
+        ),
+    ],
 ) -> str:
     """Product Search"""
     logger.info("product search, query: %s", query)

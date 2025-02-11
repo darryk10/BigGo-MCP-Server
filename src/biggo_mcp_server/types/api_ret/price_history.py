@@ -12,8 +12,8 @@ class PriceHistoryItem(BaseModel):
 
 class Days(BaseModel):
     days: int
-    max_price: int
-    min_price: int
+    max_price: float
+    min_price: float
     up_times: int
     down_times: int
     last_continue_times: int
@@ -34,7 +34,7 @@ class PriceHistoryAttributes(BaseModel):
     currency: str
     nindex: str
     oid: str
-    current_price: int
+    current_price: float
     datetime_format: str
     price_history: List[PriceHistoryItem]
     purl: str | None = None

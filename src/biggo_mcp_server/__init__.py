@@ -21,7 +21,7 @@ async def start():
     args.add_argument("--region",
                       type=Regions,
                       choices=Regions,
-                      default=Regions.US)
+                      default=Regions.TW)
     args.add_argument("--client-id", type=str, default=None)
     args.add_argument("--client-secret", type=str, default=None)
     args.add_argument("--log-level",
