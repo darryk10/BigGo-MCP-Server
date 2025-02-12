@@ -86,9 +86,10 @@ uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
 ```
 
 ### Arguments
-| Variable          | Description               | Default | Choices                                    |
-| ----------------- | ------------------------- | ------- | ------------------------------------------ |
-| `--region`        | Region for product search | TW      | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
-| `--client-id`     | Client ID                 | None    |                                            |
-| `--client-secret` | Client Secret             | None    |                                            |
-| `--log-level`     | Log level                 | INFO    | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
+| Variable          | Description               | Default                           | Choices                                    |
+| ----------------- | ------------------------- | --------------------------------- | ------------------------------------------ |
+| `--region`        | Region for product search | TW                                | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
+| `--client-id`     | Client ID                 | None                              |                                            |
+| `--client-secret` | Client Secret             | None                              |                                            |
+| `--log-level`     | Log level                 | INFO                              | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
+| `--es-proxy-url`  | Elasticsearch proxy URL   | http://es-proxy.d.cloud.biggo.com |                                            |

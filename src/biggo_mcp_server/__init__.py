@@ -14,6 +14,7 @@ class Args:
     client_id: str | None
     client_secret: str | None
     log_level: LogLevel
+    es_proxy_url: str
 
 
 async def start():
@@ -28,6 +29,9 @@ async def start():
                       type=LogLevel,
                       choices=LogLevel,
                       default=LogLevel.INFO)
+    args.add_argument("--es-proxy-url",
+                      type=str,
+                      default="http://es-proxy.d.cloud.biggo.com")
     args = args.parse_args(namespace=Args)
 
     setting = BigGoMCPSetting(
@@ -35,6 +39,7 @@ async def start():
         client_id=args.client_id,
         client_secret=args.client_secret,
         log_level=args.log_level,
+        es_proxy_url=args.es_proxy_url,
     )
 
     logger.info("Starting BigGo MCP Server with setting: %s", setting)
