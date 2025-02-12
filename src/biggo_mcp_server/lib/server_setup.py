@@ -1,4 +1,6 @@
 from logging import getLogger
+
+from ..tools.util import get_current_region
 from ..tools.spec_search import (
     spec_indexes,
     spec_mapping,
@@ -33,5 +35,8 @@ async def create_server(setting: BigGoMCPSetting) -> BigGoMCPServer:
     server.add_tool(spec_indexes)
     server.add_tool(spec_mapping)
     server.add_tool(spec_search)
+
+    # Util
+    server.add_tool(get_current_region)
 
     return server

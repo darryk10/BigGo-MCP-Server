@@ -11,7 +11,19 @@ from biggo_mcp_server.tools.product_search import product_search
 import pytest
 from unittest.mock import MagicMock
 
-from biggo_mcp_server.types.setting import BigGoMCPSetting
+from biggo_mcp_server.tools.util import get_current_region
+from biggo_mcp_server.types.setting import BigGoMCPSetting, Regions
+
+
+def test_get_current_region():
+
+    ctx = MagicMock()
+    ctx.fastmcp = MagicMock()
+    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+
+    region = get_current_region(ctx)
+
+    assert isinstance(region, Regions)
 
 
 @pytest.mark.asyncio
