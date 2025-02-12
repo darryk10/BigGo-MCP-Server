@@ -9,7 +9,7 @@ from biggo_mcp_server.tools.price_history import (
 )
 from biggo_mcp_server.tools.product_search import product_search
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from biggo_mcp_server.types.setting import BigGoMCPSetting
 
