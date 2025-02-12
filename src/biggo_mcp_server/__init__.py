@@ -42,9 +42,10 @@ async def start():
         es_proxy_url=args.es_proxy_url,
     )
 
-    logger.info("Starting BigGo MCP Server with setting: %s", setting)
-
     server = await create_server(setting)
+
+    logger.info("Starting BigGo MCP Server")
+
     await server.run_stdio_async()
 
 
