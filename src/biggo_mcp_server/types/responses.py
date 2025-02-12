@@ -22,3 +22,15 @@ class PriceHisotryGraphToolResponse(BaseToolResponse):
 class PriceHistoryToolResponse(BaseToolResponse):
     price_history_description: PriceHistoryAPIRet
     price_history_graph: str
+
+
+class SpecIndexesToolResponse(BaseToolResponse):
+    indexes: list[str]
+
+
+class SpecMappingToolResponse(BaseToolResponse):
+    mapping: dict
+
+
+class SpecSearchToolResponse(BaseToolResponse):
+    documents: list[dict]

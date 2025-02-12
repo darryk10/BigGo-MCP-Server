@@ -2,15 +2,17 @@ from logging import getLogger
 import base64
 from aiohttp import ClientSession
 from ..types.api_ret.auth_token import AuthTokenRet
+from async_lru import alru_cache
 
 logger = getLogger(__name__)
 
 
-# TODO: use 'async_lru_cache'
+@alru_cache(maxsize=1, ttl=60)
 async def get_access_token(
-        client_id: str,
-        client_secret: str,
-        endpoint: str = "https://api.biggo.com/auth/v1/token") -> str:
+    client_id: str,
+    client_secret: str,
+    endpoint: str = "https://api.biggo.com/auth/v1/token",
+) -> str:
     """Get access token with client credentials"""
 
     params = {
@@ -30,8 +32,9 @@ async def get_access_token(
                 params=params,
         ) as resp:
             if resp.status >= 400:
-                msg = f"get access token error, {await resp.text()}"
-                raise ValueError(msg)
+                err_msg = f"get access token error, {await resp.text()}"
+                logger.error(err_msg)
+                raise ValueError(err_msg)
 
             data = await resp.json()
             return AuthTokenRet.model_validate(data).access_token

@@ -1,13 +1,23 @@
+from logging import getLogger
 from typing import Annotated
 from mcp.server.fastmcp import Context
 from pydantic import Field
+from ..types.responses import SpecIndexesToolResponse, SpecMappingToolResponse, SpecSearchToolResponse
+from ..lib.utils import get_setting
+from ..services.spec_search import SpecSearchService
+
+logger = getLogger(__name__)
 
 
 async def spec_indexes(
     ctx: Context,
 ) -> Annotated[str, Field(description="List of Elasticsearch indexes")]:
     """Elasticsearch Indexes for Product Specification"""
-    return "Not implemented"
+    logger.info("spec indexes")
+    setting = get_setting(ctx)
+    service = SpecSearchService(setting)
+    indexes = await service.spec_indexes()
+    return SpecIndexesToolResponse(indexes=indexes).slim_dump()
 
 
 async def spec_mapping(
@@ -21,7 +31,11 @@ async def spec_mapping(
                           """)],
 ) -> Annotated[str, Field(description="Elasticsearch Mappings")]:
     """Elasticsearch Mapping For Product Specification """
-    return "Not implemented"
+    logger.info("spec mapping, index: %s", index)
+    setting = get_setting(ctx)
+    service = SpecSearchService(setting)
+    mapping = await service.spec_mapping(index)
+    return SpecMappingToolResponse(mapping=mapping).slim_dump()
 
 
 async def spec_search(
@@ -45,6 +59,17 @@ async def spec_search(
                              use 'get_current_region' tool to get the current region
                              and apply it in the query. Regions are in lowercase.
                           """)],
+    size: Annotated[int,
+                    Field(description="""
+                         Search result size (1 ~ 1000)
+                         """,
+                          ge=1,
+                          le=1000)],
 ) -> str:
     """Product Specification Search"""
-    return "Not implemented"
+    logger.info("spec search, index: %s, query: %s, size: %s", index, query,
+                size)
+    setting = get_setting(ctx)
+    service = SpecSearchService(setting)
+    documents = await service.search(index, query, size)
+    return SpecSearchToolResponse(documents=documents).slim_dump()
