@@ -2,17 +2,33 @@
 
 ## Tools
 - [x] Price History With URL
+  - Example Question:
+    - ```
+      Please show me the price history of this url https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781
+      ```
 - [x] Price History With History ID
   - History ID can be found in the result of `product_search`
   - Typical use case:
     - User provide a product name, and the model finds the most relevant product from the search result, use the history ID of the product as the argument.
+  - Example Question:
+    - ```
+      Please find me the price history of keyboards on shopee
+      ```
 - [x] Product Search
+  - Example Question: 
+    - ```
+      Please find me the iphone 16 pro on shopee
+      ```
 - [x] Spec Indexes
   - List elasticsearch indexes related to product specification
 - [x] Spec Mapping
   - Elasticsearch index mapping plus an example document
 - [x] Spec Search
   - Search product specification with elasticsearch query
+  - Example Question: 
+    - ```
+      Find me the most efficient refrigerators according to product specification
+      ```
 
 ## Development
 > Install [uv](https://docs.astral.sh/uv/) package manager
