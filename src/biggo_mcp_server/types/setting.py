@@ -70,7 +70,7 @@ class BigGoMCPSetting(BaseModel):
 
     log_level: LogLevel = LogLevel.INFO
 
-    es_proxy_url: str = "http://es-proxy.d.cloud.biggo.com"
+    es_proxy_url: str = "http://localhost:9999"
 
     @property
     def domain(self) -> Domains:

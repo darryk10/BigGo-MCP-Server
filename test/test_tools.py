@@ -13,13 +13,14 @@ from unittest.mock import MagicMock
 
 from biggo_mcp_server.tools.util import get_current_region
 from biggo_mcp_server.types.setting import BigGoMCPSetting, Regions
+from .helper import *
 
 
-def test_get_current_region():
+def test_get_current_region(setting: BigGoMCPSetting):
 
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
-    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+    ctx.fastmcp.biggo_setting = setting
 
     region = get_current_region(ctx)
 
@@ -27,11 +28,11 @@ def test_get_current_region():
 
 
 @pytest.mark.asyncio
-async def test_get_history():
+async def test_get_history(setting: BigGoMCPSetting):
 
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
-    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+    ctx.fastmcp.biggo_setting = setting
 
     history = await price_history_with_history_id(
         ctx=ctx,
@@ -43,11 +44,11 @@ async def test_get_history():
 
 
 @pytest.mark.asyncio
-async def test_get_history_with_url():
+async def test_get_history_with_url(setting: BigGoMCPSetting):
 
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
-    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+    ctx.fastmcp.biggo_setting = setting
 
     history = await price_history_with_url(
         ctx=ctx,
@@ -58,11 +59,11 @@ async def test_get_history_with_url():
 
 
 @pytest.mark.asyncio
-async def test_product_search():
+async def test_product_search(setting: BigGoMCPSetting):
 
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
-    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+    ctx.fastmcp.biggo_setting = setting
 
     search = await product_search(
         ctx=ctx,
@@ -72,11 +73,11 @@ async def test_product_search():
     assert isinstance(search, str)
 
 
-def test_price_history_graph():
+def test_price_history_graph(setting: BigGoMCPSetting):
 
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
-    ctx.fastmcp.biggo_setting = BigGoMCPSetting()
+    ctx.fastmcp.biggo_setting = setting
 
     search = price_history_graph(
         ctx=ctx,

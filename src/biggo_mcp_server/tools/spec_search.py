@@ -16,7 +16,8 @@ async def spec_indexes(
     logger.info("spec indexes")
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
-    indexes = await service.spec_indexes()
+    async with service.session():
+        indexes = await service.spec_indexes()
     return SpecIndexesToolResponse(indexes=indexes).slim_dump()
 
 
@@ -34,7 +35,8 @@ async def spec_mapping(
     logger.info("spec mapping, index: %s", index)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
-    mapping = await service.spec_mapping(index)
+    async with service.session():
+        mapping = await service.spec_mapping(index)
     return SpecMappingToolResponse(mapping=mapping).slim_dump()
 
 
@@ -71,5 +73,6 @@ async def spec_search(
                 size)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
-    documents = await service.search(index, query, size)
-    return SpecSearchToolResponse(documents=documents).slim_dump()
+    async with service.session():
+        hits = await service.search(index, query, size)
+    return SpecSearchToolResponse(hits=hits).slim_dump()

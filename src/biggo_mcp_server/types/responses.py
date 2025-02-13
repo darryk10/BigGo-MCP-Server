@@ -33,4 +33,4 @@ class SpecMappingToolResponse(BaseToolResponse):
 
 
 class SpecSearchToolResponse(BaseToolResponse):
-    documents: list[dict]
+    hits: list[dict]
