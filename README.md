@@ -7,11 +7,11 @@
   - Typical use case:
     - User provide a product name, and the model finds the most relevant product from the search result, use the history ID of the product as the argument.
 - [x] Product Search
-- [ ] Spec Indexes
+- [x] Spec Indexes
   - List elasticsearch indexes related to product specification
-- [ ] Spec Mapping
-  - Elasticsearch index mapping
-- [ ] Spec Search
+- [x] Spec Mapping
+  - Elasticsearch index mapping plus an example document
+- [x] Spec Search
   - Search product specification with elasticsearch query
 
 ## Development
