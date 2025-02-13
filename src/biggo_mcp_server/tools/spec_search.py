@@ -1,3 +1,4 @@
+import json
 from logging import getLogger
 from typing import Annotated
 from mcp.server.fastmcp import Context
@@ -26,18 +27,23 @@ async def spec_mapping(
     index: Annotated[str,
                      Field(description="""
                           Elasticsearch index
+
                           Steps to obtain this argument.
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
                           """)],
-) -> Annotated[str, Field(description="Elasticsearch Mappings")]:
-    """Elasticsearch Mapping For Product Specification """
+) -> Annotated[
+        str,
+        Field(description="Elasticsearch mappings plus an example document")]:
+    """Elasticsearch Mapping For Product Specification"""
     logger.info("spec mapping, index: %s", index)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
     async with service.session():
         mapping = await service.spec_mapping(index)
-    return SpecMappingToolResponse(mapping=mapping).slim_dump()
+    return SpecMappingToolResponse(
+        mappings=mapping.mappings,
+        example_document=mapping.example_document).slim_dump()
 
 
 async def spec_search(
@@ -45,34 +51,64 @@ async def spec_search(
     index: Annotated[str,
                      Field(description="""
                           Elasticsearch index
+
                           Steps to obtain this argument.
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
                           """)],
-    query: Annotated[str,
-                     Field(description="""
-                          Elasticsearch query, no need to include the `query` field.
+    elasticsearch_query: Annotated[
+        str | dict,
+        Field(description="""
+                          Elasticsearch query
+
                           Steps to know what to query:
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
                           3. Use 'spec_mapping' tool to get the mapping of the index
                           4. Use this tool to query the index
-                          5. If the mapping has 'region' related fields, 
-                             use 'get_current_region' tool to get the current region
-                             and apply it in the query. Regions are in lowercase.
-                          """)],
+
+                          Example:
+                          ```json
+                            {
+                                "range": {
+                                    "specs.physical_specifications.dimensions.height": {
+                                        "gte": 1321,
+                                        "lte": 2321
+                                    }
+                                }
+                            }
+                          ```
+                          """,
+              examples=[
+                  {
+                      "range": {
+                          "specs.physical_specifications.dimensions.height": {
+                              "gte": 1321,
+                              "lte": 2321
+                          }
+                      }
+                  },
+              ])],
     size: Annotated[int,
                     Field(description="""
-                         Search result size (1 ~ 1000)
+                         Search result size (1 ~ 10)
                          """,
                           ge=1,
-                          le=1000)],
+                          le=10)] = 5,
 ) -> str:
-    """Product Specification Search"""
-    logger.info("spec search, index: %s, query: %s, size: %s", index, query,
-                size)
+    """Product Specification Search. 
+
+    YOU MUST KNOW THE MAPPING OF THE INDEX BEFORE USING THIS TOOL.
+    Use 'spec_mapping' tool to get the mapping of the index.
+    """
+    logger.info("spec search, index: %s, query: %s, size: %s", index,
+                elasticsearch_query, size)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
     async with service.session():
+        if isinstance(elasticsearch_query, str):
+            query = json.loads(elasticsearch_query)
+        else:
+            query = elasticsearch_query
         hits = await service.search(index, query, size)
     return SpecSearchToolResponse(hits=hits).slim_dump()

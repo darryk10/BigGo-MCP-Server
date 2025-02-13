@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from logging import getLogger
 from elasticsearch8 import AsyncElasticsearch
 from ..types.api_ret.spec import SpecIndexesAPIRet, SpecMappingAPIRet, SpecSearchAPIRet
@@ -6,6 +7,12 @@ from ..lib.access_token import get_access_token
 from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
+
+
+@dataclass(slots=True)
+class SpecMappingRet:
+    mappings: dict
+    example_document: dict
 
 
 class SpecSearchService:
@@ -46,16 +53,22 @@ class SpecSearchService:
         data = SpecIndexesAPIRet.model_validate(resp.body)
         return [item.index for item in data.root]
 
-    async def spec_mapping(self, index: str) -> dict:
+    async def spec_mapping(self, index: str) -> SpecMappingRet:
         resp = await self._es_conn.indices.get_mapping(index=index)
         data = SpecMappingAPIRet.model_validate(resp.body)
-        return data.root
+        mappings = data.root[index]['mappings']
 
-    async def search(self, index: str, query: str, size: int) -> list[dict]:
+        resp = await self._es_conn.search(index=index, size=1)
+        example_document = resp.body['hits']['hits'][0]['_source']
+
+        return SpecMappingRet(mappings=mappings,
+                              example_document=example_document)
+
+    async def search(self, index: str, query: dict, size: int) -> list[dict]:
         resp = await self._es_conn.search(index=index,
                                           body={
                                               "size": size,
                                               "query": query
                                           })
-        data = SpecSearchAPIRet.model_validate(resp.body)
+        data = SpecSearchAPIRet.model_validate(resp.body['hits']['hits'])
         return data.root

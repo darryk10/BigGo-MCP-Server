@@ -29,7 +29,8 @@ class SpecIndexesToolResponse(BaseToolResponse):
 
 
 class SpecMappingToolResponse(BaseToolResponse):
-    mapping: dict
+    mappings: dict
+    example_document: dict
 
 
 class SpecSearchToolResponse(BaseToolResponse):

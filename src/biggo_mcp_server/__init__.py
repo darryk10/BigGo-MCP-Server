@@ -31,7 +31,7 @@ async def start():
                       default=LogLevel.INFO)
     args.add_argument("--es-proxy-url",
                       type=str,
-                      default="http://localhost:9999")
+                      default="http://localhost:8888")
     args = args.parse_args(namespace=Args)
 
     setting = BigGoMCPSetting(
