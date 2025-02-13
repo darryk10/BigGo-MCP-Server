@@ -64,11 +64,15 @@ class SpecSearchService:
         return SpecMappingRet(mappings=mappings,
                               example_document=example_document)
 
-    async def search(self, index: str, query: dict, size: int) -> list[dict]:
-        resp = await self._es_conn.search(index=index,
-                                          body={
-                                              "size": size,
-                                              "query": query
-                                          })
+    async def search(self, index: str, query: dict) -> list[dict]:
+        size = query.get('size', None)
+        if size is not None and size > 10:
+            raise ValueError("Size must be less than or equal to 10")
+        else:
+            query['size'] = 5
+
+        logger.debug("Actual search args, index: %s, query: %s", index, query)
+
+        resp = await self._es_conn.search(index=index, body=query)
         data = SpecSearchAPIRet.model_validate(resp.body['hits']['hits'])
         return data.root

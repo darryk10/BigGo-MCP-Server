@@ -33,5 +33,13 @@ async def test_spec_search_service_search(setting: BigGoMCPSetting):
 
     async with service.session():
         indexes = await service.spec_indexes()
-        hits = await service.search(indexes[0], {"match_all": {}}, 10)
+        hits = await service.search(indexes[0], {"query": {"match_all": {}}})
         assert isinstance(hits, list)
+
+        with pytest.raises(ValueError):
+            await service.search(indexes[0], {
+                "query": {
+                    "match_all": {}
+                },
+                "size": 11
+            })

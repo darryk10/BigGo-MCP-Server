@@ -39,8 +39,13 @@ async def spec_mapping(
     logger.info("spec mapping, index: %s", index)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
-    async with service.session():
-        mapping = await service.spec_mapping(index)
+    try:
+        async with service.session():
+            mapping = await service.spec_mapping(index)
+    except Exception as e:
+        raise Exception(
+            f"You must know the available indexes before using this tool. Error: {e}"
+        )
     return SpecMappingToolResponse(
         mappings=mapping.mappings,
         example_document=mapping.example_document).slim_dump()
@@ -57,30 +62,14 @@ async def spec_search(
                           2. Choose the most relevant index
                           """)],
     elasticsearch_query: Annotated[
-        str | dict,
+        dict,
         Field(description="""
-                          Elasticsearch query
+              Elasticsearch query
 
-                          Steps to know what to query:
-                          1. Use 'spec_indexes' tool to get the list of indexes
-                          2. Choose the most relevant index
-                          3. Use 'spec_mapping' tool to get the mapping of the index
-                          4. Use this tool to query the index
-
-                          Example:
-                          ```json
-                            {
-                                "range": {
-                                    "specs.physical_specifications.dimensions.height": {
-                                        "gte": 1321,
-                                        "lte": 2321
-                                    }
-                                }
-                            }
-                          ```
-                          """,
-              examples=[
-                  {
+              Size must be less than or equal to 10.
+              """,
+              examples=[{
+                  "query": {
                       "range": {
                           "specs.physical_specifications.dimensions.height": {
                               "gte": 1321,
@@ -88,27 +77,26 @@ async def spec_search(
                           }
                       }
                   },
-              ])],
-    size: Annotated[int,
-                    Field(description="""
-                         Search result size (1 ~ 10)
-                         """,
-                          ge=1,
-                          le=10)] = 5,
+                  "size":
+                      5,
+                  "sort": [{
+                      "specs.physical_specifications.dimensions.height": "asc"
+                  }]
+              }])],
 ) -> str:
     """Product Specification Search. 
 
-    YOU MUST KNOW THE MAPPING OF THE INDEX BEFORE USING THIS TOOL.
     Use 'spec_mapping' tool to get the mapping of the index.
     """
-    logger.info("spec search, index: %s, query: %s, size: %s", index,
-                elasticsearch_query, size)
+    logger.info("spec search, index: %s, query: %s", index, elasticsearch_query)
+
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
-    async with service.session():
-        if isinstance(elasticsearch_query, str):
-            query = json.loads(elasticsearch_query)
-        else:
-            query = elasticsearch_query
-        hits = await service.search(index, query, size)
+    try:
+        async with service.session():
+            hits = await service.search(index, elasticsearch_query)
+    except Exception as e:
+        raise Exception(
+            f"You must know the mapping of the index before using this tool. Error: {e}"
+        )
     return SpecSearchToolResponse(hits=hits).slim_dump()
