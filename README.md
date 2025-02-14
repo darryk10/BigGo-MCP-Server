@@ -17,7 +17,7 @@
 - [x] Product Search
   - Example Question: 
     - ```
-      Please find me the iphone 16 pro on shopee
+      Please find me iphone 16 pro on shopee
       ```
 - [x] Spec Indexes
   - List elasticsearch indexes related to product specification
@@ -25,9 +25,12 @@
   - Elasticsearch index mapping plus an example document
 - [x] Spec Search
   - Search product specification with elasticsearch query
-  - Example Question: 
+  - Example Questions: 
     - ```
       Find me the most efficient refrigerators according to product specification
+      ```
+    - ```
+      Please find me diving watches that weighs around 120g
       ```
 
 ## Development

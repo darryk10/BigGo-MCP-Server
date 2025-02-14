@@ -1,4 +1,3 @@
-import json
 from logging import getLogger
 from typing import Annotated
 from mcp.server.fastmcp import Context

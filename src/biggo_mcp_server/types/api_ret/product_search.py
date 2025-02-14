@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Multiple(BaseModel):
@@ -97,7 +97,7 @@ class ProductSearchAPIRet(BaseModel):
     # top_ad_count: int
     # group: Any
     # recommend_group: List
-    list: List[ListItem] | None = None
+    list: List[ListItem] = Field(default_factory=list)
     # biggo_c: List[BiggoCItem]
     low_price: float | None = None
     high_price: float | None = None
