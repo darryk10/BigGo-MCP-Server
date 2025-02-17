@@ -32,6 +32,9 @@
     - ```
       Please find me diving watches that weighs around 120g
       ```
+    - ```
+      Find me air conditioners made in japan with heating capability, low noise and low energy consumption
+      ```
 
 ## Development
 > Install [uv](https://docs.astral.sh/uv/) package manager
