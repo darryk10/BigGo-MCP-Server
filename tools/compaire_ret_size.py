@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from biggo_mcp_server.types.product_search_ret import ProductSearchAPIRet
+from biggo_mcp_server.types.api_ret.product_search import ProductSearchAPIRet
 
 
 @dataclass(slots=True)
@@ -18,7 +18,7 @@ def print_length_comparison(original: int, cleaned: int):
 def product_search_api_ret() -> Statistics:
     print("== product_search_api_ret ==")
     # original response
-    with open("./data/original_prod_search_ret.json", "r") as f:
+    with open("./.data/original_prod_search_ret.json", "r") as f:
         original = f.read()
 
     # cleaned
