@@ -1,4 +1,4 @@
-from typing import Any, Self
+from typing import Self
 from pydantic import BaseModel, model_validator
 from .api_ret.price_history import PriceHistoryAPIRet
 from .api_ret.product_search import ProductSearchAPIRet

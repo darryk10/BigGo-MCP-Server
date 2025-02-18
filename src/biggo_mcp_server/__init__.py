@@ -15,6 +15,8 @@ class Args:
     client_secret: str | None
     log_level: LogLevel
     es_proxy_url: str
+    auth_token_url: str
+    es_verify_certs: bool
 
 
 async def start():
@@ -31,7 +33,12 @@ async def start():
                       default=LogLevel.INFO)
     args.add_argument("--es-proxy-url",
                       type=str,
-                      default="http://localhost:8888")
+                      default="https://api.biggo.com/api/v1/mcp-es-proxy/")
+    args.add_argument("--auth-token-url",
+                      type=str,
+                      default="https://api.biggo.com/auth/v1/token")
+    args.add_argument("--es-verify-certs", type=bool, default=True)
+
     args = args.parse_args(namespace=Args)
 
     setting = BigGoMCPSetting(
@@ -40,6 +47,8 @@ async def start():
         client_secret=args.client_secret,
         log_level=args.log_level,
         es_proxy_url=args.es_proxy_url,
+        auth_token_url=args.auth_token_url,
+        es_verify_certs=args.es_verify_certs,
     )
 
     server = await create_server(setting)

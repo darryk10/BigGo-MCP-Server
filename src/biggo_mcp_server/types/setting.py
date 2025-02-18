@@ -70,7 +70,10 @@ class BigGoMCPSetting(BaseModel):
 
     log_level: LogLevel = LogLevel.INFO
 
-    es_proxy_url: str = "http://localhost:8888"
+    es_proxy_url: str = "https://mcp-es-proxy.d.cloud.biggo.com"
+    es_verify_certs: bool = True
+
+    auth_token_url: str = "https://api.biggo.com/auth/v1/token"
 
     @property
     def domain(self) -> Domains:

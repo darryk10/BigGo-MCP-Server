@@ -25,10 +25,8 @@ class SpecSearchService:
         access_token = await self._get_access_token()
         self._es_conn = AsyncElasticsearch(
             hosts=self._setting.es_proxy_url,
-            verify_certs=False,
-            headers={
-                "Authorization": f"Bearer {access_token}",
-            },
+            verify_certs=self._setting.es_verify_certs,
+            bearer_auth=access_token,
         )
         try:
             yield
@@ -42,8 +40,9 @@ class SpecSearchService:
             raise ValueError(err_msg)
 
         return await get_access_token(
-            self._setting.client_id,
-            self._setting.client_secret,
+            client_id=self._setting.client_id,
+            client_secret=self._setting.client_secret,
+            endpoint=self._setting.auth_token_url,
         )
 
     async def spec_indexes(self) -> list[str]:
