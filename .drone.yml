@@ -35,8 +35,6 @@ trigger:
   ref:
     include:
       - refs/tags/v*
-    exclude:
-      - refs/tags/**-dev
 
 steps:
   - name: publish-pypi
