@@ -63,7 +63,7 @@ Search for products based on specific technical specifications using Elasticsear
 ### Prerequisites
 1. Python 3.13 or higher
 2. [uv package manager](https://docs.astral.sh/uv/)
-3. BigGo API credentials (client ID and secret) for specification search
+3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com)
 
 ### From Local Project
 ```json
