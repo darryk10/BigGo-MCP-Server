@@ -17,10 +17,10 @@ Search for products across multiple e-commerce platforms with natural language q
 
 **Example Prompts:**
 ```
-"Find me iPhone 15 Pro on Shopee"
+Find me iPhone 15 Pro on Shopee
 ```
 ```
-"Look for Nike running shoes"
+Look for Nike running shoes
 ```
 
 ### 📈 Price History Tracking
@@ -30,10 +30,10 @@ Track product price history in two ways:
 
 **Example Prompts:**
 ```
-"Show me the price history of this product: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781"
+Show me the price history of this product: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781
 ```
 ```
-"Find me the price history of IPhone 15 Pro at Shopee?"
+Find me the price history of IPhone 15 Pro at Shopee?
 ```
 
 ### 📐 Product Specification Search
@@ -41,13 +41,13 @@ Search for products based on specific technical specifications using Elasticsear
 
 **Example Prompts:**
 ```
-"Find me refrigerators with the highest energy efficiency rating"
+Find me refrigerators with the highest energy efficiency rating
 ```
 ```
-"Search for diving watches that weigh around 120g"
+Search for diving watches that weigh around 120g
 ```
 ```
-"Show me Japanese air conditioners with heating capability and low noise levels"
+Show me Japanese air conditioners with heating capability and low noise levels
 ```
 
 ## 🛠️ Available Tools
