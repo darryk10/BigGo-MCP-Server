@@ -10,7 +10,6 @@ Search for products across multiple e-commerce platforms with natural language q
 **Example Prompts:**
 ```
 "Find me iPhone 15 Pro on Shopee"
-"Search for mechanical keyboards under $100"
 "Look for Nike running shoes"
 ```
 
@@ -22,7 +21,7 @@ Track product price history in two ways:
 **Example Prompts:**
 ```
 "Show me the price history of this product: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781"
-"What's the price history of this keyboard I found on Shopee?"
+"Find me the price history of IPhone 15 Pro at Shopee?"
 ```
 
 ### Product Specification Search
