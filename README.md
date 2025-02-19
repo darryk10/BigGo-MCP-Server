@@ -95,7 +95,7 @@ Search for products based on specific technical specifications using Elasticsear
       "command": "uvx",
       "args": [
         "--from",
-        "biggo-mcp-server@0.1.0", // PROJECT_NAME@VERSION
+        "biggo-mcp-server", // PROJECT_NAME@VERSION
         "--client-id",
         "YOUR_CLIENT_ID",
         "--client-secret",
