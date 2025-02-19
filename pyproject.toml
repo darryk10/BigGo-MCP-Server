@@ -1,5 +1,5 @@
 [project]
-name = "biggo-mcp-server"
+name = "BigGo-MCP-Server"
 version = "0.1.0"
 description = "A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities."
 readme = "README.md"
