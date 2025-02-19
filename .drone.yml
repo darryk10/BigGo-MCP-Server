@@ -40,10 +40,8 @@ steps:
   - name: publish-pypi
     image: ghcr.io/astral-sh/uv:python3.13-alpine
     environment:
-      UV_PUBLISH_USERNAME:
-        from_secret: pypi-user
-      UV_PUBLISH_PASSWORD:
-        from_secret: pypi-password
+      UV_PUBLISH_TOKEN:
+        from_secret: pypi-token
     commands:
       - uv build
       - uv publish
