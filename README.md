@@ -139,14 +139,3 @@ Search for products based on specific technical specifications using Elasticsear
    ```
    uv run --group test pytest
    ```
-
-### Building and Publishing
-1. Build the package:
-   ```
-   uv build
-   ```
-
-2. Publish to repository:
-   ```
-   uv publish
-   ```
