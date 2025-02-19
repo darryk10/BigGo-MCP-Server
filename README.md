@@ -86,6 +86,7 @@ Show me Japanese air conditioners with heating capability and low noise levels
 3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com)
 
 ### 💻 From Local Project
+Use absolute path for `--directory` argument.
 ```json
 {
   "mcpServers": {
@@ -94,7 +95,7 @@ Show me Japanese air conditioners with heating capability and low noise levels
       "args": [
         "run",
         "--directory",
-        "/path/to/biggo-mcp-server", // Absolute path to project
+        "/path/to/biggo-mcp-server",
         "biggo-mcp-server",
         "--client-id",
         "YOUR_CLIENT_ID",
@@ -108,13 +109,14 @@ Show me Japanese air conditioners with heating capability and low noise levels
 ```
 
 ### 📦 From Published Package
+> For specific version use `biggo-mcp-server@VERSION`, ex: `biggo-mcp-server@0.0.1-dev3`
 ```json
 {
   "mcpServers": {
     "biggo-mcp-server": {
       "command": "uvx",
       "args": [
-        "biggo-mcp-server", // PROJECT_NAME@VERSION
+        "biggo-mcp-server",
         "--client-id",
         "YOUR_CLIENT_ID",
         "--client-secret",
