@@ -106,7 +106,6 @@ Search for products based on specific technical specifications using Elasticsear
     "biggo-mcp-server": {
       "command": "uvx",
       "args": [
-        "--from",
         "biggo-mcp-server", // PROJECT_NAME@VERSION
         "--client-id",
         "YOUR_CLIENT_ID",
