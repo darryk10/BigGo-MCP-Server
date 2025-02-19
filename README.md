@@ -68,6 +68,7 @@ Search for products based on specific technical specifications using Elasticsear
 ## ⚙️ Installation
 
 ### 📋 Prerequisites
+> PyPi package link: [biggo-mcp-server](https://pypi.org/project/biggo-mcp-server/)
 1. Python 3.13 or higher
 2. [uv package manager](https://docs.astral.sh/uv/)
 3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com)
