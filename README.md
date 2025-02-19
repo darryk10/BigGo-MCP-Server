@@ -2,6 +2,14 @@
 
 A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities.
 
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration Arguments](#configuration-arguments)
+- [Development](#development)
+- [Project Architecture](#project-architecture)
+- [License](#license)
+
 ## Features
 
 ### Product Search
@@ -138,3 +146,24 @@ Search for products based on specific technical specifications using Elasticsear
    ```
    uv run --group test pytest
    ```
+
+### Project Architecture
+```
+src/
+└── biggo_mcp_server/
+    ├── __init__.py         # MCP Server Entrypoint
+    ├── lib/
+    │   ...
+    │   ├── server.py       # Server class      
+    │   └── server_setup.py # Server initialization (load tools..etc)
+    ├── services/           # Tool logic
+    ├── tools/              # Tool entrypoint
+    └── types/
+        ├── api_ret/        # API responses
+        ...
+        ├── responses.py    # Tool responses
+        └── setting.py      # Server setting
+```
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
