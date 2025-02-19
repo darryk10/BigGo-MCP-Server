@@ -24,33 +24,6 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
-name: tagging-dev
-
-clone:
-  skip_verify: true
-
-trigger:
-  event:
-    - tag
-  ref:
-    include:
-      - refs/tags/**-dev
-
-steps:
-  - name: publish-pypi
-    image: ghcr.io/astral-sh/uv:python3.13-alpine
-    environment:
-      UV_PUBLISH_USERNAME:
-        from_secret: pypi-user
-      UV_PUBLISH_PASSWORD:
-        from_secret: pypi-password
-    commands:
-      - uv build
-      - uv publish
-
----
-kind: pipeline
-type: kubernetes
 name: tagging-release
 
 clone:
