@@ -2,14 +2,6 @@
 
 A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities.
 
-## 📑 Table of Contents
-- [Features](#features)
-- [Installation](#installation)
-- [Configuration Arguments](#configuration-arguments)
-- [Development](#development)
-- [Project Architecture](#project-architecture)
-- [License](#license)
-
 ## ✨ Features
 
 ### 🛍️ Product Search
@@ -83,7 +75,7 @@ Show me Japanese air conditioners with heating capability and low noise levels
 > PyPi package link: [biggo-mcp-server](https://pypi.org/project/biggo-mcp-server/)
 1. Python 3.13 or higher
 2. [uv package manager](https://docs.astral.sh/uv/)
-3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com)
+3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com/setting/token)
 
 ### 💻 From Local Project
 Use absolute path for `--directory` argument.
