@@ -1,0 +1,51 @@
+kind: pipeline
+type: kubernetes
+name: push-test
+
+clone:
+  skip_verify: true
+
+trigger:
+  event:
+    - push
+
+steps:
+  - name: docker-mcp-es-proxy
+    image: ghcr.io/astral-sh/uv:python3.13-alpine
+    environment:
+      CLIENT_ID:
+        from_secret: biggo-client-id
+      CLIENT_SECRET:
+        from_secret: biggo-client-secret
+    commands:
+      - uv sync
+      - uv run --group test pytest
+
+---
+kind: pipeline
+type: kubernetes
+name: tagging-release
+
+clone:
+  skip_verify: true
+
+trigger:
+  event:
+    - tag
+  ref:
+    include:
+      - refs/tags/v*
+    exclude:
+      - refs/tags/**-dev
+
+steps:
+  - name: publish-pypi
+    image: ghcr.io/astral-sh/uv:python3.13-alpine
+    environment:
+      UV_PUBLISH_USERNAME:
+        from_secret: pypi-user
+      UV_PUBLISH_PASSWORD:
+        from_secret: pypi-password
+    commands:
+      - uv build
+      - uv publish

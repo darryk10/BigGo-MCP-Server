@@ -12,3 +12,4 @@ wheels/
 .*
 !.gitignore
 !.python-version
+!.drone.yml
