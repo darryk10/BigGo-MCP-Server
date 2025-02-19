@@ -1,6 +1,6 @@
 [project]
 name = "biggo-mcp-server"
-version = "0.0.1-dev"
+version = "0.0.1-dev1"
 description = "Add your description here"
 readme = "README.md"
 authors = [
