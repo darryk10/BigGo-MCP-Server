@@ -1,3 +1,4 @@
+import json
 from logging import getLogger
 from typing import Annotated
 from mcp.server.fastmcp import Context
@@ -12,7 +13,10 @@ logger = getLogger(__name__)
 async def spec_indexes(
     ctx: Context,
 ) -> Annotated[str, Field(description="List of Elasticsearch indexes")]:
-    """Elasticsearch Indexes for Product Specification"""
+    """Elasticsearch Indexes for Product Specification.
+
+    It is REQUIRED to use this tool first before running any specification search.
+    """
     logger.info("spec indexes")
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
@@ -34,7 +38,11 @@ async def spec_mapping(
 ) -> Annotated[
         str,
         Field(description="Elasticsearch mappings plus an example document")]:
-    """Elasticsearch Mapping For Product Specification"""
+    """Elasticsearch Mapping For Product Specification.
+
+    Use this tool after you have the index, and need to know the mapping in order to query the index.
+    Available indexes can be obtained by using the 'spec_indexes' tool.
+    """
     logger.info("spec mapping, index: %s", index)
     setting = get_setting(ctx)
     service = SpecSearchService(setting)
@@ -61,9 +69,11 @@ async def spec_search(
                           2. Choose the most relevant index
                           """)],
     elasticsearch_query: Annotated[
-        dict,
+        str | dict,
         Field(description="""
               Elasticsearch query
+
+              Please use the 'spec_mapping' tool to get the mapping of the index, before using this tool.
 
               Size must be less than or equal to 10.
               """,
@@ -85,6 +95,7 @@ async def spec_search(
 ) -> str:
     """Product Specification Search. 
 
+    Index mapping must be aquired before using this tool.
     Use 'spec_mapping' tool to get the mapping of the index.
     """
     logger.info("spec search, index: %s, query: %s", index, elasticsearch_query)
@@ -93,7 +104,11 @@ async def spec_search(
     service = SpecSearchService(setting)
     try:
         async with service.session():
-            hits = await service.search(index, elasticsearch_query)
+            if isinstance(elasticsearch_query, str):
+                query: dict = json.loads(elasticsearch_query)
+            else:
+                query = elasticsearch_query
+            hits = await service.search(index, query)
     except Exception as e:
         raise Exception(
             f"You must know the mapping of the index before using this tool. Error: {e}"
