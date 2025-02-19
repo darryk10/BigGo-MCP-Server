@@ -1,74 +1,71 @@
-# BigGo MCP Server (Python)
+# BigGo MCP Server
 
-## Tools
-- [x] Price History With URL
-  - Example Question:
-    - ```
-      Please show me the price history of this url https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781
-      ```
-- [x] Price History With History ID
-  - History ID can be found in the result of `product_search`
-  - Typical use case:
-    - User provide a product name, and the model finds the most relevant product from the search result, use the history ID of the product as the argument.
-  - Example Question:
-    - ```
-      Please find me the price history of keyboards on shopee
-      ```
-- [x] Product Search
-  - Example Question: 
-    - ```
-      Please find me iphone 16 pro on shopee
-      ```
-- [x] Spec Indexes
-  - List elasticsearch indexes related to product specification
-- [x] Spec Mapping
-  - Elasticsearch index mapping plus an example document
-- [x] Spec Search
-  - Search product specification with elasticsearch query
-  - Example Questions: 
-    - ```
-      Find me the most efficient refrigerators according to product specification
-      ```
-    - ```
-      Please find me diving watches that weighs around 120g
-      ```
-    - ```
-      Find me air conditioners made in japan with heating capability, low noise and low energy consumption
-      ```
+A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities.
 
-## Development
-> Install [uv](https://docs.astral.sh/uv/) package manager
+## Features
 
-### Install Dependencies
+### Product Search
+Search for products across multiple e-commerce platforms with natural language queries.
+
+**Example Prompts:**
 ```
-uv sync
+"Find me iPhone 15 Pro on Shopee"
+"Search for mechanical keyboards under $100"
+"Look for Nike running shoes"
 ```
 
-### Run with MCP Inspector
+### Price History Tracking
+Track product price history in two ways:
+- Direct URL tracking
+- History ID tracking (obtained from product search results)
+
+**Example Prompts:**
 ```
-npx @modelcontextprotocol/inspector uv run biggo-mcp-server
+"Show me the price history of this product: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781"
+"What's the price history of this keyboard I found on Shopee?"
 ```
 
-### Test
-`pytest` is a dependency in group `test`.
-We need to specify the group to run tests.
+### Product Specification Search
+Search for products based on specific technical specifications using Elasticsearch.
+
+**Example Prompts:**
 ```
-uv run --group test pytest
+"Find me refrigerators with the highest energy efficiency rating"
+"Search for diving watches that weigh around 120g"
+"Show me Japanese air conditioners with heating capability and low noise levels"
 ```
 
-### Build 
-```
-uv build
-```
+## Available Tools
 
-### Publish
-```
-uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
-```
+### Price History Tools
+- **Price History With URL**
+  - Tracks price history using product URLs
 
+- **Price History With History ID**
+  - Uses history IDs from product search results
+  - Typical tool workflow: Search product -> Get history ID -> Track prices
+
+### Product Search
+- Product search with biggo search api
+
+### Specification Search Tools
+- **Spec Indexes**
+  - Lists available Elasticsearch indexes for product specifications
+
+- **Spec Mapping**
+  - Shows Elasticsearch index mapping with example documents
+
+- **Spec Search**
+  - Advanced specification-based product search
 
 ## Installation
-### From local project
+
+### Prerequisites
+1. Python 3.13 or higher
+2. [uv package manager](https://docs.astral.sh/uv/)
+3. BigGo API credentials (client ID and secret) for specification search
+
+### From Local Project
 ```json
 {
   "mcpServers": {
@@ -77,29 +74,12 @@ uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
       "args": [
         "run",
         "--directory",
-        "/home/alex/work/biggo-mcp-server-python", // Absolute path to project
+        "/path/to/biggo-mcp-server", // Absolute path to project
         "biggo-mcp-server",
-        // "--log-level",
-        // "INFO"
-      ],
-      "enabled": true
-    }
-  }
-}
-```
-### From published package
-```json
-{
-  "mcpServers": {
-    "biggo-mcp-server": {
-      "command": "uvx",
-      "args": [
-        "--index",
-        "http://devpi.cloud.biggo.com/alex/alex/+simple",
-        "--from",
-        "biggo-mcp-server@0.1.0" // PROJECT_NAME@VERSION
-        // "--log-level",
-        // "INFO"
+        "--client-id",
+        "YOUR_CLIENT_ID",
+        "--client-secret",
+        "YOUR_CLIENT_SECRET"
       ],
       "enabled": true
     }
@@ -107,11 +87,64 @@ uv publish --publish-url http://devpi.cloud.biggo.com/alex/alex
 }
 ```
 
-### Arguments
-| Variable          | Description               | Default                           | Choices                                    |
-| ----------------- | ------------------------- | --------------------------------- | ------------------------------------------ |
-| `--region`        | Region for product search | TW                                | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
-| `--client-id`     | Client ID                 | None                              |                                            |
-| `--client-secret` | Client Secret             | None                              |                                            |
-| `--log-level`     | Log level                 | INFO                              | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
-| `--es-proxy-url`  | Elasticsearch proxy URL   | http://es-proxy.d.cloud.biggo.com |                                            |
+### From Published Package
+```json
+{
+  "mcpServers": {
+    "biggo-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "biggo-mcp-server@0.1.0", // PROJECT_NAME@VERSION
+        "--client-id",
+        "YOUR_CLIENT_ID",
+        "--client-secret",
+        "YOUR_CLIENT_SECRET"
+      ],
+      "enabled": true
+    }
+  }
+}
+```
+
+## Configuration Arguments
+
+| Variable            | Description                       | Default                                    | Choices                                    |
+| ------------------- | --------------------------------- | ------------------------------------------ | ------------------------------------------ |
+| `--region`          | Region for product search         | TW                                         | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
+| `--client-id`       | Client ID                         | None                                       | Required for specification search          |
+| `--client-secret`   | Client Secret                     | None                                       | Required for specification search          |
+| `--log-level`       | Log level                         | INFO                                       | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
+| `--es-proxy-url`    | Elasticsearch proxy URL           | https://api.biggo.com/api/v1/mcp-es-proxy/ | Any valid URL                              |
+| `--es-verify-certs` | Verify Elasticsearch certificates | True                                       | True, False                                |
+| `--auth-token-url`  | Auth token URL                    | https://api.biggo.com/auth/v1/token        | Any valid URL                              |
+## Development
+
+### Setup
+1. Install [uv](https://docs.astral.sh/uv/) package manager
+2. Install dependencies:
+   ```
+   uv sync
+   ```
+
+### Testing and Development
+1. Run with MCP Inspector:
+   ```
+   npx @modelcontextprotocol/inspector uv run biggo-mcp-server
+   ```
+
+2. Run tests:
+   ```
+   uv run --group test pytest
+   ```
+
+### Building and Publishing
+1. Build the package:
+   ```
+   uv build
+   ```
+
+2. Publish to repository:
+   ```
+   uv publish
+   ```
