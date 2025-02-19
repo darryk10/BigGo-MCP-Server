@@ -74,6 +74,7 @@ class BigGoMCPSetting(BaseModel):
     es_verify_certs: bool = True
 
     auth_token_url: str = "https://api.biggo.com/auth/v1/token"
+    auth_verify_certs: bool = True
 
     @property
     def domain(self) -> Domains:

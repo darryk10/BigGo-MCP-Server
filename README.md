@@ -109,15 +109,17 @@ Search for products based on specific technical specifications using Elasticsear
 
 ## Configuration Arguments
 
-| Variable            | Description                       | Default                                    | Choices                                    |
-| ------------------- | --------------------------------- | ------------------------------------------ | ------------------------------------------ |
-| `--region`          | Region for product search         | TW                                         | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
-| `--client-id`       | Client ID                         | None                                       | Required for specification search          |
-| `--client-secret`   | Client Secret                     | None                                       | Required for specification search          |
-| `--log-level`       | Log level                         | INFO                                       | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
-| `--es-proxy-url`    | Elasticsearch proxy URL           | https://api.biggo.com/api/v1/mcp-es-proxy/ | Any valid URL                              |
-| `--es-verify-certs` | Verify Elasticsearch certificates | True                                       | True, False                                |
-| `--auth-token-url`  | Auth token URL                    | https://api.biggo.com/auth/v1/token        | Any valid URL                              |
+| Variable              | Description                       | Default                                    | Choices                                    |
+| --------------------- | --------------------------------- | ------------------------------------------ | ------------------------------------------ |
+| `--region`            | Region for product search         | TW                                         | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
+| `--client-id`         | Client ID                         | None                                       | Required for specification search          |
+| `--client-secret`     | Client Secret                     | None                                       | Required for specification search          |
+| `--log-level`         | Log level                         | INFO                                       | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
+| `--es-proxy-url`      | Elasticsearch proxy URL           | https://api.biggo.com/api/v1/mcp-es-proxy/ | Any valid URL                              |
+| `--es-verify-certs`   | Verify Elasticsearch certificates | True                                       | True, False                                |
+| `--auth-token-url`    | Auth token URL                    | https://api.biggo.com/auth/v1/token        | Any valid URL                              |
+| `--auth-verify-certs` | Verify Auth certificates          | True                                       | True, False                                |
+
 ## Development
 
 ### Setup

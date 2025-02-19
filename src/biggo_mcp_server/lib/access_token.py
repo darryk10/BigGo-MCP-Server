@@ -11,6 +11,7 @@ logger = getLogger(__name__)
 async def get_access_token(
     client_id: str,
     client_secret: str,
+    ssl: bool = True,
     endpoint: str = "https://api.biggo.com/auth/v1/token",
 ) -> str:
     """Get access token with client credentials"""
@@ -30,6 +31,7 @@ async def get_access_token(
                 url=endpoint,
                 headers=headers,
                 params=params,
+                ssl=ssl,
         ) as resp:
             if resp.status >= 400:
                 err_msg = f"get access token error, {await resp.text()}"

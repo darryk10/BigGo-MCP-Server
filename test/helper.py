@@ -17,5 +17,6 @@ def setting():
                               client_secret=CLIENT_SECRET,
                               es_proxy_url=ES_PROXY_URL,
                               auth_token_url=AUTH_TOKEN_URL,
-                              es_verify_certs=False)
+                              es_verify_certs=False,
+                              auth_verify_certs=False)
     return setting

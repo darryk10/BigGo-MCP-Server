@@ -46,8 +46,6 @@ steps:
         from_secret: pypi-user
       UV_PUBLISH_PASSWORD:
         from_secret: pypi-password
-      AUTH_TOKEN_URL:
-        from_secret: auth-token-url
     commands:
       - uv build
       - uv publish

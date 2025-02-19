@@ -17,6 +17,7 @@ class Args:
     es_proxy_url: str
     auth_token_url: str
     es_verify_certs: bool
+    auth_verify_certs: bool
 
 
 async def start():
@@ -34,10 +35,11 @@ async def start():
     args.add_argument("--es-proxy-url",
                       type=str,
                       default="https://api.biggo.com/api/v1/mcp-es-proxy/")
+    args.add_argument("--es-verify-certs", type=bool, default=True)
     args.add_argument("--auth-token-url",
                       type=str,
                       default="https://api.biggo.com/auth/v1/token")
-    args.add_argument("--es-verify-certs", type=bool, default=True)
+    args.add_argument("--auth-verify-certs", type=bool, default=True)
 
     args = args.parse_args(namespace=Args)
 
@@ -49,6 +51,7 @@ async def start():
         es_proxy_url=args.es_proxy_url,
         auth_token_url=args.auth_token_url,
         es_verify_certs=args.es_verify_certs,
+        auth_verify_certs=args.auth_verify_certs,
     )
 
     server = await create_server(setting)

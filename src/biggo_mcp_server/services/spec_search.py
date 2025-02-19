@@ -43,6 +43,7 @@ class SpecSearchService:
             client_id=self._setting.client_id,
             client_secret=self._setting.client_secret,
             endpoint=self._setting.auth_token_url,
+            ssl=self._setting.auth_verify_certs,
         )
 
     async def spec_indexes(self) -> list[str]:
