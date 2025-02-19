@@ -44,26 +44,30 @@ Search for products based on specific technical specifications using Elasticsear
 
 ## 🛠️ Available Tools
 
-### 📈 Price History Tools
-- **Price History With URL**
-  - Tracks price history using product URLs
+### 🛍️ Product Search Tools
+- `product_search`
+  - Product search with biggo search api
 
-- **Price History With History ID**
+### 📈 Price History Tools
+- `price_history_graph`
+  - Link that visualizes product price history
+- `price_history_with_history_id`
   - Uses history IDs from product search results
   - Typical tool workflow: Search product -> Get history ID -> Track prices
-
-### 🛍️ Product Search
-- Product search with biggo search api
+- `price_history_with_url`
+  - Tracks price history using product URLs
 
 ### 📐 Specification Search Tools
-- **Spec Indexes**
+- `spec_indexes`
   - Lists available Elasticsearch indexes for product specifications
-
-- **Spec Mapping**
+- `spec_mapping`
   - Shows Elasticsearch index mapping with example documents
-
-- **Spec Search**
+- `spec_search`
   - Advanced specification-based product search
+
+### 🧰 Utility Tools
+- `get_current_region`
+  - Get the current region setting
 
 ## ⚙️ Installation
 
