@@ -6,6 +6,7 @@ readme = "README.md"
 authors = [
     { name = "alex", email = "alex@funmula.com" }
 ]
+license = "MIT"
 requires-python = ">=3.13"
 dependencies = [
     "aiohttp>=3.11.11",
