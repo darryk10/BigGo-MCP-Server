@@ -1,8 +1,8 @@
-# BigGo MCP Server
+# 🔍 BigGo MCP Server
 
 A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities.
 
-## Table of Contents
+## 📑 Table of Contents
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration Arguments](#configuration-arguments)
@@ -10,9 +10,9 @@ A Model Context Protocol (MCP) server that provides product search, price histor
 - [Project Architecture](#project-architecture)
 - [License](#license)
 
-## Features
+## ✨ Features
 
-### Product Search
+### 🛍️ Product Search
 Search for products across multiple e-commerce platforms with natural language queries.
 
 **Example Prompts:**
@@ -21,7 +21,7 @@ Search for products across multiple e-commerce platforms with natural language q
 "Look for Nike running shoes"
 ```
 
-### Price History Tracking
+### 📈 Price History Tracking
 Track product price history in two ways:
 - Direct URL tracking
 - History ID tracking (obtained from product search results)
@@ -32,7 +32,7 @@ Track product price history in two ways:
 "Find me the price history of IPhone 15 Pro at Shopee?"
 ```
 
-### Product Specification Search
+### 📐 Product Specification Search
 Search for products based on specific technical specifications using Elasticsearch.
 
 **Example Prompts:**
@@ -42,9 +42,9 @@ Search for products based on specific technical specifications using Elasticsear
 "Show me Japanese air conditioners with heating capability and low noise levels"
 ```
 
-## Available Tools
+## 🛠️ Available Tools
 
-### Price History Tools
+### 📈 Price History Tools
 - **Price History With URL**
   - Tracks price history using product URLs
 
@@ -52,10 +52,10 @@ Search for products based on specific technical specifications using Elasticsear
   - Uses history IDs from product search results
   - Typical tool workflow: Search product -> Get history ID -> Track prices
 
-### Product Search
+### 🛍️ Product Search
 - Product search with biggo search api
 
-### Specification Search Tools
+### 📐 Specification Search Tools
 - **Spec Indexes**
   - Lists available Elasticsearch indexes for product specifications
 
@@ -65,14 +65,14 @@ Search for products based on specific technical specifications using Elasticsear
 - **Spec Search**
   - Advanced specification-based product search
 
-## Installation
+## ⚙️ Installation
 
-### Prerequisites
+### 📋 Prerequisites
 1. Python 3.13 or higher
 2. [uv package manager](https://docs.astral.sh/uv/)
 3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com)
 
-### From Local Project
+### 💻 From Local Project
 ```json
 {
   "mcpServers": {
@@ -94,7 +94,7 @@ Search for products based on specific technical specifications using Elasticsear
 }
 ```
 
-### From Published Package
+### 📦 From Published Package
 ```json
 {
   "mcpServers": {
@@ -114,7 +114,7 @@ Search for products based on specific technical specifications using Elasticsear
 }
 ```
 
-## Configuration Arguments
+## 🔧 Configuration Arguments
 
 | Variable              | Description                       | Default                                    | Choices                                    |
 | --------------------- | --------------------------------- | ------------------------------------------ | ------------------------------------------ |
@@ -127,16 +127,16 @@ Search for products based on specific technical specifications using Elasticsear
 | `--auth-token-url`    | Auth token URL                    | https://api.biggo.com/auth/v1/token        | Any valid URL                              |
 | `--auth-verify-certs` | Verify Auth certificates          | True                                       | True, False                                |
 
-## Development
+## 👨‍💻 Development
 
-### Setup
+### 🚀 Setup
 1. Install [uv](https://docs.astral.sh/uv/) package manager
 2. Install dependencies:
    ```
    uv sync
    ```
 
-### Testing and Development
+### 🧪 Testing and Development
 1. Run with MCP Inspector:
    ```
    npx @modelcontextprotocol/inspector uv run biggo-mcp-server
@@ -147,15 +147,15 @@ Search for products based on specific technical specifications using Elasticsear
    uv run --group test pytest
    ```
 
-### Project Architecture
+### 📦 Project Architecture
 ```
 src/
 └── biggo_mcp_server/
     ├── __init__.py         # MCP Server Entrypoint
     ├── lib/
-    │   ...
-    │   ├── server.py       # Server class      
-    │   └── server_setup.py # Server initialization (load tools..etc)
+    │   ...
+    │   ├── server.py       # Server class      
+    │   └── server_setup.py # Server initialization (load tools..etc)
     ├── services/           # Tool logic
     ├── tools/              # Tool entrypoint
     └── types/
@@ -165,5 +165,5 @@ src/
         └── setting.py      # Server setting
 ```
 
-## License
+## 📄 License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
