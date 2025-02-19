@@ -1,7 +1,7 @@
 [project]
 name = "biggo-mcp-server"
-version = "0.0.1-dev1"
-description = "Add your description here"
+version = "0.0.1-dev2"
+description = "A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities."
 readme = "README.md"
 authors = [
     { name = "alex", email = "alex@funmula.com" }
@@ -14,6 +14,9 @@ dependencies = [
     "elasticsearch8[async]>=8.17.1",
     "mcp[cli]>=1.2.1",
 ]
+
+[project.urls]
+Source = "https://github.com/Funmula-Corp/biggo-mcp-server-python"
 
 [project.scripts]
 biggo-mcp-server = "biggo_mcp_server:main"
