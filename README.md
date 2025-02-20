@@ -1,175 +1,77 @@
 # 🔍 BigGo MCP Server
+## Introduction
+This project uses APIs provided by BigGo ( A price comparison website ) to achive the following features
 
-A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities.
+## Features
+- **Product Discovery**: Search for products across multiple e-commerce platforms (Amazon, Aliexpress, Ebay, Taobao, Shopee ... etc.)
+- **Price History Tracking**: Track product price history by supplying product url or related terms.
+- **Spec Comparison**: Compare and find products based on their specifications, from basic infos to more complex technical specs.
 
-## ✨ Features
+## Installation
+### Prerequisites
+1. Python >= 3.10
+2. [uvx package manager ( Included with uv )](https://docs.astral.sh/uv/getting-started/installation/)
+3. BigGo Certification (`client_id` and `client_secret`) for specification search. 
 
-### 🛍️ Product Search
-Search for products across multiple e-commerce platforms with natural language queries.
+#### How to obtain BigGo certification?
+  - [Register](https://account.biggo.com/?url=https%3A%2F%2Fbiggo.com%2F&lang=en&source=web&type=biggo3&method=register) a BigGo account if you don't have one.
+  - Go to [BigGo Certification Page](https://account.biggo.com/setting/token)
+  - Click "Generate certification" button
+  - ![Generate Certification](./docs/Pics/generate-certification.png)
+  - Copy the `client_id` and `client_secret`
+  - Use them in the MCP Server configuration (`BIGGO_MCP_SERVER_CLIENT_ID` and `BIGGO_MCP_SERVER_CLIENT_SECRET`)
 
-**Example Prompts:**
-```
-Find me iPhone 15 Pro on Shopee
-```
-```
-Look for Nike running shoes
-```
-
-### 📈 Price History Tracking
-Track product price history in two ways:
-- Direct URL tracking
-- History ID tracking (obtained from product search results)
-
-**Example Prompts:**
-```
-Show me the price history of this product: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13660781
-```
-```
-Find me the price history of IPhone 15 Pro at Shopee?
-```
-
-### 📐 Product Specification Search
-Search for products based on specific technical specifications using Elasticsearch.
-
-**Example Prompts:**
-```
-Find me refrigerators with the highest energy efficiency rating
-```
-```
-Search for diving watches that weigh around 120g
-```
-```
-Show me Japanese air conditioners with heating capability and low noise levels
-```
-
-## 🛠️ Available Tools
-
-### 🛍️ Product Search Tools
-- `product_search`
-  - Product search with biggo search api
-
-### 📈 Price History Tools
-- `price_history_graph`
-  - Link that visualizes product price history
-- `price_history_with_history_id`
-  - Uses history IDs from product search results
-  - Typical tool workflow: Search product -> Get history ID -> Track prices
-- `price_history_with_url`
-  - Tracks price history using product URLs
-
-### 📐 Specification Search Tools
-- `spec_indexes`
-  - Lists available Elasticsearch indexes for product specifications
-- `spec_mapping`
-  - Shows Elasticsearch index mapping with example documents
-- `spec_search`
-  - Advanced specification-based product search
-
-### 🧰 Utility Tools
-- `get_current_region`
-  - Get the current region setting
-
-## ⚙️ Installation
-
-### 📋 Prerequisites
-> PyPi package link: [biggo-mcp-server](https://pypi.org/project/biggo-mcp-server/)
-1. Python 3.13 or higher
-2. [uv package manager](https://docs.astral.sh/uv/)
-3. BigGo API credentials (client ID and secret) for specification search. Available at [BigGo Account](https://account.biggo.com/setting/token)
-
-### 💻 From Local Project
-Use absolute path for `--directory` argument.
-```json
-{
-  "mcpServers": {
-    "biggo-mcp-server": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/path/to/biggo-mcp-server",
-        "biggo-mcp-server",
-        "--client-id",
-        "YOUR_CLIENT_ID",
-        "--client-secret",
-        "YOUR_CLIENT_SECRET"
-      ],
-      "enabled": true
-    }
-  }
-}
-```
-
-### 📦 From Published Package
-> For specific version use `biggo-mcp-server@VERSION`, ex: `biggo-mcp-server@0.1.1`
 ```json
 {
   "mcpServers": {
     "biggo-mcp-server": {
       "command": "uvx",
-      "args": [
-        "biggo-mcp-server",
-        "--client-id",
-        "YOUR_CLIENT_ID",
-        "--client-secret",
-        "YOUR_CLIENT_SECRET"
-      ],
-      "enabled": true
+      "args": [ "BigGo-MCP-Server"],
+      "env": {
+        "BIGGO_MCP_SERVER_CLIENT_ID": "CLIENT_ID",
+        "BIGGO_MCP_SERVER_CLIENT_SECRET": "CLIENT_SECRET",
+        "BIGGO_MCP_SERVER_REGION": "REGION"
+      }
     }
   }
 }
 ```
+> For specific version use `BigGo-MCP-Server@VERSION`, ex: `BigGo-MCP-Server@0.1.1`
 
-## 🔧 Configuration Arguments
+## Environment Variables
+| Variable                         | Description               | Default | Choices                                    |
+| -------------------------------- | ------------------------- | ------- | ------------------------------------------ |
+| `BIGGO_MCP_SERVER_CLIENT_ID`     | Client ID                 | None    | Required for specification search          |
+| `BIGGO_MCP_SERVER_CLIENT_SECRET` | Client Secret             | None    | Required for specification search          |
+| `BIGGO_MCP_SERVER_REGION`        | Region for product search | TW      | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
 
-| Variable              | Description                       | Default                                    | Choices                                    |
-| --------------------- | --------------------------------- | ------------------------------------------ | ------------------------------------------ |
-| `--region`            | Region for product search         | TW                                         | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
-| `--client-id`         | Client ID                         | None                                       | Required for specification search          |
-| `--client-secret`     | Client Secret                     | None                                       | Required for specification search          |
-| `--log-level`         | Log level                         | INFO                                       | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
-| `--es-proxy-url`      | Elasticsearch proxy URL           | https://api.biggo.com/api/v1/mcp-es-proxy/ | Any valid URL                              |
-| `--es-verify-certs`   | Verify Elasticsearch certificates | True                                       | True, False                                |
-| `--auth-token-url`    | Auth token URL                    | https://api.biggo.com/auth/v1/token        | Any valid URL                              |
-| `--auth-verify-certs` | Verify Auth certificates          | True                                       | True, False                                |
+## Available Tools
+- `product_search`: Product search with BigGo search api
+- `price_history_graph`: Link that visualizes product price history
+- `price_history_with_history_id`: Uses history IDs from product search results
+- `price_history_with_url`: Tracks price history using product URLs
+- `spec_indexes`: Lists available Elasticsearch indexes for product specifications
+- `spec_mapping`: Shows Elasticsearch index mapping with example documents
+- `spec_search`: Query product specifications from Elasticsearch
+- `get_current_region`: Get the current region
 
-## 👨‍💻 Development
-
-### 🚀 Setup
-1. Install [uv](https://docs.astral.sh/uv/) package manager
-2. Install dependencies:
-   ```
-   uv sync
-   ```
-
-### 🧪 Testing and Development
-1. Run with MCP Inspector:
-   ```
-   npx @modelcontextprotocol/inspector uv run biggo-mcp-server
-   ```
-
-2. Run tests:
-   ```
-   uv run --group test pytest
-   ```
-
-### 📦 Project Architecture
+## FAQ
+### How to trigger tool usage?
+For **Product Discovery** related:
 ```
-src/
-└── biggo_mcp_server/
-    ├── __init__.py         # MCP Server Entrypoint
-    ├── lib/
-    │   ...
-    │   ├── server.py       # Server class      
-    │   └── server_setup.py # Server initialization (load tools..etc)
-    ├── services/           # Tool logic
-    ├── tools/              # Tool entrypoint
-    └── types/
-        ├── api_ret/        # API responses
-        ...
-        ├── responses.py    # Tool responses
-        └── setting.py      # Server setting
+Look for Nike running shoes
+```
+For **Price History Tracking** related:
+```
+Show me the price history of this product: https://some-product-url
+```
+For **Spec Comparison** related:
+```
+Find me a laptop with 16GB RAM and 1TB SSD
 ```
 
-## 📄 License
+### Build
+See [build.md](docs/build.md) for more details.
+
+## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
