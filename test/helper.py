@@ -1,20 +1,26 @@
 import pytest
+import sys
 from os import environ, path
 from pathlib import Path
 from dotenv import load_dotenv
 from biggo_mcp_server.types.setting import BigGoMCPSetting
 
 def load_env_files():
-    # 嘗試載入測試環境變數
+    """載入環境變數，相容所有 Python 3.10+ 版本"""
     test_env_paths = [
         Path(__file__).parent / '.env.test',  # test/.env.test
         Path(__file__).parent.parent / '.env.test',  # .env.test
     ]
 
     for env_path in test_env_paths:
-        if env_path.exists():
-            load_dotenv(str(env_path))  # Python 3.10 需要轉換為字串
-            return True
+        if env_path.is_file():  # 使用 is_file() 而不是 exists()
+            try:
+                # Python 3.10+ 相容性處理
+                env_path_str = str(env_path) if sys.version_info >= (3, 11) else env_path.absolute().as_posix()
+                load_dotenv(env_path_str)
+                return True
+            except Exception as e:
+                print(f"Warning: Failed to load {env_path}: {e}", file=sys.stderr)
     return False
 
 # 確保環境變數被載入

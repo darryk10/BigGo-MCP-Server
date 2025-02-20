@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed environment variable loading in Python 3.10
 - Improved test environment setup reliability
 - Enhanced error handling for missing test credentials
+- Added compatibility for all Python versions >= 3.10
 
 ## [0.1.6] - 2024-03-19
 
