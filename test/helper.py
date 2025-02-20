@@ -1,19 +1,24 @@
 import pytest
-from os import environ
+from os import environ, path
 from pathlib import Path
 from dotenv import load_dotenv
 from biggo_mcp_server.types.setting import BigGoMCPSetting
 
-# 嘗試載入測試環境變數
-test_env_paths = [
-    Path(__file__).parent / '.env.test',  # test/.env.test
-    Path(__file__).parent.parent / '.env.test',  # .env.test
-]
+def load_env_files():
+    # 嘗試載入測試環境變數
+    test_env_paths = [
+        Path(__file__).parent / '.env.test',  # test/.env.test
+        Path(__file__).parent.parent / '.env.test',  # .env.test
+    ]
 
-for env_path in test_env_paths:
-    if env_path.exists():
-        load_dotenv(env_path)
-        break
+    for env_path in test_env_paths:
+        if env_path.exists():
+            load_dotenv(str(env_path))  # Python 3.10 需要轉換為字串
+            return True
+    return False
+
+# 確保環境變數被載入
+load_env_files()
 
 ES_PROXY_URL = environ.get("ES_PROXY_URL",
                            "https://api.biggo.com/api/v1/mcp-es-proxy/")
