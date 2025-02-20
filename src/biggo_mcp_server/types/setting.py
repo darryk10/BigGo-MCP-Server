@@ -1,13 +1,13 @@
-from enum import StrEnum
-from pydantic import BaseModel
+from enum import Enum
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class GraphLanguage(StrEnum):
+class GraphLanguage(str, Enum):
     TW = "tw"
     EN = "en"
 
 
-class LogLevel(StrEnum):
+class LogLevel(str, Enum):
     DEBUG = "DEBUG"
     INFO = "INFO"
     WARNING = "WARNING"
@@ -15,7 +15,7 @@ class LogLevel(StrEnum):
     CRITICAL = "CRITICAL"
 
 
-class Regions(StrEnum):
+class Regions(str, Enum):
     ID = "ID"
     VN = "VN"
     TH = "TH"
@@ -29,7 +29,7 @@ class Regions(StrEnum):
     SG = "SG"
 
 
-class Domains(StrEnum):
+class Domains(str, Enum):
     ID = "biggo.id"
     VN = "vn.biggo.com"
     TH = "biggo.co.th"
@@ -58,19 +58,20 @@ REGION_DOMAIN_MAP: dict[Regions, Domains] = {
 }
 
 
-class BigGoMCPSetting(BaseModel):
+class BigGoMCPSetting(BaseSettings):
     """
     BigGo MCP Server settings
     """
+    model_config = SettingsConfigDict(env_prefix="BIGGO_MCP_SERVER_")
+
+    region: Regions = Regions.TW
 
     client_id: str | None = None
     client_secret: str | None = None
 
-    region: Regions = Regions.TW
-
     log_level: LogLevel = LogLevel.INFO
 
-    es_proxy_url: str = "https://mcp-es-proxy.d.cloud.biggo.com"
+    es_proxy_url: str = "https://api.biggo.com/api/v1/mcp-es-proxy/"
     es_verify_certs: bool = True
 
     auth_token_url: str = "https://api.biggo.com/auth/v1/token"

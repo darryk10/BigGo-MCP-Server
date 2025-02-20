@@ -1,4 +1,3 @@
-from urllib.parse import quote
 from aiohttp import ClientSession
 from ..types.api_ret.product_search import ProductSearchAPIRet
 from ..types.setting import BigGoMCPSetting
@@ -17,8 +16,8 @@ class ProductSearchService:
 
         headers = {
             "Content-Type": "application/json",
-            "site": self._setting.domain,
-            "region": self._setting.region.lower(),
+            "site": self._setting.domain.value,
+            "region": self._setting.region.value.lower(),
         }
         logger.debug("product search, url: %s, headers: %s", url, headers)
 

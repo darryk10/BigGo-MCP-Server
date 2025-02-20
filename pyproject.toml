@@ -7,12 +7,13 @@ authors = [
     { name = "alex", email = "alex@funmula.com" }
 ]
 license = "MIT"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "aiohttp>=3.11.11",
     "async-lru>=2.0.4",
     "elasticsearch8[async]>=8.17.1",
     "mcp[cli]>=1.2.1",
+    "typing-extensions>=4.12.2",
 ]
 
 [project.urls]
