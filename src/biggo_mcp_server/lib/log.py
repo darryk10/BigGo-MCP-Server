@@ -6,7 +6,7 @@ logger = getLogger(__name__)
 
 def setup_logging(log_level: LogLevel = LogLevel.INFO):
     logger = getLogger("biggo_mcp_server")
-    logger.setLevel(log_level)
+    logger.setLevel(log_level.value)
     msg = "BigGo MCP Server logging setup, log_level: %s"
     match log_level:
         case LogLevel.DEBUG:
