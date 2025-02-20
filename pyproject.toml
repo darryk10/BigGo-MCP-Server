@@ -20,10 +20,10 @@ Source = "https://github.com/Funmula-Corp/BigGo-MCP-Server"
 Homepage = "https://github.com/Funmula-Corp/BigGo-MCP-Server"
 
 [project.scripts]
-biggo-mcp-server = "biggo_mcp_server:main"
+BigGo-MCP-Server = "biggo_mcp_server:main"
 
 [project.gui-scripts]
-biggo-mcp-server = "biggo_mcp_server:main"
+BigGo-MCP-Server = "biggo_mcp_server:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -1,0 +1,55 @@
+name: pull-request-test
+
+on:
+  pull_request_target:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        env:
+          CLIENT_ID: ${{ secrets.BIGGO_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.BIGGO_CLIENT_SECRET }}
+        run: uv run --group test pytest
+
+  test-build:
+    name: test-build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Test Build
+        run: uv build
