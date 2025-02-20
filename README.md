@@ -1,6 +1,6 @@
 # 🔍 BigGo MCP Server
 ## Introduction
-This project uses APIs provided by BigGo ( A price comparison website ) to achive the following features
+BigGo MCP Server utilizes APIs from BigGo, a professional price comparison website.
 
 ## Features
 - **Product Discovery**: Search for products across multiple e-commerce platforms (Amazon, Aliexpress, Ebay, Taobao, Shopee ... etc.)
