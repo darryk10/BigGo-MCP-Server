@@ -101,7 +101,7 @@ Use absolute path for `--directory` argument.
 ```
 
 ### 📦 From Published Package
-> For specific version use `biggo-mcp-server@VERSION`, ex: `biggo-mcp-server@0.0.1-dev3`
+> For specific version use `biggo-mcp-server@VERSION`, ex: `biggo-mcp-server@0.1.1`
 ```json
 {
   "mcpServers": {
