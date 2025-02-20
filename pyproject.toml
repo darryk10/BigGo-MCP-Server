@@ -1,6 +1,6 @@
 [project]
 name = "BigGo-MCP-Server"
-version = "0.1.1"
+dynamic = ["version"]
 description = "A Model Context Protocol (MCP) server that provides product search, price history tracking, and specification search capabilities."
 readme = "README.md"
 authors = [
@@ -26,8 +26,15 @@ BigGo-MCP-Server = "biggo_mcp_server:main"
 BigGo-MCP-Server = "biggo_mcp_server:main"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "semver"
 
 [dependency-groups]
 test = [
