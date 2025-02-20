@@ -1,6 +1,19 @@
 import pytest
 from os import environ
+from pathlib import Path
+from dotenv import load_dotenv
 from biggo_mcp_server.types.setting import BigGoMCPSetting
+
+# 嘗試載入測試環境變數
+test_env_paths = [
+    Path(__file__).parent / '.env.test',  # test/.env.test
+    Path(__file__).parent.parent / '.env.test',  # .env.test
+]
+
+for env_path in test_env_paths:
+    if env_path.exists():
+        load_dotenv(env_path)
+        break
 
 ES_PROXY_URL = environ.get("ES_PROXY_URL",
                            "https://api.biggo.com/api/v1/mcp-es-proxy/")
@@ -13,8 +26,17 @@ CLIENT_SECRET = environ.get("CLIENT_SECRET", None)
 
 @pytest.fixture
 def setting():
-    setting = BigGoMCPSetting(client_id=CLIENT_ID,
-                              client_secret=CLIENT_SECRET,
-                              es_proxy_url=ES_PROXY_URL,
-                              auth_token_url=AUTH_TOKEN_URL)
+    client_id = environ.get("BIGGO_MCP_SERVER_CLIENT_ID")
+    client_secret = environ.get("BIGGO_MCP_SERVER_CLIENT_SECRET")
+    
+    if not client_id or not client_secret:
+        raise ValueError(
+            "Environment variables BIGGO_MCP_SERVER_CLIENT_ID and BIGGO_MCP_SERVER_CLIENT_SECRET must be set. "
+            "Please check if .env.test exists and contains the correct values."
+        )
+    
+    setting = BigGoMCPSetting(
+        client_id=client_id,
+        client_secret=client_secret,
+    )
     return setting

@@ -14,3 +14,7 @@ wheels/
 !.python-version
 !.drone.yml
 !.github/
+!CHANGELOG.md
+
+.env*
+!.env.example

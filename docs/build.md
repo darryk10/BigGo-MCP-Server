@@ -3,11 +3,12 @@ Documentation for local development and installation.
 
 ## Development
 ### Setup
-1. Install [uv](https://docs.astral.sh/uv/) package manager
-2. Install dependencies:
-   ```
-   uv sync
-   ```
+1. Install Python >= 3.10
+2. Install [uvx package manager](https://docs.astral.sh/uv/getting-started/installation/)
+3. Install dependencies:
+```bash
+uvx install -e ".[test]"
+```
 
 ### Testing and development
 1. Run with MCP Inspector:
@@ -16,10 +17,9 @@ Documentation for local development and installation.
    ```
 
 2. Run tests:
+   ```bash
+   pytest test/
    ```
-   uv run --group test pytest
-   ```
-
 
 ## Install From Local Project
 Use absolute path for `--directory` argument.
@@ -79,3 +79,32 @@ Publishing is done automatically with GitHub Actions when a new release is creat
 1. Create a new release in the GitHub Releases page
 2. GitHub Actions will build the project and push the new version to PyPI
 3. Package version will be the release tag, ex: `v0.1.1`
+
+# Build Guide
+
+## Development Setup
+
+1. Install Python >= 3.10
+2. Install [uvx package manager](https://docs.astral.sh/uv/getting-started/installation/)
+3. Install dependencies:
+```bash
+uvx install -e ".[test]"
+```
+
+## Testing
+
+1. Copy `.env.example` to `test/.env.test`
+2. Update the credentials in `test/.env.test` with your BigGo API credentials
+3. Run tests:
+```bash
+pytest test/
+```
+
+## Build Package
+
+1. Build wheel:
+```bash
+uvx build
+```
+
+2. The built package will be in the `dist/` directory
