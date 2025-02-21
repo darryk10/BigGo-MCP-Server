@@ -4,6 +4,8 @@ from typing import Any, List
 
 from pydantic import BaseModel, Field
 
+from ..setting import Domains
+
 
 class Multiple(BaseModel):
     min_price: float | None = None
@@ -45,8 +47,9 @@ class ListItem(BaseModel):
     # is_multiple_product: bool
     # is_subscribe: bool
     title: str | None = None
-    purl: str | None = None
-    # affurl: str
+    # purl: str | None = None
+    affurl: str | None = None
+    url: str | None = None
     image: str | None = None
     # gallery_count: int
     # origin_image: str
@@ -101,3 +104,8 @@ class ProductSearchAPIRet(BaseModel):
     # biggo_c: List[BiggoCItem]
     low_price: float | None = None
     high_price: float | None = None
+
+    def construct_r_link(self, domain: Domains):
+        for product in self.list:
+            product.url = f"https://{domain.value}{product.affurl}"
+            product.affurl = None  # remove affurl from output
