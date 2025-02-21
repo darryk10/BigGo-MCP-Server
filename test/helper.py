@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+from dataclasses import dataclass
 import pytest
 import sys
 from os import environ
@@ -46,3 +48,12 @@ def setting():
         client_secret=client_secret,
     )
     return setting
+
+
+@contextmanager
+def set_temp_env(env_dict: dict):
+    for k, v in env_dict.items():
+        environ[k] = v
+    yield
+    for k, _ in env_dict.items():
+        environ.pop(k)
