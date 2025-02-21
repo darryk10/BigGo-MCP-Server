@@ -1,5 +1,7 @@
 from enum import Enum
+from typing import Any
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import field_validator
 
 
 class GraphLanguage(str, Enum):
@@ -76,6 +78,15 @@ class BigGoMCPSetting(BaseSettings):
 
     auth_token_url: str = "https://api.biggo.com/auth/v1/token"
     auth_verify_certs: bool = True
+
+    @field_validator('region', mode='before')
+    @classmethod
+    def _validate_region(cls, value: Any) -> Regions:
+        # Make region case insensitive
+        if isinstance(value, str):
+            return Regions(value.upper())
+        else:
+            return value
 
     @property
     def domain(self) -> Domains:
