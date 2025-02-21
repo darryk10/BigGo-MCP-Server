@@ -13,6 +13,7 @@ class BaseToolResponse(BaseModel):
 class ProductSearchToolResponse(BaseToolResponse):
     product_search_result: ProductSearchAPIRet
     reason: str | None = None
+    output_rules: str | None = None
 
     @model_validator(mode='after')
     def post_init(self) -> Self:
@@ -25,6 +26,10 @@ class ProductSearchToolResponse(BaseToolResponse):
             If the problems might be related to the points listed above,
             please use the 'spec_search' tool and try again.
             """
+            return self
+
+        # TODO: output rules if result is not empty
+        # self.output_rules = """"""
 
         return self
 

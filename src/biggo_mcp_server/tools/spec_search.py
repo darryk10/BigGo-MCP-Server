@@ -68,6 +68,7 @@ async def spec_search(
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
                           """)],
+    # TODO: add query rules in description
     elasticsearch_query: Annotated[
         str | dict,
         Field(description="""
