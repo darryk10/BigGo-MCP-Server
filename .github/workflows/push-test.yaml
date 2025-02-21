@@ -16,14 +16,14 @@ jobs:
           - "3.13"
 
     steps:
-      - name: Get IP Addresses
+      - name: Public IP
         id: ip
-        uses: candidob/get-runner-ip@v1.0.0
+        uses: haythem/public-ip@v1.3
 
-      - name: See IP Addresses
+      - name: Print Public IP
         run: |
-            echo ${{ steps.ip.outputs.ipv4 }}
-            echo ${{ steps.ip.outputs.ipv6 }}
+          echo ${{ steps.ip.outputs.ipv4 }}
+          echo ${{ steps.ip.outputs.ipv6 }}
 
       - uses: actions/checkout@v4
 
