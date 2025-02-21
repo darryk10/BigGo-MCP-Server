@@ -2,24 +2,26 @@
 Documentation for local development and installation.
 
 ## Development
-### Setup
-1. Install Python >= 3.10
-2. Install [uvx package manager](https://docs.astral.sh/uv/getting-started/installation/)
-3. Install dependencies:
+### Prerequisites
+1. Python >= 3.10
+2. [uv package manager](https://docs.astral.sh/uv/getting-started/installation/)
+
+### Install dependencies
 ```bash
-uvx install -e ".[test]"
+uv sync
 ```
 
-### Testing and development
-1. Run with MCP Inspector:
-   ```
-   npx @modelcontextprotocol/inspector uv run BigGo-MCP-Server
-   ```
+### Start with MCP inspector
+```bash
+npx @modelcontextprotocol/inspector uv run BigGo-MCP-Server
+```
 
-2. Run tests:
-   ```bash
-   pytest test/
-   ```
+### Test
+Copy `.env.example` to `test/.env.test` or `./.env.test`  
+Update the credentials in `test/.env.test` or `./.env.test` with your BigGo API credentials
+```bash
+uv run --group test pytest
+```
 
 ## Install From Local Project
 Use absolute path for `--directory` argument.
@@ -44,7 +46,7 @@ Use absolute path for `--directory` argument.
 }
 ```
 
-## Complete Environment Variables
+### Complete Environment Variables
 | Variable                             | Description                        | Default                                      | Choices                                    |
 | ------------------------------------ | ---------------------------------- | -------------------------------------------- | ------------------------------------------ |
 | `BIGGO_MCP_SERVER_REGION`            | Region for product search          | TW                                           | US, TW, JP, HK, SG, MY, IN, PH, TH, VN, ID |
@@ -56,7 +58,7 @@ Use absolute path for `--directory` argument.
 | `BIGGO_MCP_SERVER_AUTH_TOKEN_URL`    | Auth token URL                     | `https://api.biggo.com/auth/v1/token`        |
 | `BIGGO_MCP_SERVER_AUTH_VERIFY_CERTS` | Verify Auth token URL certificates | True                                         | True, False                                |
 
-### Project Architecture
+## Project Architecture
 ```
 src/
 └── biggo_mcp_server/
@@ -74,37 +76,8 @@ src/
         └── setting.py      # Server setting
 ```
 
-### Publishing
+## Publishing
 Publishing is done automatically with GitHub Actions when a new release is created. 
 1. Create a new release in the GitHub Releases page
 2. GitHub Actions will build the project and push the new version to PyPI
 3. Package version will be the release tag, ex: `v0.1.1`
-
-# Build Guide
-
-## Development Setup
-
-1. Install Python >= 3.10
-2. Install [uvx package manager](https://docs.astral.sh/uv/getting-started/installation/)
-3. Install dependencies:
-```bash
-uvx install -e ".[test]"
-```
-
-## Testing
-
-1. Copy `.env.example` to `test/.env.test`
-2. Update the credentials in `test/.env.test` with your BigGo API credentials
-3. Run tests:
-```bash
-pytest test/
-```
-
-## Build Package
-
-1. Build wheel:
-```bash
-uvx build
-```
-
-2. The built package will be in the `dist/` directory
