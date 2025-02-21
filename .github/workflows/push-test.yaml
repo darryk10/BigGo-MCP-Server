@@ -30,6 +30,6 @@ jobs:
 
       - name: Run tests
         env:
-          CLIENT_ID: ${{ secrets.BIGGO_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.BIGGO_CLIENT_SECRET }}
+          BIGGO_MCP_SERVER_CLIENT_ID: ${{ secrets.BIGGO_CLIENT_ID }}
+          BIGGO_MCP_SERVER_CLIENT_SECRET: ${{ secrets.BIGGO_CLIENT_SECRET }}
         run: uv run --group test pytest

@@ -169,6 +169,7 @@ dependencies = [
 test = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "python-dotenv" },
 ]
 
 [package.metadata]
@@ -184,6 +185,7 @@ requires-dist = [
 test = [
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-asyncio", specifier = ">=0.25.3" },
+    { name = "python-dotenv", specifier = ">=1.0.0" },
 ]
 
 [[package]]
