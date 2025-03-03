@@ -8,7 +8,7 @@ from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
 
-DAYS = Literal["90", "80", "365", "730"]
+DAYS = Literal["90", 90, "80", 80, "365", 365, "730", 730]
 
 
 @dataclass(slots=True)
@@ -27,7 +27,7 @@ class PriceHistoryService:
 
     def graph_link(self, history_id: str) -> str:
         item_info = get_nindex_oid(history_id)
-        return f"https://imbot-dev.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={self._setting.graph_language}"
+        return f"https://imbot.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={self._setting.graph_language}"
 
     async def _get_price_history(self, history_id: str,
                                  days: int) -> PriceHistoryAPIRet | None:
