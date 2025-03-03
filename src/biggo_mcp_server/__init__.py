@@ -10,9 +10,12 @@ async def start():
     setting = BigGoMCPSetting()
     server = await create_server(setting)
 
-    logger.info("Starting BigGo MCP Server")
+    logger.info("Starting BigGo MCP Server. type: %s", setting.server_type)
 
-    await server.run_stdio_async()
+    if setting.server_type == "sse":
+        await server.run_sse_async()
+    else:
+        await server.run_stdio_async()
 
 
 def main():
