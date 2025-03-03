@@ -1,5 +1,4 @@
 import pytest
-from biggo_mcp_server.services.product_search import ProductSearchService
 from biggo_mcp_server.services.spec_search import SpecMappingRet, SpecSearchService
 from biggo_mcp_server.types.setting import BigGoMCPSetting
 from .helper import *
@@ -37,13 +36,3 @@ async def test_spec_search_service_search(setting: BigGoMCPSetting):
                 },
                 "size": 11
             })
-
-
-@pytest.mark.asyncio
-async def test_product_search_service(setting: BigGoMCPSetting):
-    """Make sure that 'r' link is constructed"""
-    service = ProductSearchService(setting)
-    ret = await service.search("iphone")
-    for product in ret.list:
-        assert product.url is not None
-        assert product.url.startswith(f"https://{setting.domain.value}")

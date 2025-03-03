@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 
@@ -78,6 +78,10 @@ class BigGoMCPSetting(BaseSettings):
 
     auth_token_url: str = "https://api.biggo.com/auth/v1/token"
     auth_verify_certs: bool = True
+
+    sse_port: int = 9876
+
+    server_type: Literal["stdio", "sse"] = "stdio"
 
     @field_validator('region', mode='before')
     @classmethod

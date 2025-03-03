@@ -28,8 +28,4 @@ class ProductSearchService:
                     logger.error(err_msg)
                     raise ValueError(err_msg)
 
-                data = ProductSearchAPIRet.model_validate(await resp.json())
-
-        data.construct_r_link(self._setting.domain)
-
-        return data
+                return ProductSearchAPIRet.model_validate(await resp.json())
