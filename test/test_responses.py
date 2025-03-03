@@ -26,6 +26,6 @@ def test_spec_search_resp():
 
     assert resp.reason is not None
 
-    resp = SpecSearchToolResponse(hits=[{"some": "data"}])
+    resp = SpecSearchToolResponse(hits=[{"some": "data", "_source": {}}])
 
     assert resp.reason is None

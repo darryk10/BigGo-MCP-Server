@@ -1,7 +1,10 @@
+from logging import getLogger
 from typing_extensions import Self
 from pydantic import BaseModel, model_validator
 from .api_ret.price_history import PriceHistoryAPIRet
 from .api_ret.product_search import ProductSearchAPIRet
+
+logger = getLogger(__name__)
 
 
 class BaseToolResponse(BaseModel):
@@ -87,11 +90,25 @@ class SpecSearchToolResponse(BaseToolResponse):
 
     @model_validator(mode='after')
     def post_init(self) -> Self:
+        # remove documents with status == deleted
+        cleaned_hits: list[dict] = []
+        for hit in self.hits:
+            if hit["_source"].get("status", None) == "deleted":
+                continue
+            else:
+                cleaned_hits.append(hit)
+
+        logger.debug("original hits: %s, cleaned_hits: %s", len(self.hits),
+                     len(cleaned_hits))
+
+        self.hits = cleaned_hits
+
         if len(self.hits) == 0:
             self.reason = """
 No results found. Possible reasons:
 1. You have no clue about the mapping.
 2. You have not used the 'spec_mapping' tool to get the mapping of the index.
+3. You have not filter out status == 'deleted' products in your query
 
 Do you really know what you are doing?
 You MUST think about this before you tell the user that no results are found.
@@ -107,13 +124,11 @@ It is the best tool to use before you search the index.
 
         else:
             self.display_rules = """
-Rules that must be followed when presenting this data.
-Without following the rules listed bellow, the output will become useless, you must follow the rules before responding to the user.
-All rules must be followed strictly.
-
-Here are a list of rules you must follow:
-Rule 1: Product image must be included.
+Here are a list of rules you must follow to display results:
+Rule 1: Product image must be included. url is located in each object inside 'specs.images' field
 Rule 2: Display more then one relavent product if possible.
+
+Plain text is not enough, please include images when possible
             """
 
         return self
