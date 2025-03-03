@@ -28,14 +28,17 @@ please use the 'spec_search' tool and try again.
             """
             return self
 
-        # add output rules if result is not empty
+        # add display rules if result is not empty
         else:
-            self.display_rules = """     
-Rules that must be followed when presenting this data.
-Rule 1: Product link must be included.
-Rule 4: Product link must come from the field 'purl'.
-Rule 2: Product image must be included.
-Rule 3: Display more then one relavent product if possible.
+            self.display_rules = """
+As a product researcher, you need to find the most relavent product and present them in utmost detail.
+Without following the rules listed bellow, the output will become useless, you must follow the rules before responding to the user.
+All rules must be followed strictly.
+
+Here are a list of rules you must follow:
+Rule 1: Images must be included, plain text is not enough.
+Rule 2: Product urls must be included so that the user can by the product with a simple click if possible.
+Rule 3: Display more then one relavent product if possible, having multiple choices is a good thing.
             """
 
         return self
@@ -56,8 +59,8 @@ Field explanation:
 'price_history_description': includes detailed price history info.
 'price_history_graph': includes a markdown image link used for visualizing price history.
 
-Display Rules:
-- Both 'price_history_description' and the link provided at 'price_history_graph' field must be included in the output.
+Here are a list of rules you must follow:
+Rule 1: Both 'price_history_description' and the link provided at 'price_history_graph' field must be included in the output.
     """
 
 
@@ -105,6 +108,10 @@ It is the best tool to use before you search the index.
         else:
             self.display_rules = """
 Rules that must be followed when presenting this data.
+Without following the rules listed bellow, the output will become useless, you must follow the rules before responding to the user.
+All rules must be followed strictly.
+
+Here are a list of rules you must follow:
 Rule 1: Product image must be included.
 Rule 2: Display more then one relavent product if possible.
             """
