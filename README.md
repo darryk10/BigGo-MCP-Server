@@ -70,7 +70,7 @@ For **Spec Comparison** related:
 Find me a laptop with 16GB RAM and 1TB SSD
 ```
 
-### Build
+## Build
 See [build.md](docs/build.md) for more details.
 
 ## License
