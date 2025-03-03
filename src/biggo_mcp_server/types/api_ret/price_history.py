@@ -32,16 +32,16 @@ class Statistics(BaseModel):
 class PriceHistoryAttributes(BaseModel):
     symbol: str
     currency: str
-    nindex: str
-    oid: str
+    # nindex: str
+    # oid: str
     current_price: float
     # datetime_format: str
-    price_history: List[PriceHistoryItem]
+    # price_history: List[PriceHistoryItem]
     # purl: str | None = None
     url: str | None = None
     title: str
     nindex_name: str
-    icon: str
+    # icon: str
     statistics: Statistics
     state: str
 
