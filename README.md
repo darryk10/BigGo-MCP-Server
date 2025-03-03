@@ -67,7 +67,7 @@ Show me the price history of this product: https://some-product-url
 ```
 For **Spec Comparison** related:
 ```
-Find me a phones with 16GB RAM and 1TB storage
+Find me phones with 16GB RAM and 1TB storage
 ```
 ```
 Please show me diving watches that can withstand the most water pressure
