@@ -68,31 +68,45 @@ async def spec_search(
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
                           """)],
-    # TODO: add query rules in description
     elasticsearch_query: Annotated[
         str | dict,
-        Field(description="""
-              Elasticsearch query
+        Field(
+            description="""
+              Elasticsearch query ( Elasticsearch version: 8 )
 
-              Please use the 'spec_mapping' tool to get the mapping of the index, before using this tool.
+              Rules that must be followed when using this tool:
+              Rule 1: The 'spec_mapping' tool must be used to get the mapping of the index, before using this tool.
+              Rule 2: Size must be less than or equal to 10.
+              Rule 3: Result must be sorted if possible
+              Rule 4: Must not contain documents with 'status' field as 'deleted'
 
-              Size must be less than or equal to 10.
+              All rules must be followed strictly
               """,
-              examples=[{
-                  "query": {
-                      "range": {
-                          "specs.physical_specifications.dimensions.height": {
-                              "gte": 1321,
-                              "lte": 2321
-                          }
-                      }
-                  },
-                  "size":
-                      5,
-                  "sort": [{
-                      "specs.physical_specifications.dimensions.height": "asc"
-                  }]
-              }])],
+            examples=[{
+                "query": {
+                    "bool": {
+                        "must_not": [{
+                            "match": {
+                                "status": "deleted"
+                            }
+                        }],
+                        "must": [{
+                            "range": {
+                                "specs.physical_specifications.dimensions.height":
+                                    {
+                                        "gte": 1321,
+                                        "lte": 2321
+                                    }
+                            }
+                        }]
+                    }
+                },
+                "size":
+                    5,
+                "sort": [{
+                    "specs.physical_specifications.dimensions.height": "asc"
+                }]
+            }])],
 ) -> str:
     """Product Specification Search. 
 
