@@ -74,13 +74,20 @@ async def spec_search(
             description="""
               Elasticsearch query ( Elasticsearch version: 8 )
 
-              Rules that must be followed when using this tool:
-              Rule 1: The 'spec_mapping' tool must be used to get the mapping of the index, before using this tool.
-              Rule 2: Size must be less than or equal to 10.
-              Rule 3: Result must be sorted if possible
-              Rule 4: Must not contain documents with 'status' field as 'deleted'
+              Bellow are rules that MUST be followed when using this tool.
+              All rules must be followed strictly.
+                
+              1. The 'spec_mapping' tool must be used to get the mapping of the index, before using this tool
+              2. Size must be less than or equal to 10
+              3. Result must be sorted when needed
+              4. Must not contain documents with 'status' field as 'deleted'
 
-              All rules must be followed strictly
+              When to sort:
+              - The user wants the most efficient refrigerator: sort by power consumption
+              - The user wants the smallest referegirator: sort by height
+
+              When not to sort:
+              - The user wants phones with 16GB of ram: no need to sort, just find the exact number
               """,
             examples=[{
                 "query": {

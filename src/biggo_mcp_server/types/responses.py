@@ -93,7 +93,7 @@ class SpecSearchToolResponse(BaseToolResponse):
         # remove documents with status == deleted
         cleaned_hits: list[dict] = []
         for hit in self.hits:
-            if hit.get("status", None) == "deleted":
+            if hit["_source"].get("status", None) == "deleted":
                 continue
             else:
                 cleaned_hits.append(hit)
@@ -124,13 +124,11 @@ It is the best tool to use before you search the index.
 
         else:
             self.display_rules = """
-Rules that must be followed when presenting this data.
-Without following the rules listed bellow, the output will become useless, you must follow the rules before responding to the user.
-All rules must be followed strictly.
-
-Here are a list of rules you must follow:
-Rule 1: Product image must be included.
+Here are a list of rules you must follow to display results:
+Rule 1: Product image must be included. url is located in each object inside 'specs.images' field
 Rule 2: Display more then one relavent product if possible.
+
+Plain text is not enough, please include images when possible
             """
 
         return self
