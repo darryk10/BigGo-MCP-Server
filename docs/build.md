@@ -57,6 +57,8 @@ Use absolute path for `--directory` argument.
 | `BIGGO_MCP_SERVER_ES_VERIFY_CERTS`   | Verify Elasticsearch certificates  | True                                         | True, False                                |
 | `BIGGO_MCP_SERVER_AUTH_TOKEN_URL`    | Auth token URL                     | `https://api.biggo.com/auth/v1/token`        |
 | `BIGGO_MCP_SERVER_AUTH_VERIFY_CERTS` | Verify Auth token URL certificates | True                                         | True, False                                |
+| `BIGGO_MCP_SERVER_SSE_PORT`          | Port for SSE server                | 9876                                         | Any available port number                  |
+| `BIGGO_MCP_SERVER_SERVER_TYPE`       | Server Type                        | stdio                                        | stdio, sse                                 |
 
 ## Project Architecture
 ```
