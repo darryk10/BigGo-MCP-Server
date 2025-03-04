@@ -1,6 +1,7 @@
-# 🔍 BigGo MCP Server
-[![PyPI - Version](https://img.shields.io/pypi/v/BigGo-MCP-Server?style=for-the-badge)](https://pypi.org/project/BigGo-MCP-Server/)
+# BigGo MCP Server
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/BigGo-MCP-Server?style=for-the-badge)
+[![PyPI - Version](https://img.shields.io/pypi/v/BigGo-MCP-Server?style=for-the-badge)](https://pypi.org/project/BigGo-MCP-Server/)
+![PyPI - License](https://img.shields.io/pypi/l/BigGo-MCP-Server?style=for-the-badge)
 ## Introduction
 BigGo MCP Server utilizes APIs from BigGo, a professional price comparison website.
 
