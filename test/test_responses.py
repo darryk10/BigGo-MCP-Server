@@ -14,10 +14,9 @@ def test_product_search_resp():
                 oid="123",
                 title="test",
                 price=100,
-                purl="https://www.test.com",
+                affurl="/r/some-link",
             )
         ]))
-
     assert resp.reason is None
 
 
