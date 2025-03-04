@@ -48,7 +48,7 @@ class ListItem(BaseModel):
     # is_subscribe: bool
     title: str | None = None
 
-    purl: str | None = None
+    # purl: str | None = None
     affurl: str | None = None
     url: str | None = None
 
@@ -109,6 +109,5 @@ class ProductSearchAPIRet(BaseModel):
 
     def generate_r_link(self, domain: Domains):
         for product in self.list:
-            product.url = f"https://{domain}{product.affurl}"
+            product.url = f"https://{domain.value}{product.affurl}"
             product.affurl = None
-            product.purl = None
