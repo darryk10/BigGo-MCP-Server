@@ -88,6 +88,12 @@ async def spec_search(
 
               When not to sort:
               - The user wants phones with 16GB of ram: no need to sort, just find the exact number
+
+              Spec fields are all located under the 'spec' key, remaber to add 'spec' when querying.
+              Example fields paths:
+              - specs.physical_specs.weight
+              - specs.technical_specs.water_resistance.depth
+              - specs.sensors.gyroscope
               """,
             examples=[{
                 "query": {
