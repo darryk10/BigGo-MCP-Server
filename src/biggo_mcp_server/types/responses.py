@@ -40,7 +40,7 @@ All rules must be followed strictly.
 
 Here are a list of rules you must follow:
 Rule 1: Images must be included, plain text is not enough.
-Rule 2: If no avaliable image exist, just print 'NO IMAGE' in plain text.
+Rule 2: If no avaliable image exist, ignore the image field completely, do not use a dummy link as placeholder.
 Rule 3: Product urls must be included so that the user can by the product with a simple click if possible.
 Rule 4: Display more then one relavent product if possible, having multiple choices is a good thing.
 Rule 5: Do not display history id, no one would want to see that, instead, use it with 'price_history_graph' tool to get the visualized price history.
@@ -131,7 +131,7 @@ It is the best tool to use before you search the index.
             self.display_rules = """
 Here are a list of rules you must follow to display results:
 Rule 1: Product image must be included. url is located in each object inside 'specs.images' field
-Rule 2: If no avaliable image exist, just print 'NO IMAGE' in plain text.
+Rule 2: If no avaliable image exist, ignore the image field completely, do not use a dummy link as placeholder.
 Rule 3: Display more then one relavent product if possible.
 
 Plain text is not enough, please include images when possible
