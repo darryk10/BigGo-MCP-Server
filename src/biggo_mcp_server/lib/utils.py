@@ -177,3 +177,9 @@ async def get_pid_from_url(nindex: str, url: str) -> str | None:
         return
 
     return get_product_id(ec_list[region], nindex, url)
+
+
+async def expand_url(url: str) -> str:
+    async with ClientSession() as session:
+        async with session.get(url, allow_redirects=True) as resp:
+            return str(resp.url)

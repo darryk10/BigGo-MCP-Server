@@ -3,7 +3,7 @@ from logging import getLogger
 from typing import Any, Literal
 from aiohttp import ClientSession
 from ..types.api_ret.price_history import PriceHistoryAPIRet
-from ..lib.utils import get_nindex_from_url, get_nindex_oid, get_pid_from_url
+from ..lib.utils import expand_url, get_nindex_from_url, get_nindex_oid, get_pid_from_url
 from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
@@ -62,14 +62,15 @@ class PriceHistoryService:
 
     async def history_with_url(self, url: str,
                                days: DAYS) -> PriceHistoryRet | None:
+        real_url = await expand_url(url)
 
-        if (nindex := await get_nindex_from_url(url)) is None:
-            logger.warning("nindex not found, url: %s", url)
+        if (nindex := await get_nindex_from_url(real_url)) is None:
+            logger.warning("nindex not found, url: %s", real_url)
             return
 
-        if (pid := await get_pid_from_url(nindex=nindex, url=url)) is None:
+        if (pid := await get_pid_from_url(nindex=nindex, url=real_url)) is None:
             logger.warning("product id not found, nindex: %s, url: %s", nindex,
-                           url)
+                           real_url)
             return
 
         history_id = self._get_history_id(nindex=nindex, pid=pid)
