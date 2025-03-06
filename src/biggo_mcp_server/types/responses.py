@@ -68,6 +68,7 @@ Field explanation:
 
 Here are a list of rules you must follow:
 Rule 1: Both 'price_history_description' and the link provided at 'price_history_graph' field must be included in the output.
+Rule 2: Product url must be included, it can be found in 'price_history_description'
     """
 
 
