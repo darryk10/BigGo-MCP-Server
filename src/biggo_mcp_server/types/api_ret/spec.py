@@ -25,4 +25,5 @@ class SpecMappingAPIRet(RootModel[dict[str, dict[str, Any]]]):
     root: dict[str, dict[str, Any]] = Field(default_factory=dict)
 
 
-class SpecSearchAPIRet(RootModel[list[dict[str, Any]]]): ...
+class SpecSearchAPIRet(RootModel[list[dict[str, Any]]]):
+    root: list[dict[str, Any]]

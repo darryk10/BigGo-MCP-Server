@@ -12,7 +12,7 @@ import pytest
 from unittest.mock import MagicMock
 
 from biggo_mcp_server.tools.util import get_current_region
-from biggo_mcp_server.types.setting import BigGoMCPSetting, Regions
+from biggo_mcp_server.types.setting import BigGoMCPSetting
 from .helper import *
 
 
@@ -23,7 +23,8 @@ def test_get_current_region(setting: BigGoMCPSetting):
 
     region = get_current_region(ctx)
 
-    assert isinstance(region, Regions)
+    assert isinstance(region, str)
+    assert region == setting.region.value.lower()
 
 
 @pytest.mark.asyncio

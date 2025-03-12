@@ -93,6 +93,7 @@ async def spec_search(
               2. Size must be less than or equal to 10
               3. Result must be sorted when needed
               4. Must not contain documents with 'status' field as 'deleted'
+              5. Must contain documents with 'region' field as the current region, this can be obtained by using the 'get_current_region' tool
 
               When to sort:
               - The user wants the most efficient refrigerator: sort by power consumption
@@ -120,7 +121,8 @@ async def spec_search(
                                             "lte": 2321,
                                         }
                                     }
-                                }
+                                },
+                                {"match": {"region": "tw"}},
                             ],
                         }
                     },
