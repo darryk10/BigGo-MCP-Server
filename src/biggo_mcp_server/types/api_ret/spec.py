@@ -1,3 +1,4 @@
+from typing import Any
 from pydantic import BaseModel, Field, RootModel
 
 
@@ -5,11 +6,11 @@ class SpecIndexesAPIItem(BaseModel):
     index: str
 
 
-class SpecIndexesAPIRet(RootModel):
+class SpecIndexesAPIRet(RootModel[list[SpecIndexesAPIItem]]):
     root: list[SpecIndexesAPIItem] = Field(default_factory=list)
 
 
-class SpecMappingAPIRet(RootModel):
+class SpecMappingAPIRet(RootModel[dict[str, dict[str, Any]]]):
     """
     Example:
     {
@@ -20,8 +21,8 @@ class SpecMappingAPIRet(RootModel):
         }
     }
     """
-    root: dict[str, dict] = Field(default_factory=dict)
+
+    root: dict[str, dict[str, Any]] = Field(default_factory=dict)
 
 
-class SpecSearchAPIRet(RootModel):
-    root: list[dict]
+class SpecSearchAPIRet(RootModel[list[dict[str, Any]]]): ...

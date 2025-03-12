@@ -8,7 +8,6 @@ logger = getLogger(__name__)
 
 
 class BaseToolResponse(BaseModel):
-
     def slim_dump(self) -> str:
         return self.model_dump_json(exclude_none=True)
 
@@ -18,7 +17,7 @@ class ProductSearchToolResponse(BaseToolResponse):
     reason: str | None = None
     display_rules: str | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def post_init(self) -> Self:
         if len(self.product_search_result.list) == 0:
             self.reason = """
@@ -91,7 +90,7 @@ class SpecSearchToolResponse(BaseToolResponse):
     reason: str | None = None
     display_rules: str | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def post_init(self) -> Self:
         # remove documents with status == deleted
         cleaned_hits: list[dict] = []
@@ -101,8 +100,9 @@ class SpecSearchToolResponse(BaseToolResponse):
             else:
                 cleaned_hits.append(hit)
 
-        logger.debug("original hits: %s, cleaned_hits: %s", len(self.hits),
-                     len(cleaned_hits))
+        logger.debug(
+            "original hits: %s, cleaned_hits: %s", len(self.hits), len(cleaned_hits)
+        )
 
         self.hits = cleaned_hits
 

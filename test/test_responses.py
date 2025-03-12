@@ -1,22 +1,27 @@
 from biggo_mcp_server.types.api_ret.product_search import ListItem, ProductSearchAPIRet
-from biggo_mcp_server.types.responses import ProductSearchToolResponse, SpecSearchToolResponse
+from biggo_mcp_server.types.responses import (
+    ProductSearchToolResponse,
+    SpecSearchToolResponse,
+)
 
 
 def test_product_search_resp():
-    resp = ProductSearchToolResponse(product_search_result=ProductSearchAPIRet(
-        list=[]))
+    resp = ProductSearchToolResponse(product_search_result=ProductSearchAPIRet(list=[]))
 
     assert resp.reason is not None
 
-    resp = ProductSearchToolResponse(product_search_result=ProductSearchAPIRet(
-        list=[
-            ListItem(
-                oid="123",
-                title="test",
-                price=100,
-                affurl="/r/some-link",
-            )
-        ]))
+    resp = ProductSearchToolResponse(
+        product_search_result=ProductSearchAPIRet(
+            list=[
+                ListItem(
+                    oid="123",
+                    title="test",
+                    price=100,
+                    affurl="/r/some-link",
+                )
+            ]
+        )
+    )
     assert resp.reason is None
 
 

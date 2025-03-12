@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from logging import getLogger
+from typing import Any
 from elasticsearch8 import AsyncElasticsearch
 from ..types.api_ret.spec import SpecIndexesAPIRet, SpecMappingAPIRet, SpecSearchAPIRet
 from ..lib.access_token import get_access_token
@@ -11,12 +12,11 @@ logger = getLogger(__name__)
 
 @dataclass(slots=True)
 class SpecMappingRet:
-    mappings: dict
-    example_document: dict
+    mappings: dict[str, Any]
+    example_document: dict[str, Any]
 
 
 class SpecSearchService:
-
     def __init__(self, setting: BigGoMCPSetting):
         self._setting = setting
 
@@ -47,32 +47,29 @@ class SpecSearchService:
         )
 
     async def spec_indexes(self) -> list[str]:
-        resp = await self._es_conn.cat.indices(index="spec*",
-                                               format="json",
-                                               h="index")
+        resp = await self._es_conn.cat.indices(index="spec*", format="json", h="index")
         data = SpecIndexesAPIRet.model_validate(resp.body)
         return [item.index for item in data.root]
 
     async def spec_mapping(self, index: str) -> SpecMappingRet:
         resp = await self._es_conn.indices.get_mapping(index=index)
         data = SpecMappingAPIRet.model_validate(resp.body)
-        mappings = data.root[index]['mappings']
+        mappings = data.root[index]["mappings"]
 
         resp = await self._es_conn.search(index=index, size=1)
-        example_document = resp.body['hits']['hits'][0]['_source']
+        example_document = resp.body["hits"]["hits"][0]["_source"]
 
-        return SpecMappingRet(mappings=mappings,
-                              example_document=example_document)
+        return SpecMappingRet(mappings=mappings, example_document=example_document)
 
-    async def search(self, index: str, query: dict) -> list[dict]:
-        size = query.get('size', None)
+    async def search(self, index: str, query: dict[str, Any]) -> list[dict[str, Any]]:
+        size = query.get("size", None)
         if size is not None and size > 10:
             raise ValueError("Size must be less than or equal to 10")
         else:
-            query['size'] = 5
+            query["size"] = 5
 
         logger.debug("Actual search args, index: %s, query: %s", index, query)
 
         resp = await self._es_conn.search(index=index, body=query)
-        data = SpecSearchAPIRet.model_validate(resp.body['hits']['hits'])
+        data = SpecSearchAPIRet.model_validate(resp.body["hits"]["hits"])
         return data.root

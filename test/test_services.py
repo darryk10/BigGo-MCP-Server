@@ -1,7 +1,7 @@
 import pytest
 from biggo_mcp_server.services.spec_search import SpecMappingRet, SpecSearchService
 from biggo_mcp_server.types.setting import BigGoMCPSetting
-from .helper import *
+from .helper import *  # noqa: F403
 
 
 @pytest.mark.asyncio
@@ -30,9 +30,4 @@ async def test_spec_search_service_search(setting: BigGoMCPSetting):
         assert isinstance(hits, list)
 
         with pytest.raises(ValueError):
-            await service.search(indexes[0], {
-                "query": {
-                    "match_all": {}
-                },
-                "size": 11
-            })
+            await service.search(indexes[0], {"query": {"match_all": {}}, "size": 11})

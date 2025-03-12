@@ -1,5 +1,6 @@
 from asyncio import Event, Task, create_task, CancelledError
 from logging import getLogger
+from typing import Any
 from mcp.server.fastmcp import FastMCP
 from ..types.setting import BigGoMCPSetting
 import os
@@ -9,13 +10,12 @@ logger = getLogger(__name__)
 
 
 class BigGoMCPServer(FastMCP):
-
     def __init__(self, setting: BigGoMCPSetting):
         super().__init__("BigGo MCP Server")
         self._biggo_setting = setting
         self.settings.port = setting.sse_port
         self._end_event: Event = Event()
-        self._bg: list[Task] = []
+        self._bg: list[Task[Any]] = []
 
     @property
     def biggo_setting(self) -> BigGoMCPSetting:
@@ -27,7 +27,7 @@ class BigGoMCPServer(FastMCP):
             return await self.run_stdio_async()
         except (KeyboardInterrupt, CancelledError) as ex:
             logger.warning(ex)
-        except:
+        except Exception:
             logger.exception("[stdio] somthing is wrong")
         finally:
             self._end_event.set()
@@ -38,7 +38,7 @@ class BigGoMCPServer(FastMCP):
             await super().run_sse_async()
         except (KeyboardInterrupt, CancelledError) as ex:
             logger.warning(ex)
-        except:
+        except Exception:
             logger.exception("[SSE] somthing is wrong")
         finally:
             self._end_event.set()

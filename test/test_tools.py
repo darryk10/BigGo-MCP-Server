@@ -17,7 +17,6 @@ from .helper import *
 
 
 def test_get_current_region(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -29,7 +28,6 @@ def test_get_current_region(setting: BigGoMCPSetting):
 
 @pytest.mark.asyncio
 async def test_get_history(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -45,7 +43,6 @@ async def test_get_history(setting: BigGoMCPSetting):
 
 @pytest.mark.asyncio
 async def test_get_history_with_url(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -60,7 +57,6 @@ async def test_get_history_with_url(setting: BigGoMCPSetting):
 
 @pytest.mark.asyncio
 async def test_product_search(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -74,7 +70,6 @@ async def test_product_search(setting: BigGoMCPSetting):
 
 
 def test_price_history_graph(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
