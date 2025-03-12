@@ -3,6 +3,8 @@ from logging import getLogger
 from typing import Annotated, Any
 from mcp.server.fastmcp import Context
 from pydantic import Field
+
+from biggo_mcp_server.types.setting import BigGoMCPSetting
 from ..types.responses import (
     SpecIndexesToolResponse,
     SpecMappingToolResponse,
@@ -83,7 +85,7 @@ async def spec_search(
     elasticsearch_query: Annotated[
         str | dict[str, Any],
         Field(
-            description="""
+            description=f"""
               Elasticsearch query ( Elasticsearch version: 8 )
 
               Bellow are rules that MUST be followed when using this tool.
@@ -93,7 +95,7 @@ async def spec_search(
               2. Size must be less than or equal to 10
               3. Result must be sorted when needed
               4. Must not contain documents with 'status' field as 'deleted'
-              5. Must contain documents with 'region' field as the current region, this can be obtained by using the 'get_current_region' tool
+              5. Must contain documents with 'region' as '{BigGoMCPSetting().region.value.lower()}'
 
               When to sort:
               - The user wants the most efficient refrigerator: sort by power consumption
