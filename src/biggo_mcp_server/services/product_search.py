@@ -7,7 +7,6 @@ logger = getLogger(__name__)
 
 
 class ProductSearchService:
-
     def __init__(self, setting: BigGoMCPSetting):
         self._setting = setting
 

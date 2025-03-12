@@ -64,6 +64,7 @@ class BigGoMCPSetting(BaseSettings):
     """
     BigGo MCP Server settings
     """
+
     model_config = SettingsConfigDict(env_prefix="BIGGO_MCP_SERVER_")
 
     region: Regions = Regions.TW
@@ -83,7 +84,7 @@ class BigGoMCPSetting(BaseSettings):
 
     server_type: Literal["stdio", "sse"] = "stdio"
 
-    @field_validator('region', mode='before')
+    @field_validator("region", mode="before")
     @classmethod
     def _validate_region(cls, value: Any) -> Regions:
         # Make region case insensitive

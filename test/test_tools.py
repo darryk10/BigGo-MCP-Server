@@ -12,24 +12,23 @@ import pytest
 from unittest.mock import MagicMock
 
 from biggo_mcp_server.tools.util import get_current_region
-from biggo_mcp_server.types.setting import BigGoMCPSetting, Regions
+from biggo_mcp_server.types.setting import BigGoMCPSetting
 from .helper import *
 
 
 def test_get_current_region(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
 
     region = get_current_region(ctx)
 
-    assert isinstance(region, Regions)
+    assert isinstance(region, str)
+    assert region == setting.region.value.lower()
 
 
 @pytest.mark.asyncio
 async def test_get_history(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -45,7 +44,6 @@ async def test_get_history(setting: BigGoMCPSetting):
 
 @pytest.mark.asyncio
 async def test_get_history_with_url(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -60,7 +58,6 @@ async def test_get_history_with_url(setting: BigGoMCPSetting):
 
 @pytest.mark.asyncio
 async def test_product_search(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting
@@ -74,7 +71,6 @@ async def test_product_search(setting: BigGoMCPSetting):
 
 
 def test_price_history_graph(setting: BigGoMCPSetting):
-
     ctx = MagicMock()
     ctx.fastmcp = MagicMock()
     ctx.fastmcp.biggo_setting = setting

@@ -23,15 +23,15 @@ async def get_access_token(
     authorization = base64.b64encode(credentials).decode()
     headers = {
         "Authorization": f"Basic {authorization}",
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
     }
 
     async with ClientSession() as session:
         async with session.post(
-                url=endpoint,
-                headers=headers,
-                params=params,
-                ssl=ssl,
+            url=endpoint,
+            headers=headers,
+            params=params,
+            ssl=ssl,
         ) as resp:
             if resp.status >= 400:
                 err_msg = f"get access token error, {await resp.text()}"

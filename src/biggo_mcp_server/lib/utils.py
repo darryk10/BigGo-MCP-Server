@@ -4,6 +4,8 @@ import re
 from typing import Any
 from urllib.parse import quote_plus, urlparse, parse_qs
 from mcp.server.fastmcp import Context
+
+from ..lib.server import BigGoMCPServer
 from ..types.setting import BigGoMCPSetting
 from ..types.api_ret.ec_list import EcListAPIData, EcListAPIRet, EcListPattern
 from ..types.api_ret.ninde_from_url import NindexFromUrlAPIRet
@@ -41,21 +43,19 @@ def get_query_variable(url: str, field: str) -> str | None:
         return None
 
 
-def get_url_match(url: str, regex: str) -> re.Match | None:
+def get_url_match(url: str, regex: str) -> re.Match[str] | None:
     return re.search(regex, url)
 
 
 @dataclass(slots=True)
 class GetIdWithRegexpRet:
-    match: re.Match | None
+    match: re.Match[str] | None
     pid: str | None
 
 
 def get_id_with_regexp(
-        url: str,
-        regex: str,
-        template: str = "%1",
-        config: EcListPattern | None = None) -> GetIdWithRegexpRet:
+    url: str, regex: str, template: str = "%1", config: EcListPattern | None = None
+) -> GetIdWithRegexpRet:
     match = get_url_match(url, regex)
     pid = None
 
@@ -71,8 +71,13 @@ def get_id_with_regexp(
                 pid = pid.replace("%1", match.group(1))
 
     # Padding
-    if (config and config.len and isinstance(pid, str) and "%p" in pid and
-            config.len > len(pid)):
+    if (
+        config
+        and config.len
+        and isinstance(pid, str)
+        and "%p" in pid
+        and config.len > len(pid)
+    ):
         padding_length = config.len - (len(pid) - 2)
         padding = config.pad * padding_length
         pid = pid.replace("%p", padding)
@@ -98,18 +103,15 @@ def parse_url(url: str, nindex: str, config: EcListPattern) -> str | None:
 
         tmp: list[GetIdWithRegexpRet] = []
         for idx, re_pattern in enumerate(regex):
-            template_to_use = template[idx] if idx < len(
-                template) else template[0]
-            result = get_id_with_regexp(url, re_pattern, template_to_use,
-                                        config)
+            template_to_use = template[idx] if idx < len(template) else template[0]
+            result = get_id_with_regexp(url, re_pattern, template_to_use, config)
             if result.pid:
                 tmp.append(result)
 
         if len(tmp) > 0:
             if tmp[0].match:
                 match = [
-                    tmp[0].match.group(i)
-                    for i in range(len(tmp[0].match.groups()) + 1)
+                    tmp[0].match.group(i) for i in range(len(tmp[0].match.groups()) + 1)
                 ]
             pid = tmp[0].pid
 
@@ -132,16 +134,17 @@ def parse_url(url: str, nindex: str, config: EcListPattern) -> str | None:
     return pid
 
 
-def get_product_id(ec_list: dict[str, EcListPattern], nindex: str,
-                   url: str) -> str | None:
+def get_product_id(
+    ec_list: dict[str, EcListPattern], nindex: str, url: str
+) -> str | None:
     pid: Any = ""
 
     if nindex in ec_list:
         current = ec_list[nindex]
         pid = parse_url(url, nindex, current)
 
-    if isinstance(pid, dict) and 'pid' in pid:
-        return pid['pid']
+    if isinstance(pid, dict) and "pid" in pid:
+        return pid["pid"]  # type: ignore
     elif isinstance(pid, str):
         return pid
     else:
@@ -172,8 +175,7 @@ async def get_pid_from_url(nindex: str, url: str) -> str | None:
 
     region = nindex.split("_")[0]
     if region not in ec_list:
-        logger.warning("region not in ec list. region: %s, nindex: %s", region,
-                       nindex)
+        logger.warning("region not in ec list. region: %s, nindex: %s", region, nindex)
         return
 
     return get_product_id(ec_list[region], nindex, url)

@@ -3,7 +3,12 @@ from logging import getLogger
 from typing import Any, Literal
 from aiohttp import ClientSession
 from ..types.api_ret.price_history import PriceHistoryAPIRet
-from ..lib.utils import expand_url, get_nindex_from_url, get_nindex_oid, get_pid_from_url
+from ..lib.utils import (
+    expand_url,
+    get_nindex_from_url,
+    get_nindex_oid,
+    get_pid_from_url,
+)
 from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
@@ -18,7 +23,6 @@ class PriceHistoryRet:
 
 
 class PriceHistoryService:
-
     def __init__(self, setting: BigGoMCPSetting):
         self._setting = setting
 
@@ -29,8 +33,9 @@ class PriceHistoryService:
         item_info = get_nindex_oid(history_id)
         return f"https://imbot.biggo.dev/chart?nindex={item_info.nindex}&oid={item_info.oid}&lang={self._setting.graph_language.value}"
 
-    async def _get_price_history(self, history_id: str,
-                                 days: int) -> PriceHistoryAPIRet | None:
+    async def _get_price_history(
+        self, history_id: str, days: int
+    ) -> PriceHistoryAPIRet | None:
         url = "https://extension.biggo.com/api/product_price_history.php"
         body = {"item": [history_id], "days": days}
 
@@ -43,7 +48,7 @@ class PriceHistoryService:
                     logger.error(err_msg)
                     raise ValueError(err_msg)
 
-                if (data := await resp.json()).get("result") == False:
+                if (data := await resp.json()).get("result") is False:
                     return None
                 else:
                     return PriceHistoryAPIRet.model_validate(data)
@@ -60,8 +65,7 @@ class PriceHistoryService:
             url = self.graph_link(history_id)
             return PriceHistoryRet(description=description, graph_link=url)
 
-    async def history_with_url(self, url: str,
-                               days: DAYS) -> PriceHistoryRet | None:
+    async def history_with_url(self, url: str, days: DAYS) -> PriceHistoryRet | None:
         real_url = await expand_url(url)
 
         if (nindex := await get_nindex_from_url(real_url)) is None:
@@ -69,16 +73,20 @@ class PriceHistoryService:
             return
 
         if (pid := await get_pid_from_url(nindex=nindex, url=real_url)) is None:
-            logger.warning("product id not found, nindex: %s, url: %s", nindex,
-                           real_url)
+            logger.warning(
+                "product id not found, nindex: %s, url: %s", nindex, real_url
+            )
             return
 
         history_id = self._get_history_id(nindex=nindex, pid=pid)
-        resp = await self._get_price_history(history_id=history_id,
-                                             days=int(days))
+        resp = await self._get_price_history(history_id=history_id, days=int(days))
 
         if resp is None and nindex in ["tw_mall_shopeemall", "tw_bid_shopee"]:
-            nindex = "tw_mall_shopeemall" if nindex == "tw_bid_shopee" else "tw_mall_shopeemall"
+            nindex = (
+                "tw_mall_shopeemall"
+                if nindex == "tw_bid_shopee"
+                else "tw_mall_shopeemall"
+            )
             history_id = self._get_history_id(nindex=nindex, pid=pid)
             resp = await self._get_price_history(
                 history_id=history_id,

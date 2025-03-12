@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from .common import BigGoAPIRet
 
@@ -19,8 +19,9 @@ class EcListPattern(BaseModel):
     pad: Any = ""
 
 
-EcListRegion = Literal["tw", "thai", "jp", "hk", "id", "my", "ph", "sg", "us",
-                       "vn"] | str
+EcListRegion = (
+    Literal["tw", "thai", "jp", "hk", "id", "my", "ph", "sg", "us", "vn"] | str
+)
 EcListAPIData = dict[EcListRegion, dict[str, EcListPattern]]
 
 

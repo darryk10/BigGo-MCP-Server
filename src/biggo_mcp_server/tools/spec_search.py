@@ -1,9 +1,13 @@
 import json
 from logging import getLogger
-from typing import Annotated
+from typing import Annotated, Any
 from mcp.server.fastmcp import Context
 from pydantic import Field
-from ..types.responses import SpecIndexesToolResponse, SpecMappingToolResponse, SpecSearchToolResponse
+from ..types.responses import (
+    SpecIndexesToolResponse,
+    SpecMappingToolResponse,
+    SpecSearchToolResponse,
+)
 from ..lib.utils import get_setting
 from ..services.spec_search import SpecSearchService
 
@@ -27,17 +31,21 @@ async def spec_indexes(
 
 async def spec_mapping(
     ctx: Context,
-    index: Annotated[str,
-                     Field(description="""
+    index: Annotated[
+        str,
+        Field(
+            description="""
                           Elasticsearch index
 
                           Steps to obtain this argument.
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
-                          """)],
+                          """
+        ),
+    ],
 ) -> Annotated[
-        str,
-        Field(description="Elasticsearch mappings plus an example document")]:
+    str, Field(description="Elasticsearch mappings plus an example document")
+]:
     """Elasticsearch Mapping For Product Specification.
 
     Use this tool after you have the index, and need to know the mapping in order to query the index.
@@ -54,22 +62,26 @@ async def spec_mapping(
             f"You must know the available indexes before using this tool. Error: {e}"
         )
     return SpecMappingToolResponse(
-        mappings=mapping.mappings,
-        example_document=mapping.example_document).slim_dump()
+        mappings=mapping.mappings, example_document=mapping.example_document
+    ).slim_dump()
 
 
 async def spec_search(
     ctx: Context,
-    index: Annotated[str,
-                     Field(description="""
+    index: Annotated[
+        str,
+        Field(
+            description="""
                           Elasticsearch index
 
                           Steps to obtain this argument.
                           1. Use 'spec_indexes' tool to get the list of indexes
                           2. Choose the most relevant index
-                          """)],
+                          """
+        ),
+    ],
     elasticsearch_query: Annotated[
-        str | dict,
+        str | dict[str, Any],
         Field(
             description="""
               Elasticsearch query ( Elasticsearch version: 8 )
@@ -81,6 +93,7 @@ async def spec_search(
               2. Size must be less than or equal to 10
               3. Result must be sorted when needed
               4. Must not contain documents with 'status' field as 'deleted'
+              5. Must contain documents with 'region' field as the current region, this can be obtained by using the 'get_current_region' tool
 
               When to sort:
               - The user wants the most efficient refrigerator: sort by power consumption
@@ -95,33 +108,34 @@ async def spec_search(
               - specs.technical_specs.water_resistance.depth
               - specs.sensors.gyroscope
               """,
-            examples=[{
-                "query": {
-                    "bool": {
-                        "must_not": [{
-                            "match": {
-                                "status": "deleted"
-                            }
-                        }],
-                        "must": [{
-                            "range": {
-                                "specs.physical_specifications.dimensions.height":
-                                    {
-                                        "gte": 1321,
-                                        "lte": 2321
+            examples=[
+                {
+                    "query": {
+                        "bool": {
+                            "must_not": [{"match": {"status": "deleted"}}],
+                            "must": [
+                                {
+                                    "range": {
+                                        "specs.physical_specifications.dimensions.height": {
+                                            "gte": 1321,
+                                            "lte": 2321,
+                                        }
                                     }
-                            }
-                        }]
-                    }
-                },
-                "size":
-                    5,
-                "sort": [{
-                    "specs.physical_specifications.dimensions.height": "asc"
-                }]
-            }])],
+                                },
+                                {"match": {"region": "tw"}},
+                            ],
+                        }
+                    },
+                    "size": 5,
+                    "sort": [
+                        {"specs.physical_specifications.dimensions.height": "asc"}
+                    ],
+                }
+            ],
+        ),
+    ],
 ) -> str:
-    """Product Specification Search. 
+    """Product Specification Search.
 
     Index mapping must be aquired before using this tool.
     Use 'spec_mapping' tool to get the mapping of the index.
@@ -133,7 +147,7 @@ async def spec_search(
     try:
         async with service.session():
             if isinstance(elasticsearch_query, str):
-                query: dict = json.loads(elasticsearch_query)
+                query: dict[str, Any] = json.loads(elasticsearch_query)
             else:
                 query = elasticsearch_query
             hits = await service.search(index, query)
