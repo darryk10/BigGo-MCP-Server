@@ -48,7 +48,7 @@ class PriceHistoryService:
                     logger.error(err_msg)
                     raise ValueError(err_msg)
 
-                if not (data := await resp.json()).get("result"):
+                if (data := await resp.json()).get("result") is False:
                     return None
                 else:
                     return PriceHistoryAPIRet.model_validate(data)
