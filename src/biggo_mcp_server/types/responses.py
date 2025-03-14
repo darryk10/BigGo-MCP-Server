@@ -108,29 +108,18 @@ class SpecSearchToolResponse(BaseToolResponse):
 
         if len(self.hits) == 0:
             self.reason = """
-No results found. Possible reasons:
-1. You have no clue about the mapping.
-2. You have not used the 'spec_mapping' tool to get the mapping of the index.
-3. You have not filter out status == 'deleted' products in your query
-
-Do you really know what you are doing?
-You MUST think about this before you tell the user that no results are found.
-You MUST be ABSOLUTELY sure that you understand the mapping of the index, and that the
-search criteria is correct, and that there is TRULY no result.
-
-If you have any doubt, please use the 'spec_mapping' tool to get the mapping of the index,
-and try again.
-The 'spec_mapping' tool will give you the mapping of the index, and an example document.
-'spec_mapping' is the only way to understand the mapping of the index.
-It is the best tool to use before you search the index.
+No results found. Try:
+1. For complex product searches → Use 'spec_search' tool
+2. For specification-related queries → Use 'spec_search' tool
             """
 
         else:
             self.display_rules = """
-Here are a list of rules you must follow to display results:
-Rule 1: Product image must be included when available, url is located in each object inside 'specs.images' field.
-Rule 2: If no avaliable image exist, ignore the image field completely, don't even write anything image related for that single product.
-Rule 3: Display more then one relavent product if possible.
+CRITICAL DISPLAY RULES:
+1. Include product images (from 'specs.images' field) when available; omit image mentions if unavailable
+2. Always include clickable product URLs
+3. Show multiple relevant products when possible
+4. Never show raw history_id; use 'price_history_graph' tool for price history visualization
             """
 
         return self

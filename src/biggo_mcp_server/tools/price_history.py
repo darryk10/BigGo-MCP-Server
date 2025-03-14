@@ -15,11 +15,7 @@ def price_history_graph(
         str,
         Field(
             description="""
-              Product History ID
-              Here are a few steps to obtain this argument.
-              1. Use 'product_search' tool to retrive a list of products
-              2. Find the most relevant product.
-              3. The product should have a field called 'history_id', use it as the value for this argument
+              Product History ID - Get from 'history_id' field in product_search results
               """,
             examples=["tw_pmall_rakuten-nwdsl_6MONJRBOO", "tw_pec_senao-1363332"],
         ),
@@ -44,11 +40,7 @@ async def price_history_with_history_id(
         str,
         Field(
             description="""
-              Product History ID
-              Here are a few steps to obtain this argument.
-              1. Use 'product_search' tool to retrive a list of products
-              2. Find the most relevant product.
-              3. The product should have a field called 'history_id', use it as the value for this argument
+              Product History ID - Get from 'history_id' field in product_search results
               """,
             examples=["tw_pmall_rakuten-nwdsl_6MONJRBOO", "tw_pec_senao-1363332"],
         ),

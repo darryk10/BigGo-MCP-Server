@@ -86,29 +86,21 @@ async def spec_search(
         str | dict[str, Any],
         Field(
             description=f"""
-              Elasticsearch query ( Elasticsearch version: 8 )
+              Elasticsearch(ES8) query tool
 
-              Bellow are rules that MUST be followed when using this tool.
-              All rules must be followed strictly.
-                
-              1. The 'spec_mapping' tool must be used to get the mapping of the index, before using this tool
-              2. Size must be less than or equal to 10
-              3. Result must be sorted when needed
-              4. Must not contain documents with 'status' field as 'deleted'
-              5. Must contain documents with 'region' as '{BigGoMCPSetting().region.value.lower()}'
+              Required steps:
+              1. First use 'spec_mapping' to get index mapping
+              2. Result limit ≤ 10
+              3. Must exclude documents with 'status'='deleted'
+              4. Must include documents with 'region'='{BigGoMCPSetting().region.value.lower()}'
 
               When to sort:
-              - The user wants the most efficient refrigerator: sort by power consumption
-              - The user wants the smallest referegirator: sort by height
+              - For optimal performance (e.g., most energy-efficient refrigerator) → sort by power consumption
+              - For specific attribute extremes (e.g., smallest refrigerator) → sort by height
+              - When only querying products matching specific parameters (e.g., phones with 16GB RAM) → no sorting needed
 
-              When not to sort:
-              - The user wants phones with 16GB of ram: no need to sort, just find the exact number
-
-              Spec fields are all located under the 'spec' key, remaber to add 'spec' when querying.
-              Example fields paths:
-              - specs.physical_specs.weight
-              - specs.technical_specs.water_resistance.depth
-              - specs.sensors.gyroscope
+              Note: All spec fields are under the 'spec' key, must add 'spec' prefix when querying
+              Example paths: specs.physical_specs.weight, specs.technical_specs.water_resistance.depth
               """,
             examples=[
                 {
