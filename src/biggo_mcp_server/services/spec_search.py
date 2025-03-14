@@ -2,9 +2,11 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from logging import getLogger
 from typing import Any
+
 from elasticsearch8 import AsyncElasticsearch
-from ..types.api_ret.spec import SpecIndexesAPIRet, SpecMappingAPIRet, SpecSearchAPIRet
+
 from ..lib.access_token import get_access_token
+from ..types.api_ret.spec import SpecIndexesAPIRet, SpecMappingAPIRet, SpecSearchAPIRet
 from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
@@ -63,10 +65,10 @@ class SpecSearchService:
 
     async def search(self, index: str, query: dict[str, Any]) -> list[dict[str, Any]]:
         size = query.get("size", None)
-        if size is not None and size > 10:
+        if size is None:
+            query["size"] = 10
+        elif size > 10:
             raise ValueError("Size must be less than or equal to 10")
-        else:
-            query["size"] = 5
 
         logger.debug("Actual search args, index: %s, query: %s", index, query)
 

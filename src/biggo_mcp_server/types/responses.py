@@ -1,6 +1,8 @@
 from logging import getLogger
-from typing_extensions import Self
+
 from pydantic import BaseModel, model_validator
+from typing_extensions import Self
+
 from .api_ret.price_history import PriceHistoryAPIRet
 from .api_ret.product_search import ProductSearchAPIRet
 
@@ -115,11 +117,7 @@ No results found. Try:
 
         else:
             self.display_rules = """
-CRITICAL DISPLAY RULES:
-1. Include product images (from 'specs.images' field) when available; omit image mentions if unavailable
-2. Always include clickable product URLs
-3. Show multiple relevant products when possible
-4. Never show raw history_id; use 'price_history_graph' tool for price history visualization
+Display product images (from 'specs.images.url' field) when available; omit image mentions if unavailable
             """
 
         return self
