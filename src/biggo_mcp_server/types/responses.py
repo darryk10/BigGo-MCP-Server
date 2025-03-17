@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import Any
 
 from pydantic import BaseModel, model_validator
 from typing_extensions import Self
@@ -76,8 +77,8 @@ class SpecIndexesToolResponse(BaseToolResponse):
 
 
 class SpecMappingToolResponse(BaseToolResponse):
-    mappings: dict
-    example_document: dict
+    mappings: dict[str, dict[str, Any]]
+    example_document: dict[str, dict[str, Any]]
     note: str = """
 Specifications are under the 'specs' field
 Example fields paths:
@@ -88,14 +89,14 @@ Example fields paths:
 
 
 class SpecSearchToolResponse(BaseToolResponse):
-    hits: list[dict]
+    hits: list[dict[str, Any]]
     reason: str | None = None
     display_rules: str | None = None
 
     @model_validator(mode="after")
     def post_init(self) -> Self:
         # remove documents with status == deleted
-        cleaned_hits: list[dict] = []
+        cleaned_hits: list[dict[str, Any]] = []
         for hit in self.hits:
             if hit["_source"].get("status", None) == "deleted":
                 continue

@@ -45,7 +45,9 @@ async def price_history_with_history_id(
             examples=["tw_pmall_rakuten-nwdsl_6MONJRBOO", "tw_pec_senao-1363332"],
         ),
     ],
-    days: Annotated[DAYS, Field(description="History range")],
+    days: Annotated[
+        DAYS, Field(description="History range, must be one of 90, 80, 365, 730")
+    ] = "90",
 ) -> str:
     """Product Price History With History ID"""
 
@@ -67,8 +69,8 @@ async def price_history_with_history_id(
 
 async def price_history_with_url(
     ctx: Context,
-    days: Annotated[DAYS, Field(description="History range")],
     url: Annotated[str, Field(description="Product URL")],
+    days: Annotated[DAYS, Field(description="History range")] = "90",
 ) -> str:
     """Product Price History With URL"""
 
