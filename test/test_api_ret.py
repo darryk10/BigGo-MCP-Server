@@ -14,7 +14,7 @@ def test_product_search_api_ret():
         ]
     )
 
-    assert data.list[0].url is None
+    assert data.list[0].url == ""
     data.generate_r_link(Domains.TW)
 
     assert data.list[0].url == "https://biggo.com.tw/r/some-link"
