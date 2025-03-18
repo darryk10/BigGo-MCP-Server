@@ -10,7 +10,7 @@ BigGo MCP Server utilizes APIs from BigGo, a professional price comparison websi
 
 - **Product Discovery**: Search for products across multiple e-commerce platforms (Amazon, Aliexpress, Ebay, Taobao, Shopee ... etc.)
 - **Price History Tracking**: Track product price history by supplying product url or related terms.
-- **Spec Comparison**: Compare and find products based on their specifications, from basic infos to more complex technical specs.
+- **Spec Comparison [Disabled on versions >= v0.1.28]**: Compare and find products based on their specifications, from basic infos to more complex technical specs.
 
 
 ## Installation
