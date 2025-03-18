@@ -45,7 +45,6 @@ Rule 1: Product image must be included when available, url is located in each ob
 Rule 2: If no avaliable image exist, ignore the image field completely, don't even write anything image related for that single product.
 Rule 3: Product urls must be included so that the user can by the product with a simple click if possible.
 Rule 4: Display more then one relavent product if possible, having multiple choices is a good thing.
-Rule 5: Do not display history id, no one would want to see that, instead, use it with 'price_history_graph' tool to get the visualized price history.
             """
 
         return self

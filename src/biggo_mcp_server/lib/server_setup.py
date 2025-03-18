@@ -1,13 +1,6 @@
 from logging import getLogger
 
-from ..tools.spec_search import (
-    spec_indexes,
-    spec_mapping,
-    spec_search,
-)
 from ..tools.price_history import (
-    price_history_graph,
-    price_history_with_history_id,
     price_history_with_url,
 )
 from ..tools.product_search import product_search
@@ -26,13 +19,13 @@ async def create_server(setting: BigGoMCPSetting) -> BigGoMCPServer:
     server.add_tool(product_search)
 
     # Price History
-    server.add_tool(price_history_graph)
-    server.add_tool(price_history_with_history_id)
+    # server.add_tool(price_history_graph)
+    # server.add_tool(price_history_with_history_id)
     server.add_tool(price_history_with_url)
 
     # Spec Search
-    server.add_tool(spec_indexes)
-    server.add_tool(spec_mapping)
-    server.add_tool(spec_search)
+    # server.add_tool(spec_indexes)
+    # server.add_tool(spec_mapping)
+    # server.add_tool(spec_search)
 
     return server
