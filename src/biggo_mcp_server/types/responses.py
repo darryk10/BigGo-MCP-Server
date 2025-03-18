@@ -12,7 +12,7 @@ logger = getLogger(__name__)
 
 class BaseToolResponse(BaseModel):
     def slim_dump(self) -> str:
-        return self.model_dump_json(exclude_none=True)
+        return self.model_dump_json(exclude_none=True, exclude_defaults=True)
 
 
 class ProductSearchToolResponse(BaseToolResponse):

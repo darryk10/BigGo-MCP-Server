@@ -8,36 +8,36 @@ from ..setting import Domains
 
 
 class Multiple(BaseModel):
-    min_price: float | None = None
-    max_price: float | None = None
-    model_id: str | None = None
-    title: str | None = None
-    current_price: float | None = None
+    min_price: float = 0
+    max_price: float = 0
+    model_id: str = ""
+    title: str = ""
+    current_price: float = 0
 
 
 class Store(BaseModel):
     # image: str
     # link: str
-    name: str | None = None
-    discount_info: str | None = None
+    name: str = ""
+    discount_info: str = ""
     # rate_desc: str | None = None
     # is_cashback: bool
 
 
 class Shop(BaseModel):
-    name: str | None = None
-    username: str | None = None
-    uid: str | None = None
-    location: str | None = None
+    name: str = ""
+    username: str = ""
+    uid: str = ""
+    location: str = ""
     # seller_credit: int | None = None
 
 
 class ListItem(BaseModel):
-    nindex: str | None = None
-    oid: str | None = None
+    nindex: str = ""
+    oid: str = ""
     # subscribe_id: Any
-    history_id: str | None = None
-    item_id: str | None = None
+    history_id: str = ""
+    item_id: str = ""
     # is_ad: bool
     # is_group: bool
     # is_offline: bool
@@ -46,36 +46,36 @@ class ListItem(BaseModel):
     # is_adult: bool
     # is_multiple_product: bool
     # is_subscribe: bool
-    title: str | None = None
+    title: str = ""
 
     # purl: str | None = None
-    affurl: str | None = None
-    url: str | None = None
+    affurl: str | None = ""
+    url: str = ""
 
-    image: str | None = None
+    image: str = ""
     # gallery_count: int
     # origin_image: str
-    cata: List | None = None
-    symbol: str | None = None
-    currency: str | None = None
-    multiple: Multiple | None = None
-    price: float | None = None
+    cata: List[Any] = Field(default_factory=list)
+    symbol: str = ""
+    currency: str = ""
+    multiple: Multiple = Field(default_factory=Multiple)
+    price: float = 0
     price_range_min: Any | None = None
     price_range_max: Any | None = None
     count_result_store: Any | None = None
     count_result_product: Any | None = None
-    store: Store | None = None
+    store: Store = Field(default_factory=Store)
     has_shop: bool | None = None
-    shop: Shop | None = None
-    price_diff_real: float | None = None
-    product_nindex_price: List | None = None
+    shop: Shop = Field(default_factory=Shop)
+    price_diff_real: float = 0
+    product_nindex_price: List[Any] = Field(default_factory=list)
     # subscribe_tags: List
     # subscribe_time: Any
 
 
 class BiggoCItem(BaseModel):
-    key: str | None = None
-    value: str | None = None
+    key: str = ""
+    value: str = ""
     time: int | None = None
 
 
@@ -104,8 +104,8 @@ class ProductSearchAPIRet(BaseModel):
     # recommend_group: List
     list: List[ListItem] = Field(default_factory=list)
     # biggo_c: List[BiggoCItem]
-    low_price: float | None = None
-    high_price: float | None = None
+    low_price: float = 0
+    high_price: float = 0
 
     def generate_r_link(self, domain: Domains):
         for product in self.list:
