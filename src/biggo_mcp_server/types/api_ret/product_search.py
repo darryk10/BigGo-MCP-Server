@@ -111,3 +111,20 @@ class ProductSearchAPIRet(BaseModel):
         for product in self.list:
             product.url = f"https://{domain.value}{product.affurl}"
             product.affurl = None
+
+    def get_all_urls(self) -> set[str]:
+        product_urls = {product.url for product in self.list}
+        image_urls = {product.image for product in self.list}
+        return product_urls | image_urls
+
+    def replace_urls(self, url_map: dict[str, str]):
+        """Replace urls in the list with the new urls
+
+        Args:
+            url_map (dict[str, str]): The map of old urls to new urls
+        """
+        for product in self.list:
+            if product.url in url_map:
+                product.url = url_map[product.url]
+            if product.image in url_map:
+                product.image = url_map[product.image]

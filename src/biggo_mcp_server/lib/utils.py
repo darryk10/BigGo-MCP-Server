@@ -3,6 +3,7 @@ from logging import getLogger
 import re
 from typing import Any
 from urllib.parse import quote_plus, urlparse, parse_qs
+from httpx import URL
 from mcp.server.fastmcp import Context
 
 from ..lib.server import BigGoMCPServer
@@ -10,6 +11,7 @@ from ..types.setting import BigGoMCPSetting
 from ..types.api_ret.ec_list import EcListAPIData, EcListAPIRet, EcListPattern
 from ..types.api_ret.ninde_from_url import NindexFromUrlAPIRet
 from aiohttp import ClientSession
+from ..types.api_ret.short_link import ShortLinkRet
 
 logger = getLogger(__name__)
 
@@ -185,3 +187,15 @@ async def expand_url(url: str) -> str:
     async with ClientSession() as session:
         async with session.get(url, allow_redirects=True) as resp:
             return str(resp.url)
+
+
+async def generate_short_url(urls: list[str], endpoint: str) -> dict[str, str]:
+    async with ClientSession() as session:
+        async with session.post(endpoint, json={"urls": urls}) as resp:
+            data = ShortLinkRet.model_validate(await resp.json())
+
+    url = URL(endpoint)
+    result: dict[str, str] = {}
+    for original_url, short_id in data.results.items():
+        result[original_url] = f"{url.scheme}://{url.host}/{short_id}"
+    return result

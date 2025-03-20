@@ -42,3 +42,11 @@ class PriceHistoryAttributes(BaseModel):
 
 class PriceHistoryAPIRet(RootModel[dict[str, PriceHistoryAttributes]]):
     root: dict[str, PriceHistoryAttributes]
+
+    def get_all_urls(self) -> set[str]:
+        return {item.url for item in self.root.values() if item.url is not None}
+
+    def replace_urls(self, url_map: dict[str, str]):
+        for item in self.root.values():
+            if item.url is not None and item.url in url_map:
+                item.url = url_map[item.url]

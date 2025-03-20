@@ -84,6 +84,8 @@ class BigGoMCPSetting(BaseSettings):
 
     server_type: Literal["stdio", "sse"] = "stdio"
 
+    short_url_endpoint: str | None = None
+
     @field_validator("region", mode="before")
     @classmethod
     def _validate_region(cls, value: Any) -> Regions:
