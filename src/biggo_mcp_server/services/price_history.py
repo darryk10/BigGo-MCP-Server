@@ -5,6 +5,7 @@ from aiohttp import ClientSession
 from ..types.api_ret.price_history import PriceHistoryAPIRet
 from ..lib.utils import (
     expand_url,
+    generate_short_url,
     get_nindex_from_url,
     get_nindex_oid,
     get_pid_from_url,
@@ -63,6 +64,16 @@ class PriceHistoryService:
             return None
         else:
             url = self.graph_link(history_id)
+
+            if self._setting.short_url_endpoint is not None:
+                all_urls = description.get_all_urls()
+                all_urls.add(url)
+                url_map = await generate_short_url(
+                    list(all_urls), self._setting.short_url_endpoint
+                )
+                description.replace_urls(url_map)
+                url = url_map.get(url, url)
+
             return PriceHistoryRet(description=description, graph_link=url)
 
     async def history_with_url(self, url: str, days: DAYS) -> PriceHistoryRet | None:
@@ -95,6 +106,17 @@ class PriceHistoryService:
 
         if resp is not None:
             graph_link = self.graph_link(history_id)
+
+            # replace urls with short urls
+            if self._setting.short_url_endpoint is not None:
+                all_urls = resp.get_all_urls()
+                all_urls.add(graph_link)
+                url_map = await generate_short_url(
+                    list(all_urls), self._setting.short_url_endpoint
+                )
+                resp.replace_urls(url_map)
+                graph_link = url_map.get(graph_link, graph_link)
+
             return PriceHistoryRet(description=resp, graph_link=graph_link)
         else:
             return None
