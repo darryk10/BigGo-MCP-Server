@@ -23,6 +23,12 @@ Update the credentials in `test/.env.test` or `./.env.test` with your BigGo API 
 uv run --group test pytest
 ```
 
+### Use the Alive tool
+Sends a request to check if the SSE server is alive
+```bash
+uvx BigGo-MCP-Server-Alive-Checker --from BigGo-MCP-Server
+```
+
 ## Install From Local Project
 Use absolute path for `--directory` argument.
 ```json

@@ -160,6 +160,7 @@ source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
     { name = "async-lru" },
+    { name = "async-timeout" },
     { name = "elasticsearch8", extra = ["async"] },
     { name = "mcp", extra = ["cli"] },
     { name = "typing-extensions" },
@@ -176,6 +177,7 @@ test = [
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.11.11" },
     { name = "async-lru", specifier = ">=2.0.4" },
+    { name = "async-timeout", specifier = ">=5.0.1" },
     { name = "elasticsearch8", extras = ["async"], specifier = ">=8.17.1" },
     { name = "mcp", extras = ["cli"], specifier = ">=1.2.1" },
     { name = "typing-extensions", specifier = ">=4.12.2" },
