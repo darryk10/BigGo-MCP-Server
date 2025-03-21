@@ -1,10 +1,12 @@
-from asyncio import Event, Task, create_task, CancelledError
-from logging import getLogger
-from typing import Any
-from mcp.server.fastmcp import FastMCP
-from ..types.setting import BigGoMCPSetting
 import os
 import signal
+from asyncio import CancelledError, Event, Task, create_task
+from logging import getLogger
+from typing import Any
+
+from mcp.server.fastmcp import FastMCP
+
+from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
 
