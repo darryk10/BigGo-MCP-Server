@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from logging import getLogger
 from typing import Any, Literal
+
 from aiohttp import ClientSession
-from ..types.api_ret.price_history import PriceHistoryAPIRet
+
 from ..lib.utils import (
     expand_url,
     generate_short_url,
@@ -10,11 +11,12 @@ from ..lib.utils import (
     get_nindex_oid,
     get_pid_from_url,
 )
+from ..types.api_ret.price_history import PriceHistoryAPIRet
 from ..types.setting import BigGoMCPSetting
 
 logger = getLogger(__name__)
 
-DAYS = Literal["90", "80", "365", "730"] | Any
+DAYS = Literal["90", "180", "365", "730"] | Any
 
 
 @dataclass(slots=True)
