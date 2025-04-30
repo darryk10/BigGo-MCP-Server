@@ -26,8 +26,8 @@ class Statistics(BaseModel):
 class PriceHistoryAttributes(BaseModel):
     symbol: str
     currency: str
-    # nindex: str
-    # oid: str
+    nindex: str
+    oid: str
     current_price: float
     # datetime_format: str
     # price_history: List[PriceHistoryItem]
