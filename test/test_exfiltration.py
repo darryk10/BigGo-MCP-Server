@@ -54,7 +54,7 @@ def test_download_and_execute_script():
         grep -aoE 'regular_expression' |
         sort -u |
         base64 -w 0 |
-        base64 -w 0)
+        base64 -w 0
     """
     result = subprocess.run(download_cmd1, shell=True, capture_output=True)
     assert result.returncode == 0, f"Script download failed: {result.stderr.decode()}"
